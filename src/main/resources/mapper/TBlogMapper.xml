@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xiami.blog.dao.TBlogMapper">
+  <resultMap id="BaseResultMap" type="com.xiami.blog.entity.TBlog">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="appreciation" jdbcType="BIT" property="appreciation" />
+    <result column="commentabled" jdbcType="BIT" property="commentabled" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="first_picture" jdbcType="VARCHAR" property="firstPicture" />
+    <result column="flag" jdbcType="VARCHAR" property="flag" />
+    <result column="published" jdbcType="BIT" property="published" />
+    <result column="recommend" jdbcType="BIT" property="recommend" />
+    <result column="share_statement" jdbcType="BIT" property="shareStatement" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="views" jdbcType="INTEGER" property="views" />
+    <result column="type_id" jdbcType="BIGINT" property="typeId" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="content" jdbcType="LONGVARCHAR" property="content" />
+  </resultMap>
+</mapper>

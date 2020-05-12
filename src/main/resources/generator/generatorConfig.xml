@@ -25,20 +25,20 @@
         </jdbcConnection>
 
         <!-- 配置实体类存放路径 -->
-        <javaModelGenerator targetPackage="com.xiami.spring.boot.mybatis.entity" targetProject="src/main/java"/>
+        <javaModelGenerator targetPackage="com.xiami.blog.entity" targetProject="src/main/java"/>
 
         <!-- 配置 XML 存放路径 -->
         <sqlMapGenerator targetPackage="mapper" targetProject="src/main/resources"/>
 
         <!-- 配置 DAO 存放路径 -->
         <javaClientGenerator
-                targetPackage="com.xiami.spring.boot.mybatis.dao"
+                targetPackage="com.xiami.blog.dao"
                 targetProject="src/main/java"
                 type="XMLMAPPER"/>
 
         <!-- 配置需要指定生成的数据库和表，% 代表所有表 -->
 <!--        <table catalog="myshop" tableName="%">-->
-        <table catalog="guangdongcard" tableName="b_lc_plan">
+        <table catalog="myblog" tableName="%">
             <!-- mysql 配置 -->
             <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
         </table>

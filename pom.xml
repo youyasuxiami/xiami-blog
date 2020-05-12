@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.xiami</groupId>
-    <artifactId>blog</artifactId>
+    <artifactId>xiami-blog</artifactId>
     <version>0.0.1</version>
-    <name>blog</name>
+    <name>xiami-blog</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>
