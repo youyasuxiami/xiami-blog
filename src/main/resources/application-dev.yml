@@ -1,0 +1,30 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    druid:
+      url: jdbc:mysql://ip:port/dbname?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=UTC
+      username: root
+      password: 123456
+      initial-size: 1
+      min-idle: 1
+      max-active: 20
+      test-on-borrow: true
+      # MySQL 8.x: com.mysql.cj.jdbc.Driver
+      driver-class-name: com.mysql.jdbc.Driver
+
+mybatis:
+  type-aliases-package: package com.xiami.spring.boot.mybatis.entity
+  mapper-locations: classpath:mapper/*.xml
+
+#日志
+logging:
+  level:
+    #    root日志以INFO级别输出
+    root: info
+    #    此包下所有class以DEBUG级别输出
+    com.xiami.blog: debug
+  file: log/xiami-blog-dev.log
+  #  默认就是下面这个，所以不写也没关系
+  config: classpath:logging-config.xml
