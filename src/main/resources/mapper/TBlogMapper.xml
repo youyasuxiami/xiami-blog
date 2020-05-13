@@ -2,12 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xiami.blog.dao.TBlogMapper">
   <resultMap id="BaseResultMap" type="com.xiami.blog.entity.TBlog">
-    <!--
-      WARNING - @mbg.generated
-    -->
+    <!--@mbg.generated generated on Thu May 14 00:06:40 CST 2020.-->
+    <!--@Table t_blog-->
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="appreciation" jdbcType="BIT" property="appreciation" />
     <result column="commentabled" jdbcType="BIT" property="commentabled" />
+    <result column="content" jdbcType="LONGVARCHAR" property="content" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="description" jdbcType="VARCHAR" property="description" />
     <result column="first_picture" jdbcType="VARCHAR" property="firstPicture" />
@@ -20,6 +20,11 @@
     <result column="views" jdbcType="INTEGER" property="views" />
     <result column="type_id" jdbcType="BIGINT" property="typeId" />
     <result column="user_id" jdbcType="BIGINT" property="userId" />
-    <result column="content" jdbcType="LONGVARCHAR" property="content" />
   </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated generated on Thu May 14 00:06:40 CST 2020.-->
+    id, appreciation, commentabled, content, create_time, description, first_picture, 
+    flag, published, recommend, share_statement, title, update_time, views, type_id, 
+    user_id
+  </sql>
 </mapper>
