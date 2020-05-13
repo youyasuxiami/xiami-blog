@@ -1,6 +1,6 @@
-package com.xiami.blog.dao;
+package com.xiami.dao;
 
-import com.xiami.blog.entity.TBlog;
+import com.xiami.entity.TBlog;
 import tk.mybatis.mapper.MyMapper;
 
 public interface TBlogMapper extends MyMapper<TBlog> {

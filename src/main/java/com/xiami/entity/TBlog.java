@@ -1,4 +1,4 @@
-package com.xiami.blog.entity;
+package com.xiami.entity;
 
 import java.io.Serializable;
 import java.util.Date;

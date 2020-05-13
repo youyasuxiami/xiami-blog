@@ -1,7 +1,7 @@
 package com.xiami.blog;
 
-import com.xiami.blog.dao.TBlogMapper;
-import com.xiami.blog.entity.TBlog;
+import com.xiami.dao.TBlogMapper;
+import com.xiami.entity.TBlog;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

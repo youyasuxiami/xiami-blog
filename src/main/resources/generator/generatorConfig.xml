@@ -25,14 +25,14 @@
         </jdbcConnection>
 
         <!-- 配置实体类存放路径 -->
-        <javaModelGenerator targetPackage="com.xiami.blog.entity" targetProject="src/main/java"/>
+        <javaModelGenerator targetPackage="com.xiami.entity" targetProject="src/main/java"/>
 
         <!-- 配置 XML 存放路径 -->
         <sqlMapGenerator targetPackage="mapper" targetProject="src/main/resources"/>
 
         <!-- 配置 DAO 存放路径 -->
         <javaClientGenerator
-                targetPackage="com.xiami.blog.dao"
+                targetPackage="com.xiami.dao"
                 targetProject="src/main/java"
                 type="XMLMAPPER"/>
 
