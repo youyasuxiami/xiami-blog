@@ -78,7 +78,27 @@
         </dependency>
         <!-- 分页  end-->
 
+        <!-- devtools  start-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <!-- devtools  end-->
+        
+        <!-- thymeleaf  start-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+        <!-- thymeleaf  end-->
 
+        <!-- Aop  start-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
+        <!-- Aop  end-->
 
         <dependency>
             <groupId>org.springframework.boot</groupId>

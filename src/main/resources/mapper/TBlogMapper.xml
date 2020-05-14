@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.xiami.blog.dao.TBlogMapper">
-  <resultMap id="BaseResultMap" type="com.xiami.blog.entity.TBlog">
+<mapper namespace="com.xiami.dao.TBlogMapper">
+  <resultMap id="BaseResultMap" type="com.xiami.entity.TBlog">
     <!--@mbg.generated generated on Thu May 14 00:06:40 CST 2020.-->
     <!--@Table t_blog-->
     <id column="id" jdbcType="BIGINT" property="id" />
