@@ -1,4 +1,4 @@
-package com.xiami.blog;
+package com.xiami;
 
 import com.xiami.dao.TBlogMapper;
 import com.xiami.entity.TBlog;

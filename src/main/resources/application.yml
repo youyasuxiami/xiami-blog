@@ -2,4 +2,7 @@ spring:
   thymeleaf:
     mode: HTML
   profiles:
-    active: dev
+#    神州
+#    active: dev
+#    联想
+    active: lianxiangdev

@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xiami.dao.TBlogMapper">
   <resultMap id="BaseResultMap" type="com.xiami.entity.TBlog">
-    <!--@mbg.generated generated on Thu May 14 00:06:40 CST 2020.-->
+    <!--@mbg.generated generated on Thu May 14 14:04:32 CST 2020.-->
     <!--@Table t_blog-->
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="appreciation" jdbcType="BIT" property="appreciation" />
@@ -22,7 +22,7 @@
     <result column="user_id" jdbcType="BIGINT" property="userId" />
   </resultMap>
   <sql id="Base_Column_List">
-    <!--@mbg.generated generated on Thu May 14 00:06:40 CST 2020.-->
+    <!--@mbg.generated generated on Thu May 14 14:04:32 CST 2020.-->
     id, appreciation, commentabled, content, create_time, description, first_picture, 
     flag, published, recommend, share_statement, title, update_time, views, type_id, 
     user_id
