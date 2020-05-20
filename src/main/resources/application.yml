@@ -3,6 +3,6 @@ spring:
     mode: HTML
   profiles:
 #    神州
-#    active: dev
+    active: dev
 #    联想
-    active: lianxiangdev
+#    active: lianxiangdev
