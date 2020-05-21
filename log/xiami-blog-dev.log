@@ -3735,3 +3735,107 @@ Caused by: java.lang.ClassNotFoundException: Cannot find class: com.xiami.blog.e
 2020-05-14 14:05:32.620  INFO 6444 --- [main] com.xiami.BlogApplicationTests           : Started BlogApplicationTests in 4.395 seconds (JVM running for 5.677)
 2020-05-14 14:05:33.414  INFO 6444 --- [SpringContextShutdownHook] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
 2020-05-14 14:05:33.425  INFO 6444 --- [SpringContextShutdownHook] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} closed
+2020-05-15 12:22:17.557  INFO 2680 --- [main] com.xiami.BlogApplicationTests           : Starting BlogApplicationTests on LAPTOP-P9SHUQSO with PID 2680 (started by 86138 in F:\maven_workspaces\个人博客\xiami-blog)
+2020-05-15 12:22:17.558  INFO 2680 --- [main] com.xiami.BlogApplicationTests           : The following profiles are active: lianxiangdev
+2020-05-15 12:22:18.056  WARN 2680 --- [main] t.m.s.mapper.ClassPathMapperScanner      : No MyBatis mapper was found in '[com.xiami]' package. Please check your configuration.
+2020-05-15 12:22:18.192  WARN 2680 --- [main] o.m.s.mapper.ClassPathMapperScanner      : No MyBatis mapper was found in '[com.xiami]' package. Please check your configuration.
+2020-05-15 12:22:18.653  INFO 2680 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-05-15 12:22:19.371  INFO 2680 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-05-15 12:22:20.626  INFO 2680 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-05-15 12:22:20.830  INFO 2680 --- [main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page template: index
+2020-05-15 12:22:21.297  INFO 2680 --- [main] com.xiami.BlogApplicationTests           : Started BlogApplicationTests in 4.237 seconds (JVM running for 5.197)
+2020-05-15 12:22:21.965  INFO 2680 --- [SpringContextShutdownHook] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+2020-05-15 12:22:21.973  INFO 2680 --- [SpringContextShutdownHook] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} closed
+2020-05-15 12:22:38.875  INFO 14396 --- [main] com.xiami.BlogApplication                : Starting BlogApplication on LAPTOP-P9SHUQSO with PID 14396 (F:\maven_workspaces\个人博客\xiami-blog\target\classes started by 86138 in F:\maven_workspaces\个人博客\xiami-blog)
+2020-05-15 12:22:38.876  INFO 14396 --- [main] com.xiami.BlogApplication                : The following profiles are active: lianxiangdev
+2020-05-15 12:22:38.932  INFO 14396 --- [main] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2020-05-15 12:22:38.932  INFO 14396 --- [main] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2020-05-15 12:22:39.443  WARN 14396 --- [main] ssPathScanningCandidateComponentProvider : No MyBatis mapper was found in '[com.xiami]' package. Please check your configuration.
+2020-05-15 12:22:39.606  WARN 14396 --- [main] o.m.s.mapper.ClassPathMapperScanner      : No MyBatis mapper was found in '[com.xiami]' package. Please check your configuration.
+2020-05-15 12:22:40.450  INFO 14396 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2020-05-15 12:22:40.461  INFO 14396 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-05-15 12:22:40.461  INFO 14396 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.34]
+2020-05-15 12:22:40.463  INFO 14396 --- [main] o.a.catalina.core.AprLifecycleListener   : An older version [1.2.16] of the APR based Apache Tomcat Native library is installed, while Tomcat recommends a minimum version of [1.2.23]
+2020-05-15 12:22:40.463  INFO 14396 --- [main] o.a.catalina.core.AprLifecycleListener   : Loaded APR based Apache Tomcat Native library [1.2.16] using APR version [1.6.3].
+2020-05-15 12:22:40.464  INFO 14396 --- [main] o.a.catalina.core.AprLifecycleListener   : APR capabilities: IPv6 [true], sendfile [true], accept filters [false], random [true].
+2020-05-15 12:22:40.464  INFO 14396 --- [main] o.a.catalina.core.AprLifecycleListener   : APR/OpenSSL configuration: useAprConnector [false], useOpenSSL [true]
+2020-05-15 12:22:41.522  INFO 14396 --- [main] o.a.catalina.core.AprLifecycleListener   : OpenSSL successfully initialized [OpenSSL 1.0.2m  2 Nov 2017]
+2020-05-15 12:22:41.606  INFO 14396 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-05-15 12:22:41.607  INFO 14396 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 2675 ms
+2020-05-15 12:22:41.707  INFO 14396 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-05-15 12:22:42.085  INFO 14396 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-05-15 12:22:43.035  INFO 14396 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-05-15 12:22:43.136  INFO 14396 --- [main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page template: index
+2020-05-15 12:22:43.501  INFO 14396 --- [main] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2020-05-15 12:22:43.571  INFO 14396 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2020-05-15 12:22:43.574  INFO 14396 --- [main] com.xiami.BlogApplication                : Started BlogApplication in 5.285 seconds (JVM running for 9.949)
+2020-05-15 12:23:08.585  INFO 10836 --- [restartedMain] com.xiami.BlogApplication                : Starting BlogApplication on LAPTOP-P9SHUQSO with PID 10836 (F:\maven_workspaces\个人博客\xiami-blog\target\classes started by 86138 in F:\maven_workspaces\个人博客\xiami-blog)
+2020-05-15 12:23:08.587  INFO 10836 --- [restartedMain] com.xiami.BlogApplication                : The following profiles are active: lianxiangdev
+2020-05-15 12:23:08.624  INFO 10836 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2020-05-15 12:23:08.624  INFO 10836 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2020-05-15 12:23:09.059  WARN 10836 --- [restartedMain] t.m.s.mapper.ClassPathMapperScanner      : No MyBatis mapper was found in '[com.xiami]' package. Please check your configuration.
+2020-05-15 12:23:09.171  WARN 10836 --- [restartedMain] o.m.s.mapper.ClassPathMapperScanner      : No MyBatis mapper was found in '[com.xiami]' package. Please check your configuration.
+2020-05-15 12:23:09.652  INFO 10836 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2020-05-15 12:23:09.660  INFO 10836 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-05-15 12:23:09.660  INFO 10836 --- [restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.34]
+2020-05-15 12:23:09.662  INFO 10836 --- [restartedMain] o.a.catalina.core.AprLifecycleListener   : An older version [1.2.16] of the APR based Apache Tomcat Native library is installed, while Tomcat recommends a minimum version of [1.2.23]
+2020-05-15 12:23:09.662  INFO 10836 --- [restartedMain] o.a.catalina.core.AprLifecycleListener   : Loaded APR based Apache Tomcat Native library [1.2.16] using APR version [1.6.3].
+2020-05-15 12:23:09.662  INFO 10836 --- [restartedMain] o.a.catalina.core.AprLifecycleListener   : APR capabilities: IPv6 [true], sendfile [true], accept filters [false], random [true].
+2020-05-15 12:23:09.662  INFO 10836 --- [restartedMain] o.a.catalina.core.AprLifecycleListener   : APR/OpenSSL configuration: useAprConnector [false], useOpenSSL [true]
+2020-05-15 12:23:10.730  INFO 10836 --- [restartedMain] o.a.catalina.core.AprLifecycleListener   : OpenSSL successfully initialized [OpenSSL 1.0.2m  2 Nov 2017]
+2020-05-15 12:23:10.826  INFO 10836 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-05-15 12:23:10.827  INFO 10836 --- [restartedMain] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 2203 ms
+2020-05-15 12:23:10.964  INFO 10836 --- [restartedMain] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-05-15 12:23:11.237  INFO 10836 --- [restartedMain] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-05-15 12:23:11.885  INFO 10836 --- [restartedMain] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-05-15 12:23:11.967  INFO 10836 --- [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page template: index
+2020-05-15 12:23:12.224  INFO 10836 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2020-05-15 12:23:12.269  INFO 10836 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2020-05-15 12:23:12.272  INFO 10836 --- [restartedMain] com.xiami.BlogApplication                : Started BlogApplication in 4.181 seconds (JVM running for 5.463)
+2020-05-15 12:23:29.339  INFO 10836 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-05-15 12:23:29.339  INFO 10836 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-05-15 12:23:29.348  INFO 10836 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 9 ms
+2020-05-15 12:23:29.368  INFO 10836 --- [http-nio-8080-exec-1] com.xiami.aspect.LogAspect               : Request : {url='http://localhost:8080/login', ip='0:0:0:0:0:0:0:1', classMethod='com.xiami.web.LoginController.login', args=[]}
+2020-05-15 12:23:29.379  INFO 10836 --- [http-nio-8080-exec-1] com.xiami.aspect.LogAspect               : Result : com.xiami.base.ResponseResult@6c81fafd
+2020-05-15 14:04:35.150  INFO 10836 --- [SpringContextShutdownHook] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+2020-05-15 14:04:35.160  INFO 10836 --- [SpringContextShutdownHook] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} closed
+2020-05-17 23:00:40.941  INFO 5640 --- [main] com.xiami.BlogApplication                : Starting BlogApplication on LAPTOP-P9SHUQSO with PID 5640 (F:\maven_workspaces\个人博客\xiami-blog\target\classes started by 86138 in F:\maven_workspaces\个人博客\xiami-blog)
+2020-05-17 23:00:40.943  INFO 5640 --- [main] com.xiami.BlogApplication                : The following profiles are active: lianxiangdev
+2020-05-17 23:00:41.021  INFO 5640 --- [main] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2020-05-17 23:00:41.021  INFO 5640 --- [main] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2020-05-17 23:00:42.026  WARN 5640 --- [main] ssPathScanningCandidateComponentProvider : No MyBatis mapper was found in '[com.xiami]' package. Please check your configuration.
+2020-05-17 23:00:42.205  WARN 5640 --- [main] o.m.s.mapper.ClassPathMapperScanner      : No MyBatis mapper was found in '[com.xiami]' package. Please check your configuration.
+2020-05-17 23:00:43.774  INFO 5640 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2020-05-17 23:00:43.794  INFO 5640 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2020-05-17 23:00:43.794  INFO 5640 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.34]
+2020-05-17 23:00:43.799  INFO 5640 --- [main] o.a.catalina.core.AprLifecycleListener   : An older version [1.2.16] of the APR based Apache Tomcat Native library is installed, while Tomcat recommends a minimum version of [1.2.23]
+2020-05-17 23:00:43.799  INFO 5640 --- [main] o.a.catalina.core.AprLifecycleListener   : Loaded APR based Apache Tomcat Native library [1.2.16] using APR version [1.6.3].
+2020-05-17 23:00:43.800  INFO 5640 --- [main] o.a.catalina.core.AprLifecycleListener   : APR capabilities: IPv6 [true], sendfile [true], accept filters [false], random [true].
+2020-05-17 23:00:43.800  INFO 5640 --- [main] o.a.catalina.core.AprLifecycleListener   : APR/OpenSSL configuration: useAprConnector [false], useOpenSSL [true]
+2020-05-17 23:00:44.914  INFO 5640 --- [main] o.a.catalina.core.AprLifecycleListener   : OpenSSL successfully initialized [OpenSSL 1.0.2m  2 Nov 2017]
+2020-05-17 23:00:45.129  INFO 5640 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2020-05-17 23:00:45.129  INFO 5640 --- [main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 4108 ms
+2020-05-17 23:00:45.260  INFO 5640 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2020-05-17 23:00:45.742  INFO 5640 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2020-05-17 23:00:46.730  INFO 5640 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-05-17 23:00:46.857  INFO 5640 --- [main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page template: index
+2020-05-17 23:00:47.211  INFO 5640 --- [main] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2020-05-17 23:00:47.274  INFO 5640 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2020-05-17 23:00:47.278  INFO 5640 --- [main] com.xiami.BlogApplication                : Started BlogApplication in 7.44 seconds (JVM running for 12.939)
+2020-05-17 23:01:53.990  INFO 5640 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-05-17 23:01:53.990  INFO 5640 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2020-05-17 23:01:54.000  INFO 5640 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 10 ms
+2020-05-17 23:01:54.033  INFO 5640 --- [http-nio-8080-exec-1] com.xiami.aspect.LogAspect               : Request : {url='http://localhost:8080/', ip='0:0:0:0:0:0:0:1', classMethod='com.xiami.web.IndexController.index', args=[]}
+2020-05-17 23:01:54.044  INFO 5640 --- [http-nio-8080-exec-1] com.xiami.aspect.LogAspect               : Result : index
+2020-05-17 23:01:58.009  INFO 5640 --- [http-nio-8080-exec-8] com.xiami.aspect.LogAspect               : Request : {url='http://localhost:8080/', ip='0:0:0:0:0:0:0:1', classMethod='com.xiami.web.IndexController.index', args=[]}
+2020-05-17 23:01:58.010  INFO 5640 --- [http-nio-8080-exec-8] com.xiami.aspect.LogAspect               : Result : index
+2020-05-17 23:02:16.308  INFO 5640 --- [http-nio-8080-exec-2] com.xiami.aspect.LogAspect               : Request : {url='http://localhost:8080/login', ip='0:0:0:0:0:0:0:1', classMethod='com.xiami.web.LoginController.login', args=[]}
+2020-05-17 23:02:16.314  INFO 5640 --- [http-nio-8080-exec-2] com.xiami.aspect.LogAspect               : Result : com.xiami.base.ResponseResult@7f1bcecf
+2020-05-17 23:02:30.886  INFO 5640 --- [http-nio-8080-exec-10] com.xiami.aspect.LogAspect               : Request : {url='http://localhost:8080/login', ip='0:0:0:0:0:0:0:1', classMethod='com.xiami.web.LoginController.login', args=[]}
+2020-05-17 23:02:30.887  INFO 5640 --- [http-nio-8080-exec-10] com.xiami.aspect.LogAspect               : Result : com.xiami.base.ResponseResult@6f86d42c
+2020-05-17 23:02:46.290  WARN 5640 --- [File Watcher] o.m.s.mapper.ClassPathMapperScanner      : No MyBatis mapper was found in '[com.xiami]' package. Please check your configuration.
+2020-05-17 23:03:13.216  WARN 5640 --- [http-nio-8080-exec-8] o.m.s.mapper.ClassPathMapperScanner      : No MyBatis mapper was found in '[com.xiami]' package. Please check your configuration.
+2020-05-17 23:03:13.523  INFO 5640 --- [http-nio-8080-exec-8] com.xiami.aspect.LogAspect               : Request : {url='http://localhost:8080/login', ip='0:0:0:0:0:0:0:1', classMethod='com.xiami.web.LoginController.login', args=[]}
+2020-05-17 23:03:13.526  INFO 5640 --- [http-nio-8080-exec-8] com.xiami.aspect.LogAspect               : Result : com.xiami.base.ResponseResult@2e00a71e
+2020-05-17 23:04:10.556  INFO 5640 --- [http-nio-8080-exec-4] com.xiami.aspect.LogAspect               : Request : {url='http://localhost:8080/login', ip='0:0:0:0:0:0:0:1', classMethod='com.xiami.web.LoginController.login', args=[]}
+2020-05-17 23:04:10.556  INFO 5640 --- [http-nio-8080-exec-4] com.xiami.aspect.LogAspect               : Result : com.xiami.base.ResponseResult@5183ce0a

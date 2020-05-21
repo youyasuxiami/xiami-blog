@@ -16,6 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class LoginController {
     @RequestMapping(value="/login",method = RequestMethod.GET)
     public ResponseResult login(){
-        return new ResponseResult(ResponseResult.CodeStatus.OK,"成功","成功了");
+        return new ResponseResult(ResponseResult.CodeStatus.OK,"成功",null);
     }
 }
