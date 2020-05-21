@@ -1,6 +1,4 @@
 spring:
-  thymeleaf:
-    mode: HTML
   profiles:
 #    神州
     active: dev

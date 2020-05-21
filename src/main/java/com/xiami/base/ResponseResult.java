@@ -1,53 +1,83 @@
 package com.xiami.base;
 
+import lombok.Data;
+
 import java.io.Serializable;
 
 /**
- * Description：
+ * Description：<描述>这个是李哥的响应
  *
  * @version v1.0.0
  * @author：zj
- * @date：2020­03­28 14:15
+ * @date：2019­12­15 22:10
  */
-public class ResponseResult implements Serializable {
-    public int code;
-    public String message;
-    public Object data;
-
-    public ResponseResult(){}
-    public ResponseResult(int code){
-        this.code=code;
+@Data
+public class ResponseResult<T> implements Serializable {
+    private static final long serialVersionUID = 3468352004150968551L;
+    /**
+     * 状态码
+     */
+    private Integer code;
+    /**
+     * 消息
+     */
+    private String message;
+    /**
+     * 返回对象
+     */
+    private T data;
+    public ResponseResult() {
+        super();
     }
-    public ResponseResult(int code, String message){
-        this.code=code;
-        this.message=message;
+    public ResponseResult(Integer code) {
+        super();
+        this.code = code;
     }
-
-    public ResponseResult(int code, Object data){
-        this.code=code;
-        this.data=data;
+    public ResponseResult(Integer code, String message) {
+        super();
+        this.code = code;
+        this.message = message;
     }
-    public ResponseResult(int code, String message, Object data){
-        this.code=code;
-        this.message=message;
-        this.data=data;
+    public ResponseResult(Integer code, Throwable throwable) {
+        super();
+        this.code = code;
+        this.message = throwable.getMessage();
     }
-
+    public ResponseResult(Integer code, T data) {
+        super();
+        this.code = code;
+        this.data = data;
+    }
+    public ResponseResult(Integer code, String message, T data) {
+        super();
+        this.code = code;
+        this.message = message;
+        this.data = data;
+    }
+    public T getData() {
+        return data;
+    }
+    public void setData(T data) {
+        this.data = data;
+    }
+    /**
+     *
+     * Description：状态码
+     *
+     * @author：zj
+     * @version v1.0.0
+     * @date：${YEAR}­${MONTH}­${DAY} ${TIME}
+     */
     public class CodeStatus{
         /**
-         * 请求成功
+         * 成功
          */
         public static final int OK=20000;
 
         /**
-         * 请求失败
+         * 失败
          */
-        public static final int FAIL=20004;
-
-        /**
-         * 非法请求
-         */
-        public static final int ILLEGAL_REQUEST= 50000;
+        public static final int FAIL=50000;
 
         /**
          * 非法的Token
@@ -63,11 +93,5 @@ public class ResponseResult implements Serializable {
          * Token超时
          */
         public static final int TOKEN_EXPIRED =50014;
-
-        /**
-         * 熔断请求
-         */
-        public static final int BREAKING=20004;
     }
-
 }
