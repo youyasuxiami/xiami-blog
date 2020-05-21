@@ -1,9 +1,12 @@
 package com.xiami.web;
 
 import com.xiami.base.ResponseResult;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import com.xiami.dto.LoginParam;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+import org.thymeleaf.expression.Maps;
+
+import java.util.Map;
 
 /**
  * Description：
@@ -14,8 +17,14 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class LoginController {
-    @RequestMapping(value="/login",method = RequestMethod.GET)
+    @GetMapping(value="/login")
     public ResponseResult login(){
         return new ResponseResult(ResponseResult.CodeStatus.OK,"成功",null);
+    }
+
+    @PostMapping(value = "/user/login")
+    public ResponseResult login(@RequestBody LoginParam loginParam){
+        System.out.println("111111111");
+        return new ResponseResult(HttpStatus.OK.value(),HttpStatus.OK.toString(),null);
     }
 }

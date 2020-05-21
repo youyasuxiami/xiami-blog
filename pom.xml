@@ -17,6 +17,13 @@
     <properties>
         <java.version>1.8</java.version>
     </properties>
+    <!--证书-->
+    <licenses>
+        <license>
+            <name>Apache 2.0</name>
+            <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
 
     <dependencies>
         <dependency>

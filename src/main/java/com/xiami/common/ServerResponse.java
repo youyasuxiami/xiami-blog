@@ -3,6 +3,9 @@ package com.xiami.common;
 //import org.codehaus.jackson.annotate.JsonIgnore;
 //import org.codehaus.jackson.map.annotate.JsonSerialize;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import java.io.Serializable;
 
 /**
@@ -42,7 +45,7 @@ public class ServerResponse<T> implements Serializable {
 
     //如果不处理，会显示在json里面
     //加了 @JsonIgnore，在序列化之后，就不会显示在json里面
-    //@JsonIgnore
+    @JsonIgnore
     //使之不在json序列化结果当中
     //对外开放了这四个方法
     public boolean isSuccess(){
