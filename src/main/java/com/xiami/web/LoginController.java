@@ -43,7 +43,8 @@ public class LoginController {
         //Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         LoginInfo loginInfo=new LoginInfo();
         //loginInfo.setName(authentication.getName());
-        loginInfo.setName("admin");
+        loginInfo.setName("zhengjin");
+        loginInfo.setAvatar("https://italker-news.oss-cn-shenzhen.aliyuncs.com/xiaoxin2.jpg");
         return new ResponseResult<LoginInfo>(ResponseResult.CodeStatus.OK,"获取用户信息",loginInfo);
     }
 
