@@ -1,97 +1,86 @@
-package com.xiami.entity;
-
-import java.io.Serializable;
-import java.util.Date;
-import javax.persistence.*;
+package com.xiami.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
+import java.io.Serializable;
+import java.util.Date;
+
+/**
+ * Description：
+ *
+ * @version v1.0.0
+ * @author：zj
+ * @date：2020­05­24 21:54
+ */
 @Data
-@Table(name = "`user`")
-public class User implements Serializable {
+public class UserParam implements Serializable {
+    private static final long serialVersionUID = -8472527239027808727L;
+
     /**
      * 用户编号
      */
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(generator = "JDBC")
     private Integer id;
 
-    @Column(name = "nick_name")
     private String nickName;
 
     /**
      * 密码
      */
-    @Column(name = "`password`")
     private String password;
 
-    @Column(name = "`name`")
     private String name;
 
     /**
      * 性别
      */
-    @Column(name = "sex")
     private String sex;
 
     /**
      * 年龄
      */
-    @Column(name = "age")
     private String age;
 
     /**
      * 联系方式
      */
-    @Column(name = "phone")
     private String phone;
 
     /**
      * 邮箱
      */
-    @Column(name = "email")
     private String email;
 
     /**
      * 头像
      */
-    @Column(name = "avatar")
     private String avatar;
 
     /**
      * 创建时间
      */
-    @Column(name = "create_time")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
 
     /**
      * 更新时间
      */
-    @Column(name = "update_time")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
 
     /**
      * 最新登录时间
      */
-    @Column(name = "login_time")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date loginTime;
 
     /**
      * 备注
      */
-    @Column(name = "`ps`")
     private String ps;
 
     /**
      * 账号状态
      */
-    @Column(name = "status")
     private String status;
-
-    private static final long serialVersionUID = 1L;
 }
