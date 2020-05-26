@@ -50,4 +50,12 @@ public class UserServiceImpl implements UserService {
         user1.setStatus(user.getStatus());
         return userMapper.updateByPrimaryKey(user1);
     }
+
+    @Override
+    public int modifyIcon(String username,String path){
+        User user1=get(username);
+        user1.setAvatar(path);
+        return userMapper.updateByPrimaryKey(user1);
+    }
+
 }

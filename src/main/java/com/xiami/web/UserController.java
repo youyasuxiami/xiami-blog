@@ -1,6 +1,7 @@
 package com.xiami.web;
 
 import com.xiami.base.ResponseResult;
+import com.xiami.dto.IconParam;
 import com.xiami.dto.UserParam;
 import com.xiami.entity.User;
 import com.xiami.service.UserService;
@@ -59,5 +60,24 @@ public class UserController {
             return new ResponseResult<>(ResponseResult.CodeStatus.FAIL, "更新个人信息失败");
         }
     }
+    /**
+     * 修改头像
+     *
+     * @param iconParam {@link IconParam}
+     * @return {@link ResponseResult}
+     */
+    @PostMapping(value = "/profile/modify/icon")
+    public ResponseResult<Void> modifyIcon(@RequestBody IconParam iconParam) {
+        int result = userService.modifyIcon(iconParam.getUsername(), iconParam.getPath());
+        // 成功
+        if (result > 0) {
+            return new ResponseResult<Void>(ResponseResult.CodeStatus.OK, "更新头像成功");
+        }
+        // 失败
+        else {
+            return new ResponseResult<Void>(ResponseResult.CodeStatus.FAIL, "更新头像失败");
+        }
+    }
+
 
 }
