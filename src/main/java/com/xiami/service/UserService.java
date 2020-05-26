@@ -25,4 +25,11 @@ public interface UserService {
       */
      int updateUserInfo(User user);
 
+     /**
+      * 修改头像
+      * @param username
+      * @param path
+      * @return
+      */
+     int modifyIcon(String username,String path);
 }
