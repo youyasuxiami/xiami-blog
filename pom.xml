@@ -130,14 +130,13 @@
             <version>18.0</version>
         </dependency>
         <!-- guava  end-->
-
-        <!-- 阿里云oss  start-->
+        <!-- OSS  start-->
         <dependency>
             <groupId>com.aliyun.oss</groupId>
             <artifactId>aliyun-sdk-oss</artifactId>
             <version>3.9.1</version>
         </dependency>
-        <!-- 阿里云oss  end-->
+        <!-- OSS  end-->
         
     </dependencies>
 
