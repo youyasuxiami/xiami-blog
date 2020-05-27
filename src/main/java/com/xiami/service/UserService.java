@@ -3,6 +3,8 @@ package com.xiami.service;
 import com.xiami.entity.User;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.util.List;
+
 /**
  * Description：
  *
@@ -32,4 +34,10 @@ public interface UserService {
       * @return
       */
      int modifyIcon(String username,String path);
+
+     /**
+      * 获得用户列表数据
+      * @return
+      */
+     List<User> getUsers();
 }
