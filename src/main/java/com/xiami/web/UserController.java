@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 /**
  * Description：
  *
@@ -77,6 +79,12 @@ public class UserController {
         else {
             return new ResponseResult<Void>(ResponseResult.CodeStatus.FAIL, "更新头像失败");
         }
+    }
+
+    @GetMapping(value = "/profile/users")
+    public ResponseResult<User> getUsers() {
+        List<User> users = userService.getUsers();
+        return new ResponseResult(ResponseResult.CodeStatus.OK, "获取用户列表数据成功",users);
     }
 
 

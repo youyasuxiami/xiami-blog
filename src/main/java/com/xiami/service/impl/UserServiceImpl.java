@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import tk.mybatis.mapper.entity.Example;
 
+import java.util.List;
+
 /**
  * Description：
  *
@@ -57,5 +59,8 @@ public class UserServiceImpl implements UserService {
         user1.setAvatar(path);
         return userMapper.updateByPrimaryKey(user1);
     }
-
+    @Override
+    public List<User> getUsers(){
+        return userMapper.selectAll();
+    }
 }
