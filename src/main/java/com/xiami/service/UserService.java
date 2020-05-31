@@ -35,9 +35,4 @@ public interface UserService {
       */
      int modifyIcon(String username,String path);
 
-     /**
-      * 获得用户列表数据
-      * @return
-      */
-     List<User> getUsers();
 }

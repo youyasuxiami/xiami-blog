@@ -1,6 +1,10 @@
 package com.xiami.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.io.Serializable;
 
@@ -10,6 +14,8 @@ import java.io.Serializable;
  * Description：<描述>
  */
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class IconParam implements Serializable {
     private static final long serialVersionUID = 3995479111219288438L;
 

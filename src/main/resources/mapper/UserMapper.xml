@@ -22,4 +22,8 @@
     id, nick_name, `password`, `name`, sex, age, phone, email, avatar, create_time, update_time, 
     login_time
   </sql>
+
+  <select id="selectByQuery" parameterType="com.xiami.dto.UserQueryDto" resultMap="BaseResultMap">
+    SELECT <include refid="Base_Column_List"/> FROM user
+  </select>
 </mapper>
