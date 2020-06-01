@@ -137,6 +137,13 @@
             <version>3.9.1</version>
         </dependency>
         <!-- OSS  end-->
+        <!-- Shiro  start-->
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-core</artifactId>
+            <version>1.4.0</version>
+        </dependency>
+        <!-- Shiro  end-->
         
     </dependencies>
 
