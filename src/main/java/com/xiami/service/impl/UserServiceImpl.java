@@ -59,8 +59,5 @@ public class UserServiceImpl implements UserService {
         user1.setAvatar(path);
         return userMapper.updateByPrimaryKey(user1);
     }
-    @Override
-    public List<User> getUsers(){
-        return userMapper.selectAll();
-    }
+
 }
