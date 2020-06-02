@@ -13,4 +13,11 @@
     <!--@mbg.generated generated on Fri May 15 12:21:16 CST 2020.-->
     id, role_name, create_time, update_time
   </sql>
+
+  <select id="getRoleNames" resultType="String" parameterType="integer">
+    SELECT r.role_name FROM role r
+    INNER JOIN role_user ru
+    ON r.id=ru.role_id
+    WHERE ru.user_id=#{userId}
+  </select>
 </mapper>

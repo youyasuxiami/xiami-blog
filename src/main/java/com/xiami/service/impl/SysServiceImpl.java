@@ -14,6 +14,7 @@ import com.xiami.service.SysService;
 import com.xiami.utils.DictionaryUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
@@ -102,28 +103,29 @@ public class SysServiceImpl implements SysService {
         Example example = new Example(User.class);
         Example.Criteria criteria = example.createCriteria();
         //实体类属性
-        if (!"".equals(userQueryDto.getNickName())) {
-            criteria.andEqualTo("nickName", userQueryDto.getNickName());
-        }
-        if (!"".equals(userQueryDto.getName())) {
+        if (!StringUtils.isEmpty(userQueryDto.getName())) {
             criteria.andEqualTo("name", userQueryDto.getName());
         }
-        if (!"".equals(userQueryDto.getSex())) {
+        if (!StringUtils.isEmpty(userQueryDto.getNickName())) {
+            criteria.andEqualTo("nickName", userQueryDto.getNickName());
+        }
+        if (!StringUtils.isEmpty(userQueryDto.getSex())) {
             criteria.andEqualTo("sex", userQueryDto.getSex());
         }
-        if (!"".equals(userQueryDto.getAccountStatus())) {
+
+        if (!StringUtils.isEmpty(userQueryDto.getAccountStatus())) {
             criteria.andEqualTo("status", userQueryDto.getAccountStatus());
         }
-        if (null==userQueryDto.getCreateTime()||userQueryDto.getCreateTime().length==0) {
+        if (null == userQueryDto.getCreateTime() || userQueryDto.getCreateTime().length == 0) {
             // TODO: 2020/6/1
-        }else{
+        } else {
             //criteria.andEqualTo("createTime", userQueryDto.getCreateTime());
-            criteria.andBetween("createTime",userQueryDto.getCreateTime()[0],userQueryDto.getCreateTime()[1]);
+            criteria.andBetween("createTime", userQueryDto.getCreateTime()[0], userQueryDto.getCreateTime()[1]);
         }
 
         //先在角色-用户表中，筛选出搜索框的角色id，得出所有筛选到的用户id
         String roleId = userQueryDto.getRoleId();
-        if (!"".equals(roleId)) {
+        if (!StringUtils.isEmpty(roleId)) {
             Example exampleRole = new Example(RoleUser.class);
             Example.Criteria criteria1 = exampleRole.createCriteria();
             criteria1.andEqualTo("roleId", roleId);
@@ -131,11 +133,12 @@ public class SysServiceImpl implements SysService {
             List<Integer> collect = roleUsers.stream().map(RoleUser::getUserId)
                     .collect(Collectors.toList());
             //获取用户表中，是筛选后的角色编号id的用户编号id
-            //if (null == collect || collect.isEmpty()) {
-            //    // TODO: 2020/5/31 管理员不存在怎么办
-            //}else{
-                criteria.andIn("id", collect);
-            //}
+            if (null == collect || collect.isEmpty()) {
+                //管理员不存在怎么办
+                PageResult pageResult = new PageResult(0l, null);
+                return pageResult;
+            }
+            criteria.andIn("id", collect);
         }
 
         PageHelper.startPage(userQueryDto.getPageNum(), userQueryDto.getPageSize());

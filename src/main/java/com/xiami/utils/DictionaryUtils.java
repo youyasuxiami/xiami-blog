@@ -54,8 +54,9 @@ public class DictionaryUtils {
         criteria.andEqualTo("group",group);
         criteria.andEqualTo("code",code);
         List<SysDictionary> sysDictionaries = dictionaryUtils.sysDictionaryMapper.selectByExample(example);
-        List<String> lists = sysDictionaries.stream().map(SysDictionary::getValue).collect(Collectors.toList());
-        String s = lists.get(0);
+        String s = sysDictionaries.get(0).getValue();
+        //List<String> lists = sysDictionaries.stream().map(SysDictionary::getValue).collect(Collectors.toList());
+        //String s = lists.get(0);
         return s;
     }
 
