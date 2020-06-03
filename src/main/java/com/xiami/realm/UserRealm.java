@@ -1,23 +1,36 @@
 package com.xiami.realm;
 
+import com.xiami.dao.MenuMapper;
+import com.xiami.dao.RoleMapper;
 import com.xiami.entity.User;
 import com.xiami.service.UserService;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
+import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * Author：郑锦
  * Date：2020­06­01 22:57
  * Description：<描述>
  */
+@Component
 public class UserRealm extends AuthorizingRealm {
 
-    @Resource
+    @Autowired
     private UserService userService;
+
+    @Autowired
+    private RoleMapper roleMapper;
+
+    @Autowired
+    private MenuMapper menuMapper;
 
     /**
      * 认证
@@ -56,9 +69,17 @@ public class UserRealm extends AuthorizingRealm {
         User user = (User) principalCollection.getPrimaryPrincipal();
         //获取当前用户的编号
         Integer userId = user.getId();
-        //获取该用户编号的所有的菜单权限
 
         //获取该用户编号的所有角色
-        return null;
+        List<String> roleNames = roleMapper.getRoleNames(userId);
+        //获取该用户编号的所有的菜单权限
+        List<String> menuPerms = menuMapper.getMenuPerms(userId);
+
+        //添加认证信息
+        SimpleAuthorizationInfo info=new SimpleAuthorizationInfo();
+        info.addRoles(roleNames);
+        info.addStringPermissions(menuPerms);
+
+        return info;
     }
 }

@@ -16,6 +16,12 @@
 
     <properties>
         <java.version>1.8</java.version>
+        <shiro.version>1.4.0</shiro.version>
+        <aliyun-sdk-oss.version>3.9.1</aliyun-sdk-oss.version>
+        <mybatis-spring-boot-starter.version>2.1.2</mybatis-spring-boot-starter.version>
+        <druid.version>1.1.10</druid.version>
+        <tk.mybatis.version>2.0.2</tk.mybatis.version>
+        <kaptcha.version>0.0.9</kaptcha.version>
     </properties>
     <!--证书-->
     <licenses>
@@ -33,7 +39,7 @@
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>
             <artifactId>mybatis-spring-boot-starter</artifactId>
-            <version>2.1.2</version>
+            <version>${mybatis-spring-boot-starter.version}</version>
         </dependency>
 
         <dependency>
@@ -57,7 +63,7 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid-spring-boot-starter</artifactId>
-            <version>1.1.10</version>
+            <version>${druid.version}</version>
         </dependency>
         <!-- druid  end-->
 
@@ -73,7 +79,7 @@
         <dependency>
             <groupId>tk.mybatis</groupId>
             <artifactId>mapper-spring-boot-starter</artifactId>
-            <version>2.0.2</version>
+            <version>${tk.mybatis.version}</version>
         </dependency>
         <!-- tk.mybatis  end-->
 
@@ -134,17 +140,30 @@
         <dependency>
             <groupId>com.aliyun.oss</groupId>
             <artifactId>aliyun-sdk-oss</artifactId>
-            <version>3.9.1</version>
+            <version>${aliyun-sdk-oss.version}</version>
         </dependency>
         <!-- OSS  end-->
         <!-- Shiro  start-->
         <dependency>
             <groupId>org.apache.shiro</groupId>
-            <artifactId>shiro-core</artifactId>
-            <version>1.4.2</version>
+            <artifactId>shiro-spring</artifactId>
+            <version>${shiro.version}</version>
         </dependency>
         <!-- Shiro  end-->
-        
+        <!-- Shiro 缓存  start-->
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-ehcache</artifactId>
+            <version>${shiro.version}</version>
+        </dependency>
+        <!-- Shiro 缓存  end-->
+<!-- 验证码  start-->
+        <dependency>
+            <groupId>com.github.axet</groupId>
+            <artifactId>kaptcha</artifactId>
+            <version>${kaptcha.version}</version>
+        </dependency>
+<!-- 验证码  end-->
     </dependencies>
 
     <build>
