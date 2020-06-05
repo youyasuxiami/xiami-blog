@@ -67,13 +67,13 @@ public class ShiroConfig {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager);
         //设置登录页面
-        shiroFilterFactoryBean.setLoginUrl("/login.html");
-        shiroFilterFactoryBean.setSuccessUrl("/index.html");
-        shiroFilterFactoryBean.setUnauthorizedUrl("unauthorized.html");
+        shiroFilterFactoryBean.setLoginUrl("/");
+        //shiroFilterFactoryBean.setSuccessUrl("/index.html");
+        //shiroFilterFactoryBean.setUnauthorizedUrl("unauthorized.html");
         //拦截的路径的详细设置
         //什么Map是存取有序的？
         Map<String,String> map = new LinkedHashMap<>();
-        map.put("/sys/login","anon");//匿名访问
+        map.put("/user/**","anon");//匿名访问
         map.put("/captcha.jpg","anon");//验证码放行
         map.put("/public/**","anon");
         map.put("/json/**","anon");
