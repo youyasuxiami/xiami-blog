@@ -98,5 +98,10 @@ public class ResponseResult<T> implements Serializable {
          * Token超时
          */
         public static final int TOKEN_EXPIRED =50014;
+
+        /**
+         * 验证码错误
+         */
+        public static final int CODE_ERROR=30000;
     }
 }
