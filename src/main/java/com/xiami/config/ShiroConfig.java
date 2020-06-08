@@ -1,5 +1,6 @@
 package com.xiami.config;
 
+import com.xiami.filter.ShiroAuthFilter;
 import com.xiami.realm.UserRealm;
 import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.apache.shiro.mgt.SecurityManager;
@@ -15,6 +16,7 @@ import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreato
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import javax.servlet.Filter;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -46,19 +48,27 @@ public class ShiroConfig {
     public SecurityManager securityManager(SessionManager sessionManager, UserRealm userRealm){
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         securityManager.setSessionManager(sessionManager);
+
         //缓存管理
         EhCacheManager cacheManager = new EhCacheManager();
         cacheManager.setCacheManagerConfigFile("classpath:ehcache.xml");
         securityManager.setCacheManager(cacheManager);
+
         //cookie管理
         CookieRememberMeManager cookieRememberMeManager = new CookieRememberMeManager();
         Cookie cookie = cookieRememberMeManager.getCookie();
         cookie.setMaxAge(60*60*24*3);
+        //可以实现session跨多个应用
         cookie.setPath("/");
         securityManager.setRememberMeManager(cookieRememberMeManager);
+
         //设置自定义realm
         securityManager.setRealm(userRealm);
         return  securityManager;
+    }
+
+    public ShiroAuthFilter getShiroAuthFilter(){
+        return new ShiroAuthFilter();
     }
 
     //3,创建ShiroFilter
@@ -72,12 +82,16 @@ public class ShiroConfig {
         //shiroFilterFactoryBean.setUnauthorizedUrl("unauthorized.html");
         //拦截的路径的详细设置
         //什么Map是存取有序的？
+
+        // 自定义的登录过滤器
+        Map<String, Filter> filterMap = new LinkedHashMap<>();
+        filterMap.put("ShiroAuthFilter", getShiroAuthFilter());
+        shiroFilterFactoryBean.setFilters(filterMap);
+
         Map<String,String> map = new LinkedHashMap<>();
         map.put("/user/**","anon");//匿名访问
         map.put("/captcha.jpg","anon");//验证码放行
-        map.put("/public/**","anon");
-        map.put("/json/**","anon");
-        map.put("/**","authc");
+        map.put("/**","ShiroAuthFilter");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(map);
         return  shiroFilterFactoryBean;
     }
