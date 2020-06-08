@@ -12,7 +12,6 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -51,7 +50,7 @@ public class UserRealm extends AuthorizingRealm {
             throw new IncorrectCredentialsException("密码不正确");
         }
         if(user.getStatus().equals("0")){
-            throw new LockedAccountException("账户被冻结");
+            throw new LockedAccountException("账户被冻结，请联系管理员");
         }
         //第一个参数用户对象，第二个是前端传过来的密码，第三个是shiro任意名
         SimpleAuthenticationInfo info=new SimpleAuthenticationInfo(user,password,this.getName());

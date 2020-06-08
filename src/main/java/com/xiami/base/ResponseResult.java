@@ -103,5 +103,10 @@ public class ResponseResult<T> implements Serializable {
          * 验证码错误
          */
         public static final int CODE_ERROR=30000;
+
+        /**
+         * 验证码错误
+         */
+        public static final int INCORRECT_CREDENTIALS=30002;
     }
 }
