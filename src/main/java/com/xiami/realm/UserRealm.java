@@ -3,7 +3,7 @@ package com.xiami.realm;
 import com.xiami.dao.MenuMapper;
 import com.xiami.dao.RoleMapper;
 import com.xiami.entity.User;
-import com.xiami.service.UserService;
+import com.xiami.service.ProfileService;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
@@ -23,7 +23,7 @@ import java.util.List;
 public class UserRealm extends AuthorizingRealm {
 
     @Autowired
-    private UserService userService;
+    private ProfileService profileService;
 
     @Autowired
     private RoleMapper roleMapper;
@@ -42,7 +42,7 @@ public class UserRealm extends AuthorizingRealm {
         UsernamePasswordToken usernamePasswordToken= (UsernamePasswordToken) authenticationToken;
         String username = usernamePasswordToken.getUsername();
         String password = new String(usernamePasswordToken.getPassword());
-        User user = userService.getUserInfo(username);
+        User user = profileService.getUserInfo(username);
         if(user==null){
             throw new UnknownAccountException("账户不存在");
         }
