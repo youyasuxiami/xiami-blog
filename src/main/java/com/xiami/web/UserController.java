@@ -1,83 +1,84 @@
 package com.xiami.web;
 
+import com.github.pagehelper.PageInfo;
+import com.xiami.base.PageResult;
 import com.xiami.base.ResponseResult;
-import com.xiami.dto.IconParam;
-import com.xiami.dto.UserParam;
+import com.xiami.dto.PageRequestDto;
+import com.xiami.dto.UserQueryDto;
 import com.xiami.entity.User;
+import com.xiami.service.SysService;
 import com.xiami.service.UserService;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
- * Description：
- *
- * @version v1.0.0
- * @author：zj
- * @date：2020­05­24 17:09
+ * Author：郑锦
+ * Date：2020­06­10 22:24
+ * Description：<描述>
  */
-@RequestMapping("/api")
 @RestController
+@RequestMapping("/user")
 public class UserController {
-    @Autowired
+
+    @Resource
     private UserService userService;
 
     /**
-     * 获得一个账号信息
-     *
-     * @param username
+     * 获取用户列表
      * @return
      */
-    @GetMapping("/profile/info/{username}")
-    public ResponseResult<User> getUserInfo(@PathVariable String username) {
-        User userInfo = userService.getUserInfo(username);
-        System.out.println(userInfo);
-        return new ResponseResult<>(ResponseResult.CodeStatus.OK, "获取个人信息成功", userInfo);
+    @GetMapping(value = "/list")
+    public PageResult getUsers(@RequestBody PageRequestDto pageRequestDto) {
+        List<User> lists = userService.getUsersByPage(pageRequestDto);
+        //PageInfo pageInfo=new PageInfo(userList);
+        //long total = pageInfo.getTotal();
+        return new PageResult(new PageInfo(lists).getTotal(),lists);
+    }
+
+
+    /**
+     * 获取用户列表：方式二
+     * @return
+     */
+    @GetMapping(value = "/list1")
+    public PageResult getUsers1(@RequestBody PageRequestDto pageRequestDto) {
+        return userService.getUsersByPage1(pageRequestDto);
     }
 
     /**
-     * 更新账号信息
-     * @param userParam
+     * 获取用户列表：根据单表的条件
      * @return
      */
-    @PostMapping("/profile/update")
-    public ResponseResult<User> updateUserInfo(@RequestBody UserParam userParam) {
-        User user=new User();
-        BeanUtils.copyProperties(userParam,user);
-        int result = userService.updateUserInfo(user);
-
-        //成功
-        if(result>0){
-            return new ResponseResult<>(ResponseResult.CodeStatus.OK, "更新个人信息成功");
-        }
-        //失败
-        else{
-            return new ResponseResult<>(ResponseResult.CodeStatus.FAIL, "更新个人信息失败");
-        }
+    @GetMapping(value = "/searchlist1")
+    public PageResult getSearch1Users(@RequestBody UserQueryDto userQueryDto) {
+        return userService.getUsersBySearch(userQueryDto);
     }
+
     /**
-     * 修改头像
-     *
-     * @param iconParam {@link IconParam}
-     * @return {@link ResponseResult}
+     * 获取用户列表：根据多表的条件
+     * @return
      */
-    @PostMapping(value = "/profile/modify/icon")
-    public ResponseResult<Void> modifyIcon(@RequestBody IconParam iconParam) {
-        int result = userService.modifyIcon(iconParam.getUsername(), iconParam.getPath());
-        // 成功
-        if (result > 0) {
-            return new ResponseResult<Void>(ResponseResult.CodeStatus.OK, "更新头像成功");
+    @PostMapping(value = "/searchlist")
+    //public ResponseResult getSearchUsers(UserQueryDto userQueryDto) {//表单json字符串请求
+    public ResponseResult getSearchUsers(@RequestBody UserQueryDto userQueryDto) {//json字符串请求
+        PageResult usersBySearch = userService.getUsersBySearch(userQueryDto);
+        return new ResponseResult<>(ResponseResult.CodeStatus.OK, "获取列表数据成功",usersBySearch);
+    }
+
+    /**
+     * 新增用户
+     * @param user
+     * @return
+     */
+    @PostMapping("/addUser")
+    public ResponseResult<User> addUser(@RequestBody User user){
+        int i = userService.addUser(user);
+        if(i>0){
+        return new ResponseResult<>(ResponseResult.CodeStatus.OK,"新增数据成功");
         }
-        // 失败
-        else {
-            return new ResponseResult<Void>(ResponseResult.CodeStatus.FAIL, "更新头像失败");
-        }
+        return new ResponseResult<>(ResponseResult.CodeStatus.FAIL,"新增数据失败");
     }
 }

@@ -3,7 +3,6 @@ package com.xiami.web;
 import com.google.code.kaptcha.impl.DefaultKaptcha;
 import com.google.common.collect.Maps;
 import com.xiami.base.ResponseResult;
-import com.xiami.base.ResponseResult1;
 import com.xiami.dto.LoginInfo;
 import com.xiami.dto.LoginParam;
 import com.xiami.utils.ShiroUtils;
@@ -12,7 +11,6 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.imageio.ImageIO;
@@ -47,7 +45,7 @@ public class LoginController {
     //}
 
 
-    @GetMapping(value = "/user/info")
+    @GetMapping(value = "/info")
     public ResponseResult<LoginInfo> info() {
         //Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         LoginInfo loginInfo = new LoginInfo();
@@ -62,7 +60,7 @@ public class LoginController {
      *
      * @return {@link ResponseResult}
      */
-    @PostMapping(value = "/user/logout")
+    @PostMapping(value = "/logout")
     public ResponseResult<Void> logout(HttpServletRequest request) {
         // 获取 token
         String token = request.getParameter("access_token");
@@ -98,7 +96,7 @@ public class LoginController {
         }
     }
 
-    @PostMapping(value = "/user/login")
+    @PostMapping(value = "/login")
     public ResponseResult<Map<String, Object>> login(@RequestBody LoginParam loginParam) {
         //比对验证码
         String serverKaptcha = ShiroUtils.getKaptcha();
