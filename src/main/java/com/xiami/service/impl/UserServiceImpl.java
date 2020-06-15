@@ -3,6 +3,7 @@ package com.xiami.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.xiami.base.PageResult;
+import com.xiami.base.ResponseResult;
 import com.xiami.dao.RoleUserMapper;
 import com.xiami.dao.SysMapper;
 import com.xiami.dao.UserMapper;
@@ -153,9 +154,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int addUser(User user){
-        return userMapper.insert(user);
+    public ResponseResult addUser(User user){
+            int i = userMapper.insert(user);
+            if(i>0){
+                return new ResponseResult<>(ResponseResult.CodeStatus.OK,"提交成功");
+            }
+            return new ResponseResult<>(ResponseResult.CodeStatus.FAIL,"提交失败");
     }
 
-
+    @Override
+    public ResponseResult updateUser(User user){
+        int i = userMapper.updateByPrimaryKey(user);
+        if(i>0){
+            return new ResponseResult<>(ResponseResult.CodeStatus.OK,"提交成功");
+        }
+        return new ResponseResult<>(ResponseResult.CodeStatus.FAIL,"提交失败");
+    }
 }
