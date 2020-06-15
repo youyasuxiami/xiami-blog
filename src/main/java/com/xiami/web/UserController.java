@@ -8,10 +8,12 @@ import com.xiami.dto.UserQueryDto;
 import com.xiami.entity.User;
 import com.xiami.service.SysService;
 import com.xiami.service.UserService;
+import org.apache.shiro.crypto.hash.Md5Hash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -61,9 +63,9 @@ public class UserController {
      * 获取用户列表：根据多表的条件
      * @return
      */
-    @PostMapping(value = "/searchlist")
+    @GetMapping(value = "/searchList")
     //public ResponseResult getSearchUsers(UserQueryDto userQueryDto) {//表单json字符串请求
-    public ResponseResult getSearchUsers(@RequestBody UserQueryDto userQueryDto) {//json字符串请求
+    public ResponseResult getSearchUsers(UserQueryDto userQueryDto) {//json字符串请求
         PageResult usersBySearch = userService.getUsersBySearch(userQueryDto);
         return new ResponseResult<>(ResponseResult.CodeStatus.OK, "获取列表数据成功",usersBySearch);
     }
@@ -75,10 +77,20 @@ public class UserController {
      */
     @PostMapping("/addUser")
     public ResponseResult<User> addUser(@RequestBody User user){
-        int i = userService.addUser(user);
-        if(i>0){
-        return new ResponseResult<>(ResponseResult.CodeStatus.OK,"新增数据成功");
+        //新增用户
+        if(user.getId()==null){
+            //初始密码
+            String newPass = new Md5Hash("123456", user.getName(), 1024).toBase64();
+            user.setPassword(newPass);
+            user.setAvatar("http://youyasumi-oss.oss-cn-beijing.aliyuncs.com/76e11fce-e7fd-4985-84ec-2332b9dfef84.png");
+            user.setCreateTime(new Date());
+            user.setUpdateTime(new Date());
+            user.setLoginTime(new Date());
+            return userService.addUser(user);
         }
-        return new ResponseResult<>(ResponseResult.CodeStatus.FAIL,"新增数据失败");
+
+        //编辑用户
+        user.setUpdateTime(new Date());
+        return userService.updateUser(user);
     }
 }

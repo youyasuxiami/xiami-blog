@@ -1,6 +1,7 @@
 package com.xiami.service;
 
 import com.xiami.base.PageResult;
+import com.xiami.base.ResponseResult;
 import com.xiami.dto.PageRequestDto;
 import com.xiami.dto.UserQueryDto;
 import com.xiami.entity.User;
@@ -35,5 +36,17 @@ public interface UserService {
      */
     PageResult getUsersBySearch(UserQueryDto userQueryDto);
 
-    int addUser(User user);
+    /**
+     * 新增用户
+     * @param user
+     * @return
+     */
+    ResponseResult addUser(User user);
+
+    /**
+     * 编辑用户
+     * @param user
+     * @return
+     */
+    ResponseResult updateUser(User user);
 }

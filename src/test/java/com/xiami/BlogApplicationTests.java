@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import tk.mybatis.mapper.entity.Example;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -101,5 +102,11 @@ class BlogApplicationTests {
         dictionaryUtils.getDictionaryList("sys_role").stream()
                 .map(SysDictionary::getValue)
                 .forEach(System.out::println);
+    }
+
+    @Test
+    public void test2(){
+        BigDecimal bigDecimal = new BigDecimal(22.4);
+        System.out.println(17&13);
     }
 }
