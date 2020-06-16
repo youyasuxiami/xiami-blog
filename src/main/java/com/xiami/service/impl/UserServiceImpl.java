@@ -113,6 +113,7 @@ public class UserServiceImpl implements UserService {
         if (!StringUtils.isEmpty(userQueryDto.getAccountStatus())) {
             criteria.andEqualTo("status", userQueryDto.getAccountStatus());
         }
+
         if (null == userQueryDto.getCreateTime() || userQueryDto.getCreateTime().length == 0) {
             // TODO: 2020/6/1
         } else {
@@ -154,20 +155,49 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseResult addUser(User user){
-            int i = userMapper.insert(user);
-            if(i>0){
-                return new ResponseResult<>(ResponseResult.CodeStatus.OK,"提交成功");
-            }
-            return new ResponseResult<>(ResponseResult.CodeStatus.FAIL,"提交失败");
+    public ResponseResult addUser(User user) {
+        int i = userMapper.insert(user);
+        if (i > 0) {
+            return new ResponseResult<>(ResponseResult.CodeStatus.OK, "提交成功");
+        }
+        return new ResponseResult<>(ResponseResult.CodeStatus.FAIL, "提交失败");
     }
 
     @Override
-    public ResponseResult updateUser(User user){
+    public ResponseResult updateUser(User user) {
         int i = userMapper.updateByPrimaryKey(user);
-        if(i>0){
-            return new ResponseResult<>(ResponseResult.CodeStatus.OK,"提交成功");
+        if (i > 0) {
+            return new ResponseResult<>(ResponseResult.CodeStatus.OK, "提交成功");
         }
-        return new ResponseResult<>(ResponseResult.CodeStatus.FAIL,"提交失败");
+        return new ResponseResult<>(ResponseResult.CodeStatus.FAIL, "提交失败");
+    }
+
+    @Override
+    public ResponseResult updateUserStatus(User user) {
+        int i = userMapper.updateByPrimaryKeySelective(user);
+        String msg = "";
+        if (i > 0) {
+            switch (user.getStatus()) {
+                case "0":
+                    msg = "禁用成功";
+                    break;
+                case "1":
+                    msg = "启用成功";
+                    break;
+                default:
+                    msg="成功";
+            }
+            return new ResponseResult<>(ResponseResult.CodeStatus.OK, msg);
+        }
+        return new ResponseResult<>(ResponseResult.CodeStatus.FAIL, "操作失败");
+    }
+
+    @Override
+    public ResponseResult deleteUser(User user) {
+        int i = userMapper.deleteByPrimaryKey(user);
+        if (i > 0) {
+            return new ResponseResult<>(ResponseResult.CodeStatus.OK, "删除成功");
+        }
+        return new ResponseResult<>(ResponseResult.CodeStatus.FAIL, "删除失败");
     }
 }

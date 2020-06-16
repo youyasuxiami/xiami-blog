@@ -49,4 +49,19 @@ public interface UserService {
      * @return
      */
     ResponseResult updateUser(User user);
+
+    /**
+     * 启用/禁用账号
+     * @param user
+     * @return
+     */
+    ResponseResult updateUserStatus(User user);
+
+    /**
+     * 删除用户
+     * @param user
+     * @return
+     */
+    ResponseResult deleteUser(User user);
+
 }
