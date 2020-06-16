@@ -71,7 +71,7 @@ public class UserController {
     }
 
     /**
-     * 新增用户
+     * 新增/编辑用户
      * @param user
      * @return
      */
@@ -92,5 +92,31 @@ public class UserController {
         //编辑用户
         user.setUpdateTime(new Date());
         return userService.updateUser(user);
+    }
+
+    /**
+     * 禁用0、启用1
+     * @param id
+     * @param status
+     * @return
+     */
+    @PostMapping("/updateUserStatus")
+    public ResponseResult<User> updateUserStatus(Integer id,String status){
+        User user = new User();
+        user.setId(id);
+        user.setStatus(status);
+        return userService.updateUserStatus(user);
+    }
+
+    /**
+     * 删除User
+     * @param id
+     * @return
+     */
+    @PostMapping("/deleteUser")
+    public ResponseResult<User> deleteUser(Integer id){
+        User user = new User();
+        user.setId(id);
+        return userService.deleteUser(user);
     }
 }
