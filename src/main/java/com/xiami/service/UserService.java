@@ -64,4 +64,11 @@ public interface UserService {
      */
     ResponseResult deleteUser(User user);
 
+    /**
+     * 批量导入excel
+     * @param list
+     * @return
+     */
+    ResponseResult importExcel(List list);
+
 }

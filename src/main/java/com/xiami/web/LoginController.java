@@ -100,9 +100,9 @@ public class LoginController {
     public ResponseResult<Map<String, Object>> login(@RequestBody LoginParam loginParam) {
         //比对验证码
         String serverKaptcha = ShiroUtils.getKaptcha();
-        if (!serverKaptcha.equalsIgnoreCase(loginParam.getCaptcha())) {
-            return new ResponseResult<Map<String, Object>>(ResponseResult.CodeStatus.CODE_ERROR,"验证码错误" );
-        }
+        //if (!serverKaptcha.equalsIgnoreCase(loginParam.getCaptcha())) {
+        //    return new ResponseResult<Map<String, Object>>(ResponseResult.CodeStatus.CODE_ERROR,"验证码错误" );
+        //}
         Subject subject = SecurityUtils.getSubject();
 
         String newPass = new Md5Hash(loginParam.getPassword(), loginParam.getUsername(), 1024).toBase64();
