@@ -11,6 +11,7 @@ import com.xiami.service.UserService;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -117,6 +118,16 @@ public class UserController {
     public ResponseResult<User> deleteUser(Integer id){
         User user = new User();
         user.setId(id);
+        return userService.deleteUser(user);
+    }
+
+    /**
+     * 批量导入用户
+     * @param file
+     * @return
+     */
+    @PostMapping("/importExcel")
+    public ResponseResult<User> importExcel(@RequestParam("file") MultipartFile file)  {
         return userService.deleteUser(user);
     }
 }
