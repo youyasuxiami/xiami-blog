@@ -6,14 +6,14 @@ import com.xiami.base.ResponseResult;
 import com.xiami.dto.PageRequestDto;
 import com.xiami.dto.UserQueryDto;
 import com.xiami.entity.User;
-import com.xiami.service.SysService;
 import com.xiami.service.UserService;
+import com.xiami.utils.ImprotExcelUtil;
 import org.apache.shiro.crypto.hash.Md5Hash;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
@@ -127,7 +127,22 @@ public class UserController {
      * @return
      */
     @PostMapping("/importExcel")
-    public ResponseResult<User> importExcel(@RequestParam("file") MultipartFile file)  {
-        return userService.deleteUser(user);
+    public ResponseResult<User> importExcel(@RequestParam("file") MultipartFile file) throws IOException {
+        if (!file.isEmpty()) {
+            //对文件的全名进行截取然后在后缀名进行删选。
+            int begin = file.getOriginalFilename().indexOf(".");
+            int last = file.getOriginalFilename().length();
+            //获得文件后缀名
+            String a = file.getOriginalFilename().substring(begin, last);
+            //需要的xlsx文件
+            if (!a.endsWith(".xlsx")||!a.endsWith(".xls")) {
+                return new ResponseResult<>(ResponseResult.CodeStatus.FAIL,"文件格式错误");
+            }
+        }
+        List<List<Object>> dataList = ImprotExcelUtil.analysisExcel(file.getInputStream(), file.getOriginalFilename());
+        userService.importExcel(dataList);
+        System.out.println("111111");
+
+        return null;
     }
 }
