@@ -6,6 +6,7 @@ import com.xiami.dto.PageRequestDto;
 import com.xiami.dto.UserQueryDto;
 import com.xiami.entity.User;
 
+import java.io.OutputStream;
 import java.util.List;
 
 public interface UserService {
@@ -70,5 +71,13 @@ public interface UserService {
      * @return
      */
     ResponseResult importExcel(List list);
+
+    /**
+     * 导出功能
+     * @param out
+     * @param userQueryDto
+     * @return
+     */
+    ResponseResult exportUserToExcel(OutputStream out,UserQueryDto userQueryDto);
 
 }

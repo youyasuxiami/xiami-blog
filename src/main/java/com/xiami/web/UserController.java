@@ -9,11 +9,16 @@ import com.xiami.entity.User;
 import com.xiami.service.UserService;
 import com.xiami.utils.ImprotExcelUtil;
 import org.apache.shiro.crypto.hash.Md5Hash;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.Date;
 import java.util.List;
 
@@ -31,6 +36,7 @@ public class UserController {
 
     /**
      * 获取用户列表
+     *
      * @return
      */
     @GetMapping(value = "/list")
@@ -38,12 +44,13 @@ public class UserController {
         List<User> lists = userService.getUsersByPage(pageRequestDto);
         //PageInfo pageInfo=new PageInfo(userList);
         //long total = pageInfo.getTotal();
-        return new PageResult(new PageInfo(lists).getTotal(),lists);
+        return new PageResult(new PageInfo(lists).getTotal(), lists);
     }
 
 
     /**
      * 获取用户列表：方式二
+     *
      * @return
      */
     @GetMapping(value = "/list1")
@@ -53,6 +60,7 @@ public class UserController {
 
     /**
      * 获取用户列表：根据单表的条件
+     *
      * @return
      */
     @GetMapping(value = "/searchlist1")
@@ -62,24 +70,26 @@ public class UserController {
 
     /**
      * 获取用户列表：根据多表的条件
+     *
      * @return
      */
     @GetMapping(value = "/searchList")
     //public ResponseResult getSearchUsers(UserQueryDto userQueryDto) {//表单json字符串请求
     public ResponseResult getSearchUsers(UserQueryDto userQueryDto) {//json字符串请求
         PageResult usersBySearch = userService.getUsersBySearch(userQueryDto);
-        return new ResponseResult<>(ResponseResult.CodeStatus.OK, "获取列表数据成功",usersBySearch);
+        return new ResponseResult<>(ResponseResult.CodeStatus.OK, "获取列表数据成功", usersBySearch);
     }
 
     /**
      * 新增/编辑用户
+     *
      * @param user
      * @return
      */
     @PostMapping("/addUser")
-    public ResponseResult<User> addUser(@RequestBody User user){
+    public ResponseResult<User> addUser(@RequestBody User user) {
         //新增用户
-        if(user.getId()==null){
+        if (user.getId() == null) {
             //初始密码
             String newPass = new Md5Hash("123456", user.getName(), 1024).toBase64();
             user.setPassword(newPass);
@@ -97,12 +107,13 @@ public class UserController {
 
     /**
      * 禁用0、启用1
+     *
      * @param id
      * @param status
      * @return
      */
     @PostMapping("/updateUserStatus")
-    public ResponseResult<User> updateUserStatus(Integer id,String status){
+    public ResponseResult<User> updateUserStatus(Integer id, String status) {
         User user = new User();
         user.setId(id);
         user.setStatus(status);
@@ -111,11 +122,12 @@ public class UserController {
 
     /**
      * 删除User
+     *
      * @param id
      * @return
      */
     @PostMapping("/deleteUser")
-    public ResponseResult<User> deleteUser(Integer id){
+    public ResponseResult<User> deleteUser(Integer id) {
         User user = new User();
         user.setId(id);
         return userService.deleteUser(user);
@@ -123,6 +135,7 @@ public class UserController {
 
     /**
      * 批量导入用户
+     *
      * @param file
      * @return
      */
@@ -135,14 +148,36 @@ public class UserController {
             //获得文件后缀名
             String a = file.getOriginalFilename().substring(begin, last);
             //需要的xlsx文件
-            if (!a.endsWith(".xlsx")||!a.endsWith(".xls")) {
-                return new ResponseResult<>(ResponseResult.CodeStatus.FAIL,"文件格式错误");
+            if (!a.endsWith(".xlsx") || !a.endsWith(".xls")) {
+                return new ResponseResult<>(ResponseResult.CodeStatus.FAIL, "文件格式错误");
             }
         }
         List<List<Object>> dataList = ImprotExcelUtil.analysisExcel(file.getInputStream(), file.getOriginalFilename());
         userService.importExcel(dataList);
         System.out.println("111111");
 
+        return null;
+    }
+
+    /**
+     * 导出用户数据
+     *
+     * @param response
+     * @param userQueryDto
+     * @return
+     * @throws IOException
+     */
+    @GetMapping(value = "/exportUserToExcel")
+    public ResponseResult exportUserToExcel(HttpServletResponse response, UserQueryDto userQueryDto) throws IOException {
+
+        //PageData pd = this.getPageData(page, limit);
+        String fileName = URLEncoder.encode("用户数据" + ".xlsx", "UTF-8");
+        String headStr = "attachment; filename=\"" + fileName + "\"";
+        response.setContentType("APPLICATION/OCTET-STREAM");
+        response.setHeader("Content-Disposition", headStr);
+        OutputStream out = response.getOutputStream();
+        userService.exportUserToExcel(out, userQueryDto);
+        //log.error("导出用户数据异常！", e);
         return null;
     }
 }

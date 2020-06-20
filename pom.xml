@@ -202,6 +202,14 @@
             <version>20040804</version>
         </dependency>
         <!--导入excel end-->
+
+        <!-- fastjson  start-->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.41</version>
+        </dependency>
+        <!-- fastjson  end-->
     </dependencies>
 
     <build>
