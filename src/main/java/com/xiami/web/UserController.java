@@ -135,14 +135,14 @@ public class UserController {
             //获得文件后缀名
             String a = file.getOriginalFilename().substring(begin, last);
             //需要的xlsx文件
-            if (!a.endsWith(".xlsx")||!a.endsWith(".xls")) {
+            if (!a.endsWith(".xlsx")) {
                 return new ResponseResult<>(ResponseResult.CodeStatus.FAIL,"文件格式错误");
             }
         }
+        //获得excel中的数据
         List<List<Object>> dataList = ImprotExcelUtil.analysisExcel(file.getInputStream(), file.getOriginalFilename());
-        userService.importExcel(dataList);
-        System.out.println("111111");
-
-        return null;
+        //将数据插入数据库
+        ResponseResult responseResult = userService.importExcel(dataList);
+        return responseResult;
     }
 }

@@ -28,7 +28,8 @@ public class ProfileServiceImpl implements ProfileService {
         Example example=new Example(User.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("name",name);
-        return userMapper.selectOneByExample(example);
+        User user = userMapper.selectOneByExample(example);
+        return user;
     }
 
     public User getUserInfo(String username){
