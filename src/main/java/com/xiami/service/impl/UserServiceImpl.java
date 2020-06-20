@@ -12,12 +12,16 @@ import com.xiami.dto.UserQueryDto;
 import com.xiami.entity.RoleUser;
 import com.xiami.entity.User;
 import com.xiami.service.UserService;
+import com.xiami.utils.BeanUtil;
 import com.xiami.utils.DictionaryUtils;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -185,7 +189,7 @@ public class UserServiceImpl implements UserService {
                     msg = "启用成功";
                     break;
                 default:
-                    msg="成功";
+                    msg = "成功";
             }
             return new ResponseResult<>(ResponseResult.CodeStatus.OK, msg);
         }
@@ -201,11 +205,63 @@ public class UserServiceImpl implements UserService {
         return new ResponseResult<>(ResponseResult.CodeStatus.FAIL, "删除失败");
     }
 
+
     @Override
-    public ResponseResult importExcel(List list) {
+    public ResponseResult importExcel(List<List<Object>> dataList) {
         System.out.println("111111");
-        return null;
+        List<User> list = new ArrayList<>();
+        for (int i = 2; i < dataList.size(); i++) {
+            User user = new User();
+//          当读取为空的时候，认为该excel读取完了，结束读取excel
+            String tmpString = String.valueOf(dataList.get(i).get(0));
+            if (tmpString == null || "".equalsIgnoreCase(tmpString)) {
+                break;
+            }
+            if ("序号".equals(String.valueOf(dataList.get(i).get(0)))) {
+                continue;
+            }
+            //String regionType = ServiceUtil.getValueArrayByGroup("operator_type", String.valueOf(dataList.get(i).get(1)));
+            user.setName(String.valueOf(dataList.get(i).get(1)));
+            user.setNickName(String.valueOf(dataList.get(i).get(2)));
+            //user.setSex(String.valueOf(dataList.get(i).get(3)));//需要翻译
+            user.setSex("0");//需要翻译
+            user.setAge(String.valueOf(dataList.get(i).get(4)));
+            user.setPhone(String.valueOf(dataList.get(i).get(5)));
+            user.setEmail(String.valueOf(dataList.get(i).get(6)));
+            user.setPs(String.valueOf(dataList.get(i).get(7)));
+            //user.setStatus(String.valueOf(dataList.get(i).get(8)));//需要翻译
+            user.setStatus("0");//需要翻译
+            user.setAvatar("");
+            user.setPassword("123456");
+            user.setCreateTime(new Date());
+            user.setLoginTime(new Date());
+            user.setUpdateTime(new Date());
+
+            list.add(user);
+        }
+//        //导入excel
+//        List<Integer> integers = userMapper.insertUsers(list);
+        int i = 0;
+        try {
+            i = userMapper.insertUsers(list);
+            if (i > 0) {
+                return new ResponseResult<>(ResponseResult.CodeStatus.OK, "导入数据成功");
+            }
+        } catch(DuplicateKeyException e) {
+            String[] code1 = BeanUtil.getCode(e);
+            String code = code1[1];
+            if (code.contains("-")){
+//                        如果包含- 则组合索引生效，这里是去除重复的工单数据
+                String[] split = code.split("-");
+                code = split[0];
+            }
+//                    获取唯一索引的名称
+//                    String s2 = message2.split("\n")[0].split("\'")[3];
+//            jsonUtil.setFlag(false);
+//            jsonUtil.setMsg("选择的号码已存在，重复数据为:"+code);
+//            jsonUtil.setCode(EXEITEATA);
+            return new ResponseResult<>(ResponseResult.CodeStatus.FAIL, "数据库中已经存在用户名为 "+code+" 的数据，请重新导入");
+        }
+        return new ResponseResult<>(ResponseResult.CodeStatus.FAIL, "导入数据失败");
     }
-
-
 }

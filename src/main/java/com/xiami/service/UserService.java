@@ -69,6 +69,6 @@ public interface UserService {
      * @param list
      * @return
      */
-    ResponseResult importExcel(List list);
+    ResponseResult importExcel(List<List<Object>>  list);
 
 }
