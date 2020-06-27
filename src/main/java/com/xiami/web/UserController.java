@@ -93,7 +93,8 @@ public class UserController {
             //初始密码
             String newPass = new Md5Hash("123456", user.getName(), 1024).toBase64();
             user.setPassword(newPass);
-            user.setAvatar("http://youyasumi-oss.oss-cn-beijing.aliyuncs.com/76e11fce-e7fd-4985-84ec-2332b9dfef84.png");
+            //user.setAvatar("http://youyasumi-oss.oss-cn-beijing.aliyuncs.com/76e11fce-e7fd-4985-84ec-2332b9dfef84.png");
+            user.setAvatar(user.getAvatar());
             user.setCreateTime(new Date());
             user.setUpdateTime(new Date());
             user.setLoginTime(new Date());
@@ -148,15 +149,15 @@ public class UserController {
             //获得文件后缀名
             String a = file.getOriginalFilename().substring(begin, last);
             //需要的xlsx文件
-            if (!a.endsWith(".xlsx") || !a.endsWith(".xls")) {
+            if (!a.endsWith(".xlsx")) {
                 return new ResponseResult<>(ResponseResult.CodeStatus.FAIL, "文件格式错误");
             }
         }
+        //获得excel中的数据
         List<List<Object>> dataList = ImprotExcelUtil.analysisExcel(file.getInputStream(), file.getOriginalFilename());
-        userService.importExcel(dataList);
-        System.out.println("111111");
-
-        return null;
+        //将数据插入数据库
+        ResponseResult responseResult = userService.importExcel(dataList);
+        return responseResult;
     }
 
     /**
@@ -168,16 +169,16 @@ public class UserController {
      * @throws IOException
      */
     @GetMapping(value = "/exportUserToExcel")
-    public ResponseResult exportUserToExcel(HttpServletResponse response, UserQueryDto userQueryDto) throws IOException {
+    public void exportUserToExcel(HttpServletResponse response,  UserQueryDto userQueryDto) throws Exception {
 
         //PageData pd = this.getPageData(page, limit);
-        String fileName = URLEncoder.encode("用户数据" + ".xlsx", "UTF-8");
+        String fileName = URLEncoder.encode("用户表" + ".xlsx", "UTF-8");
         String headStr = "attachment; filename=\"" + fileName + "\"";
         response.setContentType("APPLICATION/OCTET-STREAM");
         response.setHeader("Content-Disposition", headStr);
         OutputStream out = response.getOutputStream();
-        userService.exportUserToExcel(out, userQueryDto);
+        //userService.exportUserToExcel(out, userQueryDto);
         //log.error("导出用户数据异常！", e);
-        return null;
+                userService.exportUserToExcel(out, userQueryDto);
     }
 }

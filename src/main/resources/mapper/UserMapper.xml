@@ -26,4 +26,42 @@
   <select id="selectByQuery" parameterType="com.xiami.dto.UserQueryDto" resultMap="BaseResultMap">
     SELECT <include refid="Base_Column_List"/> FROM user
   </select>
+
+  <insert id="insertUsers" parameterType="java.util.List" >
+    insert into
+    user
+    (
+    `name`,
+    `password`,
+    `nick_name`,
+    `sex`,
+    `age`,
+    `phone`,
+    `email`,
+    `avatar`,
+    `create_time`,
+    `update_time`,
+    `login_time`,
+    `ps`,
+    `status`
+    )
+    values
+    <foreach collection="list" item="user" separator=",">
+      (
+      #{user.name},
+      #{user.password},
+      #{user.nickName},
+      #{user.sex},
+      #{user.age},
+      #{user.phone},
+      #{user.email},
+      #{user.avatar},
+      #{user.createTime},
+      #{user.updateTime},
+      #{user.loginTime},
+      #{user.ps},
+      #{user.status}
+      )
+    </foreach>
+  </insert>
 </mapper>

@@ -28,7 +28,8 @@ public class ProfileServiceImpl implements ProfileService {
         Example example=new Example(User.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("name",name);
-        return userMapper.selectOneByExample(example);
+        User user = userMapper.selectOneByExample(example);
+        return user;
     }
 
     public User getUserInfo(String username){
@@ -39,8 +40,8 @@ public class ProfileServiceImpl implements ProfileService {
     @Override
     public int updateUserInfo(User user) {
         User user1=get(user.getName());
-
         user1.setNickName(user.getNickName());
+        user1.setAvatar(user.getAvatar());
         user1.setSex(user.getSex());
         user1.setAge(user.getAge());
         user1.setPhone(user.getPhone());

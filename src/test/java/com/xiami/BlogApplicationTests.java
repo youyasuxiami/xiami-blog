@@ -16,6 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import tk.mybatis.mapper.entity.Example;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,7 +33,8 @@ class BlogApplicationTests {
     @Autowired
     private SysDictionaryMapper sysDictionaryMapper;
 
-    @Autowired DictionaryUtils dictionaryUtils;
+    @Autowired
+    DictionaryUtils dictionaryUtils;
 
     @Test
     void contextLoads() {
@@ -52,15 +54,16 @@ class BlogApplicationTests {
         //User user1 = userMapper.selectOne(user);
         //System.out.println(user1);
 
-        Example example=new Example(User.class);
+        Example example = new Example(User.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("name","zhengjin");
+        criteria.andEqualTo("name", "zhengjin");
         User user = userMapper.selectOneByExample(example);
         System.out.println(user.getNickName());
     }
 
     /**
      * 传输层dto转换为json格式
+     *
      * @throws Exception
      */
     @Test
@@ -73,20 +76,20 @@ class BlogApplicationTests {
 
     //根据参数获取字典表中文
     @Test
-    public void tranSysDictionaries(){
-        Example example=new Example(SysDictionary.class);
+    public void tranSysDictionaries() {
+        Example example = new Example(SysDictionary.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("group","sys_role");
+        criteria.andEqualTo("group", "sys_role");
         List<SysDictionary> sysDictionaries = sysDictionaryMapper.selectByExample(example);
         List<String> collect =
                 sysDictionaries.stream()
-                //.filter( sysDictionary -> "管理员".equals(sysDictionary.getValue()))
-                //.limit(2)
-                //.skip(0)
-                //.distinct()
-                //.forEach(System.out::println);
-                .map(SysDictionary::getValue)
-                .collect(Collectors.toList());
+                        //.filter( sysDictionary -> "管理员".equals(sysDictionary.getValue()))
+                        //.limit(2)
+                        //.skip(0)
+                        //.distinct()
+                        //.forEach(System.out::println);
+                        .map(SysDictionary::getValue)
+                        .collect(Collectors.toList());
         collect.stream().forEach(System.out::println);
         //sysDictionaries.stream().forEach(sysDictionary -> {
         //    System.out.println("----------");
@@ -105,8 +108,15 @@ class BlogApplicationTests {
     }
 
     @Test
-    public void test2(){
+    public void test2() {
         BigDecimal bigDecimal = new BigDecimal(22.4);
-        System.out.println(17&13);
+        System.out.println(17 & 13);
+    }
+
+    @Test
+    public void TestDecimalFormat() {
+        double pi = 314.1415927;
+        System.out.println(new DecimalFormat("0").format(pi));
+        System.out.println(new DecimalFormat("#").format(pi));
     }
 }

@@ -5,11 +5,14 @@ import com.google.common.collect.Maps;
 import com.xiami.base.ResponseResult;
 import com.xiami.dto.LoginInfo;
 import com.xiami.dto.LoginParam;
+import com.xiami.entity.User;
+import com.xiami.service.UserService;
 import com.xiami.utils.ShiroUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.subject.Subject;
+import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,6 +37,9 @@ public class LoginController {
     @Autowired
     private DefaultKaptcha kaptcha;
 
+    @Autowired
+    private UserService userService;
+
     //@GetMapping(value="/login")
     //public ResponseResult1 login(){
     //    return new ResponseResult1(ResponseResult1.CodeStatus.OK,"成功",null);
@@ -47,11 +53,17 @@ public class LoginController {
 
     @GetMapping(value = "/info")
     public ResponseResult<LoginInfo> info() {
-        //Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        //获取登录用户的信息
+        Subject subject = SecurityUtils.getSubject();
+        User user = (User) subject.getPrincipal();
+
         LoginInfo loginInfo = new LoginInfo();
-        //loginInfo.setName(authentication.getName());
-        loginInfo.setName("zhengjin");
-        loginInfo.setAvatar("https://italker-news.oss-cn-shenzhen.aliyuncs.com/xiaoxin2.jpg");
+        loginInfo.setName(user.getName());
+        loginInfo.setAvatar(user.getAvatar());
+        System.out.println("user.getName()----------");
+        System.out.println(user.getName());
+        System.out.println("user.getAvatar()----------");
+        System.out.println(user.getAvatar());
         return new ResponseResult<LoginInfo>(ResponseResult.CodeStatus.OK, "获取用户信息", loginInfo);
     }
 
@@ -62,8 +74,10 @@ public class LoginController {
      */
     @PostMapping(value = "/logout")
     public ResponseResult<Void> logout(HttpServletRequest request) {
+        Subject subject = SecurityUtils.getSubject();
+        subject.logout();
         // 获取 token
-        String token = request.getParameter("access_token");
+        //String token = request.getParameter("access_token");
         // 删除 token 以注销
         //OAuth2AccessToken oAuth2AccessToken = tokenStore.readAccessToken(token);
         //tokenStore.removeAccessToken(oAuth2AccessToken);
