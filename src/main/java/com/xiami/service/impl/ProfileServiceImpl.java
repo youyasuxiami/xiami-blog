@@ -40,8 +40,8 @@ public class ProfileServiceImpl implements ProfileService {
     @Override
     public int updateUserInfo(User user) {
         User user1=get(user.getName());
-
         user1.setNickName(user.getNickName());
+        user1.setAvatar(user.getAvatar());
         user1.setSex(user.getSex());
         user1.setAge(user.getAge());
         user1.setPhone(user.getPhone());
