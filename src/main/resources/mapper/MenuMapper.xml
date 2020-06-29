@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xiami.dao.MenuMapper">
   <resultMap id="BaseResultMap" type="com.xiami.entity.Menu">
-    <!--@mbg.generated generated on Tue Jun 02 23:12:33 CST 2020.-->
+    <!--@mbg.generated generated on Sun Jun 28 00:27:32 CST 2020.-->
     <!--@Table menu-->
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="parent_id" jdbcType="INTEGER" property="parentId" />
@@ -14,11 +14,11 @@
     <result column="order_num" jdbcType="INTEGER" property="orderNum" />
   </resultMap>
   <sql id="Base_Column_List">
-    <!--@mbg.generated generated on Tue Jun 02 23:12:33 CST 2020.-->
+    <!--@mbg.generated generated on Sun Jun 28 00:27:32 CST 2020.-->
     id, parent_id, `name`, url, perms, `type`, icon, order_num
   </sql>
 
-  <select id="getMenuPerms" resultType="String" parameterType="integer">
+  <select id="getMenuPerms" parameterType="integer" resultType="String">
     SELECT DISTINCT
         m.perms
     FROM

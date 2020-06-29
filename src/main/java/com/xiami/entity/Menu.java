@@ -1,12 +1,14 @@
 package com.xiami.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.*;
 import lombok.Data;
 
 /**
-    * 菜单管理
-    */
+ * 菜单管理
+ */
 @Data
 @Table(name = "menu")
 public class Menu implements Serializable {
@@ -58,4 +60,10 @@ public class Menu implements Serializable {
     private Integer orderNum;
 
     private static final long serialVersionUID = 1L;
+
+    private List<Menu> children=new ArrayList<>();
+
+    public void addChild(Menu menu){
+        children.add(menu);
+    }
 }

@@ -60,10 +60,6 @@ public class LoginController {
         LoginInfo loginInfo = new LoginInfo();
         loginInfo.setName(user.getName());
         loginInfo.setAvatar(user.getAvatar());
-        System.out.println("user.getName()----------");
-        System.out.println(user.getName());
-        System.out.println("user.getAvatar()----------");
-        System.out.println(user.getAvatar());
         return new ResponseResult<LoginInfo>(ResponseResult.CodeStatus.OK, "获取用户信息", loginInfo);
     }
 
