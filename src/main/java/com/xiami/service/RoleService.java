@@ -1,5 +1,7 @@
 package com.xiami.service;
 
+import com.xiami.base.ResponseResult;
+
 import java.util.List;
 
 /**
@@ -11,4 +13,6 @@ public interface RoleService {
 
     //获得所有的角色名称
     List<String> getRoleNames(Integer userId);
+
+    ResponseResult getRoleList();
 }

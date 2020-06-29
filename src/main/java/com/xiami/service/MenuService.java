@@ -1,5 +1,8 @@
 package com.xiami.service;
 
+import com.alibaba.fastjson.JSONArray;
+import com.xiami.base.ResponseResult;
+
 /**
  * Description：
  *
@@ -8,4 +11,7 @@ package com.xiami.service;
  * @date：2020­06­02 23:13
  */
 public interface MenuService {
+    ResponseResult getMenuJsonList();
+
 }
+
