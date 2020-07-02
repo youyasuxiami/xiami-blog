@@ -13,7 +13,15 @@ import java.io.Serializable;
  */
 @Data
 public class LoginInfo implements Serializable {
+    //用户名
     private String name;
-
+    
+    //头像
     private String avatar;
+
+    //角色权限
+    private String[] roles;
+    //描述
+    private String desc;
+
 }

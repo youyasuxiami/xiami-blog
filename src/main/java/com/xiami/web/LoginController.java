@@ -60,6 +60,8 @@ public class LoginController {
         LoginInfo loginInfo = new LoginInfo();
         loginInfo.setName(user.getName());
         loginInfo.setAvatar(user.getAvatar());
+        loginInfo.setRoles(new String[]{"admin"});
+        loginInfo.setDesc("i am a admin");
         return new ResponseResult<LoginInfo>(ResponseResult.CodeStatus.OK, "获取用户信息", loginInfo);
     }
 
