@@ -10,7 +10,6 @@ import com.xiami.entity.Menu;
 import com.xiami.entity.User;
 import com.xiami.service.MenuService;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.util.Comparator;
@@ -64,5 +63,25 @@ public class MenuServiceImpl implements MenuService {
         }
         return menu;
     }
+
+    @Override
+    public ResponseResult addMenu(Menu menu) {
+        int i = menuMapper.insert(menu);
+        if (i > 0) {
+            return new ResponseResult<>(ResponseResult.CodeStatus.OK, "提交成功");
+        }
+        return new ResponseResult<>(ResponseResult.CodeStatus.FAIL, "提交失败");
+    }
+
+    @Override
+    public ResponseResult updateMenu(Menu menu) {
+        int i = menuMapper.updateByPrimaryKey(menu);
+        if (i > 0) {
+            return new ResponseResult<>(ResponseResult.CodeStatus.OK, "提交成功");
+        }
+        return new ResponseResult<>(ResponseResult.CodeStatus.FAIL, "提交失败");
+    }
+
+
 }
 

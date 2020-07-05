@@ -2,13 +2,19 @@ package com.xiami.web;
 
 import com.alibaba.fastjson.JSONArray;
 import com.xiami.base.ResponseResult;
+import com.xiami.entity.Menu;
+import com.xiami.entity.User;
 import com.xiami.service.MenuService;
+import org.apache.shiro.crypto.hash.Md5Hash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
 
 
 /**
@@ -27,13 +33,30 @@ public class MenuController {
 
     @GetMapping(value = "/menuList")
     public ResponseResult menuList(String pageNum,String pageSize){
-        //try {
             return menuService.getMenuJsonList();
-            //writeJson(response, ja,ResultCodes.successCode, "查询成功！");
-        //} catch (Exception e) {
-        //     TODO: handle exception
-            //writeJson(response, null,ResultCodes.exceptionResult, "查询！");
-        //}
-
     }
+
+    /**
+     * 新增/编辑用户
+     *
+     * @param menu
+     * @return
+     */
+    @PostMapping("/addMenu")
+    public ResponseResult<User> addUser(@RequestBody Menu menu) {
+        //新增用户
+        if (menu.getId() == null) {
+            if("0".equals(menu.getType()+"")){
+                menu.setParentId(0);
+            }
+            menu.setCreateTime(new Date());
+            menu.setUpdateTime(new Date());
+            return menuService.addMenu(menu);
+        }
+
+        //编辑用户
+        menu.setUpdateTime(new Date());
+        return menuService.updateMenu(menu);
+    }
+
 }

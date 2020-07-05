@@ -12,6 +12,8 @@
     <result column="type" jdbcType="INTEGER" property="type" />
     <result column="icon" jdbcType="VARCHAR" property="icon" />
     <result column="order_num" jdbcType="INTEGER" property="orderNum" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated generated on Sun Jun 28 00:27:32 CST 2020.-->
