@@ -1,6 +1,7 @@
 package com.xiami.service;
 
 import com.xiami.base.ResponseResult;
+import com.xiami.dto.RoleParam;
 
 import java.util.List;
 
@@ -15,4 +16,7 @@ public interface RoleService {
     List<String> getRoleNames(Integer userId);
 
     ResponseResult getRoleList();
+
+    ResponseResult addRole(RoleParam param);
+
 }
