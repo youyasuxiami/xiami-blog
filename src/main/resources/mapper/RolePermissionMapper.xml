@@ -29,10 +29,11 @@
       (
       #{role.roleId},
       #{role.permissionId},
-      #{role.createTime},
-      #{role.updateTime}
+      now(),
+      now()
       )
     </foreach>
   </insert>
+
 
 </mapper>

@@ -33,7 +33,16 @@ public class RoleController {
 
     @PostMapping(value = "/addRole")
     public ResponseResult addRole(@RequestBody RoleParam param) {
+        //新增
+        if(null==param.getId()){
+            return roleService.addRole(param);
+        }
+        //编辑
+        return roleService.updateRole(param);
+    }
 
-        return roleService.addRole(param);
+    @GetMapping(value = "/getMenusByRoleId")
+    public ResponseResult getMenusByRoleId(Integer id) {
+        return roleService.getMenusByRoleId(id);
     }
 }

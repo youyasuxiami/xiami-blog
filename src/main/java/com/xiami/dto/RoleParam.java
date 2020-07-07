@@ -15,6 +15,7 @@ import java.io.Serializable;
 public class RoleParam implements Serializable {
     private static final long serialVersionUID = 8710058978001646489L;
 
+    private Integer id;
     private String roleName;
     private String roleDesc;
     private String[] menusSelect;
