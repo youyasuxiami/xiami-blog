@@ -1,10 +1,12 @@
 package com.xiami;
 
+import com.xiami.dao.RolePermissionMapper;
 import com.xiami.dao.SysDictionaryMapper;
 import com.xiami.dao.TBlogMapper;
 import com.xiami.dao.UserMapper;
 import com.xiami.dto.UserParam;
 import com.xiami.dto.UserQueryDto;
+import com.xiami.entity.RolePermission;
 import com.xiami.entity.SysDictionary;
 import com.xiami.entity.TBlog;
 import com.xiami.entity.User;
@@ -35,6 +37,9 @@ class BlogApplicationTests {
 
     @Autowired
     DictionaryUtils dictionaryUtils;
+
+    @Autowired
+    private RolePermissionMapper rolePermissionMapper;
 
     @Test
     void contextLoads() {
@@ -118,5 +123,13 @@ class BlogApplicationTests {
         double pi = 314.1415927;
         System.out.println(new DecimalFormat("0").format(pi));
         System.out.println(new DecimalFormat("#").format(pi));
+    }
+
+    @Test
+    public void TestDelete(){
+        RolePermission rolePermission=new RolePermission();
+        rolePermission.setRoleId(56);
+        List<RolePermission> select = rolePermissionMapper.select(rolePermission);
+        System.out.println(1111);
     }
 }

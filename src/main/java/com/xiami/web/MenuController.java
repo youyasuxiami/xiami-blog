@@ -44,7 +44,7 @@ public class MenuController {
      */
     @PostMapping("/addMenu")
     public ResponseResult<User> addUser(@RequestBody Menu menu) {
-        //新增用户
+        //新增菜单
         if (menu.getId() == null) {
             if("0".equals(menu.getType()+"")){
                 menu.setParentId(0);

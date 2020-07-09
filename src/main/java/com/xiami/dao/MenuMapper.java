@@ -5,4 +5,6 @@ import tk.mybatis.mapper.MyMapper;import java.util.List;
 
 public interface MenuMapper extends MyMapper<Menu> {
     List<String> getMenuPerms(Integer userId);
+
+    int updateMenu(Menu menu);
 }

@@ -75,7 +75,7 @@ public class MenuServiceImpl implements MenuService {
 
     @Override
     public ResponseResult updateMenu(Menu menu) {
-        int i = menuMapper.updateByPrimaryKey(menu);
+        int i = menuMapper.updateMenu(menu);
         if (i > 0) {
             return new ResponseResult<>(ResponseResult.CodeStatus.OK, "提交成功");
         }

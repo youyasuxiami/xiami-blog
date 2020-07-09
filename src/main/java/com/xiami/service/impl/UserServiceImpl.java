@@ -16,6 +16,7 @@ import com.xiami.service.UserService;
 import com.xiami.utils.BeanUtil;
 import com.xiami.utils.DictionaryUtils;
 import com.xiami.utils.ExcelUtil;
+import org.apache.ibatis.reflection.ArrayUtil;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -27,6 +28,7 @@ import org.apache.shiro.crypto.hash.Md5Hash;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.thymeleaf.util.ArrayUtils;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
@@ -119,15 +121,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public PageResult getUsersBySearch(UserQueryDto userQueryDto) {
-        //对哪个实体类（表）进行筛选
+        //对实体类（表）进行筛选
         Example example = new Example(User.class);
         Example.Criteria criteria = example.createCriteria();
         //实体类属性
-        if (!StringUtils.isEmpty(userQueryDto.getName())) {
-            criteria.andEqualTo("name", userQueryDto.getName());
+        if (!StringUtils.isEmpty(userQueryDto.getName())) {//模糊查询
+            criteria.andLike("name","%" + userQueryDto.getName() + "%");//实体类属性
         }
         if (!StringUtils.isEmpty(userQueryDto.getNickName())) {
-            criteria.andEqualTo("nickName", userQueryDto.getNickName());
+            criteria.andLike("nickName","%" + userQueryDto.getNickName() + "%");
         }
         if (!StringUtils.isEmpty(userQueryDto.getSex())) {
             criteria.andEqualTo("sex", userQueryDto.getSex());
@@ -137,12 +139,18 @@ public class UserServiceImpl implements UserService {
             criteria.andEqualTo("status", userQueryDto.getAccountStatus());
         }
 
+
         if (null == userQueryDto.getCreateTime() || userQueryDto.getCreateTime().length == 0) {
             // TODO: 2020/6/1
+            //System.out.println("没有选中筛选时间");
         } else {
             //criteria.andEqualTo("createTime", userQueryDto.getCreateTime());
             criteria.andBetween("createTime", userQueryDto.getCreateTime()[0], userQueryDto.getCreateTime()[1]);
         }
+
+        //if (null != userQueryDto.getCreateTime() && userQueryDto.getCreateTime().length != 0) {
+        //    criteria.andBetween("createTime", userQueryDto.getCreateTime()[0], userQueryDto.getCreateTime()[1]);
+        //}
 
         //先在角色-用户表中，筛选出搜索框的角色id，得出所有筛选到的用户id
         String roleId = userQueryDto.getRoleId();

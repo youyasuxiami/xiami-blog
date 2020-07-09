@@ -32,4 +32,24 @@
 	    u.id =1
   </select>
 
+  <update id="updateMenu" parameterType="com.xiami.entity.Menu" >
+    UPDATE menu
+    <set>
+      update_time=now()
+      <if test="name !=null and name !=''">
+         ,name = #{name}
+      </if>
+      <if test="url !=null and url !=''">
+        , url = #{url}
+      </if>
+      <if test="orderNum !=null and orderNum !=''">
+        , order_num = #{orderNum}
+      </if>
+      <if test="perms !=null and perms !=''">
+        , perms = #{perms}
+      </if>
+    </set>
+    where id=#{id}
+  </update>
+
 </mapper>
