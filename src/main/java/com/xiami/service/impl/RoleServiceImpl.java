@@ -187,6 +187,8 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public ResponseResult deleteRole(Integer id) {
+        // TODO: 2020/7/11  删除角色前，要先判断有没有用户用这个角色，有就不能删除
+
         //获取中间表中是否存在该角色的菜单
         RolePermission rolePermission = new RolePermission();
         rolePermission.setRoleId(id);

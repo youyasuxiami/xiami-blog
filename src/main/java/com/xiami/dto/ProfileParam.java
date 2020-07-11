@@ -14,7 +14,7 @@ import java.util.Date;
  * @date：2020­05­24 21:54
  */
 @Data
-public class UserParam implements Serializable {
+public class ProfileParam implements Serializable {
     private static final long serialVersionUID = -8472527239027808727L;
 
     /**

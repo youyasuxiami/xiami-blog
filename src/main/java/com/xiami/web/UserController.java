@@ -4,6 +4,7 @@ import com.github.pagehelper.PageInfo;
 import com.xiami.base.PageResult;
 import com.xiami.base.ResponseResult;
 import com.xiami.dto.PageRequestDto;
+import com.xiami.dto.UserDto;
 import com.xiami.dto.UserQueryDto;
 import com.xiami.entity.User;
 import com.xiami.service.UserService;
@@ -83,27 +84,27 @@ public class UserController {
     /**
      * 新增/编辑用户
      *
-     * @param user
+     * @param userDto
      * @return
      */
     @PostMapping("/addUser")
-    public ResponseResult<User> addUser(@RequestBody User user) {
+    public ResponseResult<User> addUser(@RequestBody UserDto userDto) {
         //新增用户
-        if (user.getId() == null) {
+        if (userDto.getId() == null) {
             //初始密码
-            String newPass = new Md5Hash("123456", user.getName(), 1024).toBase64();
-            user.setPassword(newPass);
+            String newPass = new Md5Hash("123456", userDto.getName(), 1024).toBase64();
+            userDto.setPassword(newPass);
             //user.setAvatar("http://youyasumi-oss.oss-cn-beijing.aliyuncs.com/76e11fce-e7fd-4985-84ec-2332b9dfef84.png");
-            user.setAvatar(user.getAvatar());
-            user.setCreateTime(new Date());
-            user.setUpdateTime(new Date());
-            user.setLoginTime(new Date());
-            return userService.addUser(user);
+            userDto.setAvatar(userDto.getAvatar());
+            userDto.setCreateTime(new Date());
+            userDto.setUpdateTime(new Date());
+            userDto.setLoginTime(new Date());
+            return userService.addUser(userDto);
         }
 
         //编辑用户
-        user.setUpdateTime(new Date());
-        return userService.updateUser(user);
+        userDto.setUpdateTime(new Date());
+        return userService.updateUser(userDto);
     }
 
     /**
@@ -122,7 +123,7 @@ public class UserController {
     }
 
     /**
-     * 删除User
+     * 删除一个User
      *
      * @param id
      * @return
@@ -180,5 +181,34 @@ public class UserController {
         //userService.exportUserToExcel(out, userQueryDto);
         //log.error("导出用户数据异常！", e);
                 userService.exportUserToExcel(out, userQueryDto);
+    }
+
+    /**
+     * 批量删除User
+     *
+     * @param ids
+     * @return
+     */
+    @GetMapping("/deleteUsers")
+    public ResponseResult<User> deleteUsers(Integer[] ids) {
+        return userService.deleteUsers(ids);
+    }
+
+    /**
+     * 获得所有角色
+     * @return
+     */
+    @GetMapping("/getRoles")
+    public ResponseResult<User> getRoles() {
+        return userService.getRoles();
+    }
+
+    /**
+     * 获得一个用户所拥有的角色
+     * @return
+     */
+    @GetMapping("/getCheckedRoles")
+    public ResponseResult<User> getCheckedRoles(Integer id) {
+        return userService.getCheckedRoles(id);
     }
 }

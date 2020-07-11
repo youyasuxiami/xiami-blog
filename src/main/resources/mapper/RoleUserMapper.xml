@@ -14,4 +14,12 @@
     <!--@mbg.generated generated on Fri May 15 12:21:32 CST 2020.-->
     id, role_id, user_id, create_time, update_time
   </sql>
+
+  <delete id="deleteExist" parameterType="list">
+    delete from role_user
+    where id in
+    <foreach collection="list" item="id" separator="," close=")" open="(">
+      #{id}
+    </foreach>
+  </delete>
 </mapper>

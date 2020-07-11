@@ -52,4 +52,12 @@
     where id=#{id}
   </update>
 
+  <delete id="deleteMenu" parameterType="list">
+    delete from menu
+    where id in
+    <foreach collection="list" open="("  separator="," close=")" item="id">
+      #{id}
+    </foreach>
+
+  </delete>
 </mapper>

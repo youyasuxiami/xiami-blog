@@ -32,8 +32,8 @@ public class MenuController {
     private MenuService menuService;
 
     @GetMapping(value = "/menuList")
-    public ResponseResult menuList(String pageNum,String pageSize){
-            return menuService.getMenuJsonList();
+    public ResponseResult menuList(String pageNum, String pageSize) {
+        return menuService.getMenuJsonList();
     }
 
     /**
@@ -46,7 +46,7 @@ public class MenuController {
     public ResponseResult<User> addUser(@RequestBody Menu menu) {
         //新增菜单
         if (menu.getId() == null) {
-            if("0".equals(menu.getType()+"")){
+            if ("0".equals(menu.getType() + "")) {
                 menu.setParentId(0);
             }
             menu.setCreateTime(new Date());
@@ -59,4 +59,14 @@ public class MenuController {
         return menuService.updateMenu(menu);
     }
 
+    /**
+     * 删除一个菜单(当有子菜单，也一并删除了)
+     *
+     * @param id
+     * @return
+     */
+    @GetMapping("/deleteMenu")
+    public ResponseResult deleteUser(Integer id) {
+        return menuService.deleteMenu(id);
+    }
 }

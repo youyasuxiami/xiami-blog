@@ -9,7 +9,9 @@ import java.util.List;
 public interface UserMapper extends MyMapper<User> {
     List<User> selectByQuery(UserQueryDto userQueryDto);
 
-    //List<Integer> insertUsers(List<User> list);
+    //批量导入用户
     int  insertUsers(List<User> list);
 
+    //批量删除用户
+    int deleteUsers(Integer[] ids);
 }

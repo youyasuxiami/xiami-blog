@@ -2,7 +2,8 @@ package com.xiami.web;
 
 import com.xiami.base.ResponseResult;
 import com.xiami.dto.IconParam;
-import com.xiami.dto.UserParam;
+import com.xiami.dto.ProfileParam;
+import com.xiami.dto.ProfileParam;
 import com.xiami.entity.User;
 import com.xiami.service.ProfileService;
 import org.springframework.beans.BeanUtils;
@@ -42,13 +43,13 @@ public class ProfileController {
 
     /**
      * 更新账号信息
-     * @param userParam
+     * @param profileParam
      * @return
      */
     @PostMapping("/profile/update")
-    public ResponseResult<User> updateUserInfo(@RequestBody UserParam userParam) {
+    public ResponseResult<User> updateUserInfo(@RequestBody ProfileParam profileParam) {
         User user=new User();
-        BeanUtils.copyProperties(userParam,user);
+        BeanUtils.copyProperties(profileParam,user);
         int result = profileService.updateUserInfo(user);
 
         //成功

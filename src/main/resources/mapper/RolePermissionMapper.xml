@@ -43,6 +43,11 @@
     </foreach>
   </delete>
 
-
-
+  <select id="selectByMenuIds" parameterType="list" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/> from role_permission
+    where permission_id in
+    <foreach collection="list"  item="id" open="(" separator="," close=")">
+      #{id}
+    </foreach>
+  </select>
 </mapper>

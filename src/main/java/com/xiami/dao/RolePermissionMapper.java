@@ -10,4 +10,6 @@ public interface RolePermissionMapper extends MyMapper<RolePermission> {
     int  insertRolePermission(List<RolePermission> list);
 
     int deleteByIds(List<Integer> ids);
+
+    List<RolePermission> selectByMenuIds(List<Integer> menuIds);
 }

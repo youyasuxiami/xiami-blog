@@ -6,7 +6,9 @@ import com.github.pagehelper.PageInfo;
 import com.xiami.base.PageResult;
 import com.xiami.base.ResponseResult;
 import com.xiami.dao.MenuMapper;
+import com.xiami.dao.RolePermissionMapper;
 import com.xiami.entity.Menu;
+import com.xiami.entity.RolePermission;
 import com.xiami.entity.User;
 import com.xiami.service.MenuService;
 import org.springframework.stereotype.Service;
@@ -28,6 +30,9 @@ public class MenuServiceImpl implements MenuService {
 
     @Resource
     private MenuMapper menuMapper;
+
+    @Resource
+    private RolePermissionMapper rolePermissionMapper;
 
     @Override
     public ResponseResult getMenuJsonList() {
@@ -82,6 +87,34 @@ public class MenuServiceImpl implements MenuService {
         return new ResponseResult<>(ResponseResult.CodeStatus.FAIL, "提交失败");
     }
 
+    @Override
+    public ResponseResult deleteMenu(Integer id) {
+        Menu menu=new Menu();
+        menu.setParentId(id);
+        //查找选中菜单的所有子菜单
+        List<Menu> select = menuMapper.select(menu);
+        List<Integer> menuIds = select.stream()
+                .map(Menu::getId)
+                .collect(Collectors.toList());
+        //加上自身的菜单id
+        menuIds.add(id);
 
+        //先查有没有用户用到这些菜单，有就不能删除
+        List<RolePermission> rolePermissions = rolePermissionMapper.selectByMenuIds(menuIds);
+        if(null!=rolePermissions&&rolePermissions.size()!=0){
+            return new ResponseResult(ResponseResult.CodeStatus.FAIL,"选中的菜单已经和角色绑定，请先在角色管理中解绑菜单");
+        }
+        try {
+            int i = menuMapper.deleteMenu(menuIds);
+            if(i>0){
+                return new ResponseResult(ResponseResult.CodeStatus.OK,"删除菜单成功");
+            }else {
+                return new ResponseResult(ResponseResult.CodeStatus.FAIL,"删除菜单失败");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseResult(ResponseResult.CodeStatus.FAIL,"删除菜单失败");
+        }
+    }
 }
 

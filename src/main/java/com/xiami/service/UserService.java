@@ -3,7 +3,9 @@ package com.xiami.service;
 import com.xiami.base.PageResult;
 import com.xiami.base.ResponseResult;
 import com.xiami.dto.PageRequestDto;
+import com.xiami.dto.UserDto;
 import com.xiami.dto.UserQueryDto;
+import com.xiami.entity.Role;
 import com.xiami.entity.User;
 
 import java.io.FileNotFoundException;
@@ -41,17 +43,17 @@ public interface UserService {
 
     /**
      * 新增用户
-     * @param user
+     * @param userDto
      * @return
      */
-    ResponseResult addUser(User user);
+    ResponseResult addUser(UserDto userDto);
 
     /**
      * 编辑用户
-     * @param user
+     * @param userDto
      * @return
      */
-    ResponseResult updateUser(User user);
+    ResponseResult updateUser(UserDto userDto);
 
     /**
      * 启用/禁用账号
@@ -82,4 +84,22 @@ public interface UserService {
      */
     void exportUserToExcel(OutputStream out,UserQueryDto userQueryDto) throws IOException;
 
+    /**
+     * 删除用户
+     * @param ids
+     * @return
+     */
+    ResponseResult deleteUsers(Integer[] ids);
+
+    /**
+     * 获取所有角色
+     * @return
+     */
+    ResponseResult getRoles();
+
+    /**
+     * 获取该用户拥有的所有角色
+     * @return
+     */
+    ResponseResult getCheckedRoles(Integer id);
 }

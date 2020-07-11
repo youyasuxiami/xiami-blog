@@ -5,41 +5,39 @@ import com.github.pagehelper.PageInfo;
 import com.xiami.base.Constant;
 import com.xiami.base.PageResult;
 import com.xiami.base.ResponseResult;
+import com.xiami.dao.RoleMapper;
 import com.xiami.dao.RoleUserMapper;
 import com.xiami.dao.SysMapper;
 import com.xiami.dao.UserMapper;
 import com.xiami.dto.PageRequestDto;
+import com.xiami.dto.UserDto;
 import com.xiami.dto.UserQueryDto;
 import com.xiami.entity.RoleUser;
 import com.xiami.entity.User;
 import com.xiami.service.UserService;
 import com.xiami.utils.BeanUtil;
 import com.xiami.utils.DictionaryUtils;
-import com.xiami.utils.ExcelUtil;
-import org.apache.ibatis.reflection.ArrayUtil;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.springframework.beans.BeanUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
-import org.thymeleaf.util.ArrayUtils;
 import tk.mybatis.mapper.entity.Example;
-
 import javax.annotation.Resource;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -60,6 +58,9 @@ public class UserServiceImpl implements UserService {
 
     @Resource
     private DictionaryUtils dictionaryUtils;
+
+    @Resource
+    private RoleMapper roleMapper;
 
     public final static String EXCEL_PATH_PREFIX = "static/upload/excels";
     public final static String PATH = new UserServiceImpl().getAbsolutePath();
@@ -98,8 +99,6 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public PageResult getUsersBySearch1(UserQueryDto userQueryDto) {
-
-
         //对哪个实体类（表）进行筛选
         Example example = new Example(User.class);
         Example.Criteria criteria = example.createCriteria();
@@ -126,10 +125,10 @@ public class UserServiceImpl implements UserService {
         Example.Criteria criteria = example.createCriteria();
         //实体类属性
         if (!StringUtils.isEmpty(userQueryDto.getName())) {//模糊查询
-            criteria.andLike("name","%" + userQueryDto.getName() + "%");//实体类属性
+            criteria.andLike("name", "%" + userQueryDto.getName() + "%");//实体类属性
         }
         if (!StringUtils.isEmpty(userQueryDto.getNickName())) {
-            criteria.andLike("nickName","%" + userQueryDto.getNickName() + "%");
+            criteria.andLike("nickName", "%" + userQueryDto.getNickName() + "%");
         }
         if (!StringUtils.isEmpty(userQueryDto.getSex())) {
             criteria.andEqualTo("sex", userQueryDto.getSex());
@@ -139,18 +138,10 @@ public class UserServiceImpl implements UserService {
             criteria.andEqualTo("status", userQueryDto.getAccountStatus());
         }
 
-
-        if (null == userQueryDto.getCreateTime() || userQueryDto.getCreateTime().length == 0) {
-            // TODO: 2020/6/1
-            //System.out.println("没有选中筛选时间");
-        } else {
+        if (null != userQueryDto.getCreateTime() && userQueryDto.getCreateTime().length != 0) {
             //criteria.andEqualTo("createTime", userQueryDto.getCreateTime());
             criteria.andBetween("createTime", userQueryDto.getCreateTime()[0], userQueryDto.getCreateTime()[1]);
         }
-
-        //if (null != userQueryDto.getCreateTime() && userQueryDto.getCreateTime().length != 0) {
-        //    criteria.andBetween("createTime", userQueryDto.getCreateTime()[0], userQueryDto.getCreateTime()[1]);
-        //}
 
         //先在角色-用户表中，筛选出搜索框的角色id，得出所有筛选到的用户id
         String roleId = userQueryDto.getRoleId();
@@ -185,22 +176,100 @@ public class UserServiceImpl implements UserService {
         return pageResult;
     }
 
+    @Transactional
     @Override
-    public ResponseResult addUser(User user) {
-        int i = userMapper.insert(user);
-        if (i > 0) {
-            return new ResponseResult<>(ResponseResult.CodeStatus.OK, "提交成功");
+    public ResponseResult addUser(UserDto userDto) {
+        User user = new User();
+        try {
+            BeanUtils.copyProperties(userDto, user);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseResult<>(ResponseResult.CodeStatus.FAIL, "提交失败");
         }
-        return new ResponseResult<>(ResponseResult.CodeStatus.FAIL, "提交失败");
+        if (null != userDto.getRoleIds() && userDto.getRoleIds().length != 0) {//选了角色
+            try {
+                //插入用户
+                int i = userMapper.insert(user);
+                //插入角色-用户表,先获取所有的插入数据
+                List<RoleUser> roleUserList = new ArrayList<>();
+                List<Integer> list = Arrays.asList(userDto.getRoleIds());
+                for (int i1 = 0; i1 < list.size(); i1++) {
+                    RoleUser roleUser = new RoleUser();
+                    roleUser.setUserId(user.getId());
+                    roleUser.setRoleId(list.get(i1));
+                    roleUser.setCreateTime(new Date());
+                    roleUser.setUpdateTime(new Date());
+                    roleUserList.add(roleUser);
+                }
+                int i1 = roleUserMapper.insertList(roleUserList);
+                return ResponseResult.getResponseResult(i > 0 && i1 > 0, "提交成功", "提交失败");
+            } catch (DuplicateKeyException e) {
+                String code = getDuplicateKeyExceptionMsg(e);
+                return new ResponseResult<>(ResponseResult.CodeStatus.FAIL, "数据库中已经存在用户名为 " + code + " 的数据，请重新导入");
+            } catch (Exception e) {
+                e.printStackTrace();
+                return new ResponseResult<>(ResponseResult.CodeStatus.FAIL, "提交失败");
+            }
+        } else {//没有选择角色
+            try {
+                int i = userMapper.insert(user);
+                return ResponseResult.getResponseResult(i > 0, "提交成功", "提交失败");
+            } catch (Exception e) {
+                e.printStackTrace();
+                return new ResponseResult<>(ResponseResult.CodeStatus.FAIL, "提交失败");
+            }
+        }
     }
 
+    @Transactional
     @Override
-    public ResponseResult updateUser(User user) {
-        int i = userMapper.updateByPrimaryKey(user);
-        if (i > 0) {
-            return new ResponseResult<>(ResponseResult.CodeStatus.OK, "提交成功");
+    public ResponseResult updateUser(UserDto userDto) {
+        User user = new User();
+        try {
+            BeanUtils.copyProperties(userDto, user);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseResult<>(ResponseResult.CodeStatus.FAIL, "提交失败");
         }
-        return new ResponseResult<>(ResponseResult.CodeStatus.FAIL, "提交失败");
+        //先获取用户-角色表中：该用户的所有角色数据
+        RoleUser roleUser = new RoleUser();
+        roleUser.setUserId(userDto.getId());
+        List<Integer> ids = roleUserMapper.select(roleUser)
+                .stream()
+                .map(RoleUser::getId)
+                .collect(Collectors.toList());
+        //判断该用户在用户-角色表中，有没有数据
+        if (null == ids || ids.size() == 0) {
+            // TODO: 2020/7/12  没数据
+        } else {//有数据，先删除数据
+            try {
+                roleUserMapper.deleteExist(ids);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return new ResponseResult<>(ResponseResult.CodeStatus.FAIL, "提交失败");
+            }
+        }
+
+        try {
+            //再更新用户表
+            int i1 = userMapper.updateByPrimaryKey(user);
+            //最后更新用户-角色表
+            List<RoleUser> roleUserList = new ArrayList<>();
+            List<Integer> list = Arrays.asList(userDto.getRoleIds());
+            for (int i = 0; i < list.size(); i++) {
+                RoleUser roleUser1 = new RoleUser();
+                roleUser1.setUserId(user.getId());
+                roleUser1.setRoleId(list.get(i));
+                roleUser1.setCreateTime(new Date());
+                roleUser1.setUpdateTime(new Date());
+                roleUserList.add(roleUser1);
+            }
+            int i2 = roleUserMapper.insertList(roleUserList);
+            return ResponseResult.getResponseResult(i1 > 0 && i2>0, "提交成功", "提交失败");
+        } catch (DuplicateKeyException e) {
+            String code = getDuplicateKeyExceptionMsg(e);
+            return new ResponseResult<>(ResponseResult.CodeStatus.FAIL, "数据库中已经存在用户名为 " + code + " 的数据，请重新导入");
+        }
     }
 
     @Override
@@ -356,13 +425,7 @@ public class UserServiceImpl implements UserService {
                     return new ResponseResult<>(ResponseResult.CodeStatus.OK, "导入数据成功");
                 }
             } catch (DuplicateKeyException e) {
-                String[] code1 = BeanUtil.getCode(e);
-                String code = code1[1];
-                if (code.contains("-")) {
-                    //如果包含- 则组合索引生效，这里是去除重复的工单数据
-                    String[] split = code.split("-");
-                    code = split[0];
-                }
+                String code = getDuplicateKeyExceptionMsg(e);
                 //获取唯一索引的名称
                 //String s2 = message2.split("\n")[0].split("\'")[3];
                 //jsonUtil.setFlag(false);
@@ -382,7 +445,7 @@ public class UserServiceImpl implements UserService {
      * @throws Exception
      */
     @Override
-    public void exportUserToExcel(OutputStream out, UserQueryDto userQueryDto)  {
+    public void exportUserToExcel(OutputStream out, UserQueryDto userQueryDto) {
         //获取用户列表中所有的数据
         //对哪个实体类（表）进行筛选
         Example example = new Example(User.class);
@@ -461,8 +524,8 @@ public class UserServiceImpl implements UserService {
         Row row = null;
         Cell cell = null;
         for (int i = 0; i < lists.size(); i++) {
-            row = sheet.createRow(i+2);
-            row.createCell(0).setCellValue(i+1);
+            row = sheet.createRow(i + 2);
+            row.createCell(0).setCellValue(i + 1);
             row.createCell(1).setCellValue(lists.get(i).getName());
             row.createCell(2).setCellValue(lists.get(i).getNickName());
             row.createCell(3).setCellValue(lists.get(i).getSex());
@@ -477,7 +540,6 @@ public class UserServiceImpl implements UserService {
         try {
             workbook.write(out);
         } catch (IOException e) {
-            System.out.println("----------");
             e.printStackTrace();
         }
         try {
@@ -498,5 +560,54 @@ public class UserServiceImpl implements UserService {
         return fileDir.getAbsolutePath() + File.separator;
     }
 
+    @Override
+    public ResponseResult deleteUsers(Integer[] ids) {
+        try {
+            int i = userMapper.deleteUsers(ids);
+            return ResponseResult.getResponseResult(i > 0, "提交成功", "提交失败");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseResult(ResponseResult.CodeStatus.FAIL, "删除用户失败");
+        }
+    }
+
+    @Override
+    public ResponseResult getRoles() {
+        try {
+            List<Map<String, Object>> maps = roleMapper.selectRoles();
+            return new ResponseResult(ResponseResult.CodeStatus.OK, "获取所有角色信息成功", maps);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseResult(ResponseResult.CodeStatus.FAIL, "获取所有角色信息失败");
+        }
+    }
+
+    @Override
+    public ResponseResult getCheckedRoles(Integer id) {
+        RoleUser roleUser = new RoleUser();
+        roleUser.setUserId(id);
+        //获取该用户的所有角色id
+        List<Integer> select = roleUserMapper.select(roleUser)
+                .stream()
+                .map(RoleUser::getRoleId)
+                .collect(Collectors.toList());
+        return new ResponseResult(ResponseResult.CodeStatus.OK, "获取该用户的角色信息成功", select);
+    }
+
+    /**
+     * 获得非唯一索引的异常信息
+     * @param e
+     * @return
+     */
+    private String getDuplicateKeyExceptionMsg(DuplicateKeyException e) {
+        String[] code1 = BeanUtil.getCode(e);
+        String code = code1[1];
+        if (code.contains("-")) {
+            //如果包含- 则组合索引生效，这里是去除重复的工单数据
+            String[] split = code.split("-");
+            code = split[0];
+        }
+        return code;
+    }
 }
 

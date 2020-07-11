@@ -9,6 +9,11 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
+
+  <resultMap id="RoleMap" type="hashmap">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="role_name" jdbcType="VARCHAR" property="roleName" />
+  </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated generated on Fri May 15 12:21:16 CST 2020.-->
     id, role_name, create_time, update_time
@@ -19,5 +24,9 @@
     INNER JOIN role_user ru
     ON r.id=ru.role_id
     WHERE ru.user_id=#{userId}
+  </select>
+
+  <select id="selectRoles" resultMap="RoleMap">
+    select id,role_name from role
   </select>
 </mapper>

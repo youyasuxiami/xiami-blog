@@ -4,7 +4,6 @@ import com.xiami.dao.RolePermissionMapper;
 import com.xiami.dao.SysDictionaryMapper;
 import com.xiami.dao.TBlogMapper;
 import com.xiami.dao.UserMapper;
-import com.xiami.dto.UserParam;
 import com.xiami.dto.UserQueryDto;
 import com.xiami.entity.RolePermission;
 import com.xiami.entity.SysDictionary;

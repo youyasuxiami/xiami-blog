@@ -27,5 +27,12 @@ public interface MenuService {
      * @return
      */
     ResponseResult updateMenu(Menu menu);
+
+    /**
+     * 删除一个菜单
+     * @param id
+     * @return
+     */
+    ResponseResult deleteMenu(Integer id);
 }
 
