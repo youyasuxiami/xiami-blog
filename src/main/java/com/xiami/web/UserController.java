@@ -130,9 +130,7 @@ public class UserController {
      */
     @PostMapping("/deleteUser")
     public ResponseResult<User> deleteUser(Integer id) {
-        User user = new User();
-        user.setId(id);
-        return userService.deleteUser(user);
+        return userService.deleteUser(id);
     }
 
     /**

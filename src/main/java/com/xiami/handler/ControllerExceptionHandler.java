@@ -2,7 +2,6 @@ package com.xiami.handler;
 
 import com.xiami.base.ErrorCodeEnum;
 import com.xiami.base.ResponseResult;
-import com.xiami.dto.LoginInfo;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.UnknownAccountException;
@@ -11,14 +10,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 
 /**
  * Author：郑锦
  * Date：2020­06­08 23:26
- * Description：<描述>
+ * Description：
  */
 //这个注解拦截了所有有@Controller的控制器
 @ControllerAdvice

@@ -65,7 +65,7 @@
     </foreach>
   </insert>
 
-  <delete id="deleteUsers" parameterType="Integer[]">
+  <delete id="deleteUsers" parameterType="Integer">
     delete from user
     where id in
     <foreach collection="array" open="(" close=")" separator="," item="id">

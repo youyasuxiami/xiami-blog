@@ -117,7 +117,7 @@ public class UserServiceImpl implements UserService {
         PageResult pageResult = new PageResult(total, lists);
         return pageResult;
     }
-
+    @Transactional
     @Override
     public PageResult getUsersBySearch(UserQueryDto userQueryDto) {
         //对实体类（表）进行筛选
@@ -265,7 +265,7 @@ public class UserServiceImpl implements UserService {
                 roleUserList.add(roleUser1);
             }
             int i2 = roleUserMapper.insertList(roleUserList);
-            return ResponseResult.getResponseResult(i1 > 0 && i2>0, "提交成功", "提交失败");
+            return ResponseResult.getResponseResult(i1 > 0 && i2 > 0, "提交成功", "提交失败");
         } catch (DuplicateKeyException e) {
             String code = getDuplicateKeyExceptionMsg(e);
             return new ResponseResult<>(ResponseResult.CodeStatus.FAIL, "数据库中已经存在用户名为 " + code + " 的数据，请重新导入");
@@ -292,16 +292,23 @@ public class UserServiceImpl implements UserService {
         return new ResponseResult<>(ResponseResult.CodeStatus.FAIL, "操作失败");
     }
 
+    @Transactional
     @Override
-    public ResponseResult deleteUser(User user) {
+    public ResponseResult deleteUser(Integer id) {
+        User user = new User();
+        user.setId(id);
         int i = userMapper.deleteByPrimaryKey(user);
-        if (i > 0) {
+        //根据该用户，先查用户-角色表的数据
+        RoleUser roleUser = new RoleUser();
+        roleUser.setUserId(id);
+        int delete = roleUserMapper.delete(roleUser);
+        if (i > 0 && delete > 0) {
             return new ResponseResult<>(ResponseResult.CodeStatus.OK, "删除成功");
         }
         return new ResponseResult<>(ResponseResult.CodeStatus.FAIL, "删除失败");
     }
 
-
+    @Transactional
     @Override
     public ResponseResult importExcel(List<List<Object>> dataList) {
         List<User> list = new ArrayList<>();
@@ -560,11 +567,21 @@ public class UserServiceImpl implements UserService {
         return fileDir.getAbsolutePath() + File.separator;
     }
 
+    /**
+     * 批量删除用户
+     *
+     * @param ids
+     * @return
+     */
+    @Transactional
     @Override
     public ResponseResult deleteUsers(Integer[] ids) {
         try {
             int i = userMapper.deleteUsers(ids);
-            return ResponseResult.getResponseResult(i > 0, "提交成功", "提交失败");
+            // TODO: 2020/7/12 需要先查再删除？
+            //List<RoleUser> roleUserList = roleUserMapper.selectByUserIds(ids);
+            int i1 = roleUserMapper.deleteByUserIds(ids);
+            return ResponseResult.getResponseResult(i > 0 && i1 > 0, "提交成功", "提交失败");
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseResult(ResponseResult.CodeStatus.FAIL, "删除用户失败");
@@ -596,6 +613,7 @@ public class UserServiceImpl implements UserService {
 
     /**
      * 获得非唯一索引的异常信息
+     *
      * @param e
      * @return
      */

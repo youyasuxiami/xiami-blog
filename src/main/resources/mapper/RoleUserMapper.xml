@@ -1,25 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xiami.dao.RoleUserMapper">
-  <resultMap id="BaseResultMap" type="com.xiami.entity.RoleUser">
-    <!--@mbg.generated generated on Fri May 15 12:21:32 CST 2020.-->
-    <!--@Table role_user-->
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="role_id" jdbcType="INTEGER" property="roleId" />
-    <result column="user_id" jdbcType="INTEGER" property="userId" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    <!--@mbg.generated generated on Fri May 15 12:21:32 CST 2020.-->
-    id, role_id, user_id, create_time, update_time
-  </sql>
+    <resultMap id="BaseResultMap" type="com.xiami.entity.RoleUser">
+        <!--@mbg.generated generated on Fri May 15 12:21:32 CST 2020.-->
+        <!--@Table role_user-->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="role_id" jdbcType="INTEGER" property="roleId"/>
+        <result column="user_id" jdbcType="INTEGER" property="userId"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated generated on Fri May 15 12:21:32 CST 2020.-->
+        id, role_id, user_id, create_time, update_time
+    </sql>
 
-  <delete id="deleteExist" parameterType="list">
-    delete from role_user
-    where id in
-    <foreach collection="list" item="id" separator="," close=")" open="(">
-      #{id}
-    </foreach>
-  </delete>
+    <delete id="deleteExist" parameterType="list">
+        delete from role_user
+        where id in
+        <foreach collection="list" item="id" separator="," close=")" open="(">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="selectByUserIds" parameterType="integer" resultMap="BaseResultMap">
+        select * from role_user
+        where user_id in
+        <foreach collection="array" open="(" close=")" separator="," item="id">
+            #{id}
+        </foreach>
+    </select>
+    <delete id="deleteByUserIds" parameterType="Integer">
+        delete from  role_user
+        where user_id in
+        <foreach collection="array" open="(" close=")" separator="," item="id">
+            #{id}
+        </foreach>
+    </delete>
 </mapper>

@@ -3,7 +3,6 @@ package com.xiami.web;
 import com.xiami.base.ResponseResult;
 import com.xiami.dto.IconParam;
 import com.xiami.dto.ProfileParam;
-import com.xiami.dto.ProfileParam;
 import com.xiami.entity.User;
 import com.xiami.service.ProfileService;
 import org.springframework.beans.BeanUtils;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Description：
- *
  * @version v1.0.0
  * @author：zj
  * @date：2020­05­24 17:09

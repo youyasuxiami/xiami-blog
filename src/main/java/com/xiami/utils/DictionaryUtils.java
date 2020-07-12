@@ -8,7 +8,6 @@ import tk.mybatis.mapper.entity.Example;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Description：获取字典表的中文

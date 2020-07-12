@@ -5,10 +5,12 @@ import com.github.pagehelper.PageInfo;
 import com.xiami.base.PageResult;
 import com.xiami.base.ResponseResult;
 import com.xiami.dao.RolePermissionMapper;
+import com.xiami.dao.RoleUserMapper;
 import com.xiami.dto.RoleParam;
 import com.xiami.dto.RoleQueryDto;
 import com.xiami.entity.Role;
 import com.xiami.entity.RolePermission;
+import com.xiami.entity.RoleUser;
 import com.xiami.entity.SysDictionary;
 import com.xiami.entity.User;
 import com.xiami.service.RoleService;
@@ -30,7 +32,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@Transactional
 public class RoleServiceImpl implements RoleService {
 
     @Resource
@@ -39,6 +40,8 @@ public class RoleServiceImpl implements RoleService {
     @Resource
     private RolePermissionMapper rolePermissionMapper;
 
+    @Resource
+    private RoleUserMapper roleUserMapper;
 
     @Override
     public List<String> getRoleNames(Integer userId) {
@@ -65,7 +68,7 @@ public class RoleServiceImpl implements RoleService {
         PageResult pageResult = new PageResult(total, roles);
         return new ResponseResult<>(ResponseResult.CodeStatus.OK, "获取角色列表数据成功", pageResult);
     }
-
+    @Transactional
     @Override
     public ResponseResult addRole(RoleParam param) {
         Role role = new Role();
@@ -119,7 +122,7 @@ public class RoleServiceImpl implements RoleService {
                 .collect(Collectors.toList());
         return new ResponseResult<>(ResponseResult.CodeStatus.OK, "获取角色所拥有的菜单成功", permissionIds);
     }
-
+    @Transactional
     @Override
     public ResponseResult updateRole(RoleParam param) {
         Role role = new Role();
@@ -185,10 +188,15 @@ public class RoleServiceImpl implements RoleService {
         }
     }
 
+    @Transactional
     @Override
     public ResponseResult deleteRole(Integer id) {
-        // TODO: 2020/7/11  删除角色前，要先判断有没有用户用这个角色，有就不能删除
-
+        RoleUser roleUser=new RoleUser();
+        roleUser.setRoleId(id);
+        List<RoleUser> select = roleUserMapper.select(roleUser);
+        if(null!=select&&select.size()!=0){//有绑定用户，不能删除
+            return new ResponseResult<>(ResponseResult.CodeStatus.FAIL, "选中的角色已经和用户绑定，请先在用户管理中解绑菜单");
+        }
         //获取中间表中是否存在该角色的菜单
         RolePermission rolePermission = new RolePermission();
         rolePermission.setRoleId(id);

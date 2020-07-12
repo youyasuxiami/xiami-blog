@@ -3,7 +3,6 @@ package com.xiami.filter;
 import com.xiami.utils.MapperUtils;
 import com.xiami.utils.ShiroUtils;
 import org.apache.shiro.session.Session;
-import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Description：
+ * Description：shiro
  *
  * @version v1.0.0
  * @author：zj

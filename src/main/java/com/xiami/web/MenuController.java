@@ -1,11 +1,9 @@
 package com.xiami.web;
 
-import com.alibaba.fastjson.JSONArray;
 import com.xiami.base.ResponseResult;
 import com.xiami.entity.Menu;
 import com.xiami.entity.User;
 import com.xiami.service.MenuService;
-import org.apache.shiro.crypto.hash.Md5Hash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,13 +11,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 
 
 /**
  * Description：
- *
  * @version v1.0.0
  * @author：zj
  * @date：2020­05­30 17:19

@@ -9,7 +9,6 @@ import com.xiami.dao.MenuMapper;
 import com.xiami.dao.RolePermissionMapper;
 import com.xiami.entity.Menu;
 import com.xiami.entity.RolePermission;
-import com.xiami.entity.User;
 import com.xiami.service.MenuService;
 import org.springframework.stereotype.Service;
 

@@ -5,21 +5,20 @@ import com.google.code.kaptcha.util.Config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.awt.*;
 import java.util.Properties;
 
 @Configuration
 public class KaptchaConfig {
 
 
-    @Bean(name="kaptcha")
-    public DefaultKaptcha kaptcha(){
+    @Bean(name = "kaptcha")
+    public DefaultKaptcha kaptcha() {
 
         DefaultKaptcha kaptcha = new DefaultKaptcha();
         Properties properties = new Properties();
 
-        properties.setProperty("kaptcha.border","no");// 图片边框
-        properties.setProperty("kaptcha.textproducer.char.length","4");//验证码个数
+        properties.setProperty("kaptcha.border", "no");// 图片边框
+        properties.setProperty("kaptcha.textproducer.char.length", "4");//验证码个数
         properties.setProperty("kaptcha.textproducer.font.color", "blue");//字体颜色
         properties.setProperty("kaptcha.image.width", "166");// 图片宽
         properties.setProperty("kaptcha.image.height", "47"); // 图片高
@@ -63,7 +62,7 @@ public class KaptchaConfig {
         Config config = new Config(properties);
         kaptcha.setConfig(config);
 
-        return  kaptcha;
+        return kaptcha;
 
     }
 }

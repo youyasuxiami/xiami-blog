@@ -63,11 +63,11 @@ public interface UserService {
     ResponseResult updateUserStatus(User user);
 
     /**
-     * 删除用户
-     * @param user
+     * 删除一个用户
+     * @param id
      * @return
      */
-    ResponseResult deleteUser(User user);
+    ResponseResult deleteUser(Integer id);
 
     /**
      * 批量导入excel
