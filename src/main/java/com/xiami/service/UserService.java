@@ -5,10 +5,8 @@ import com.xiami.base.ResponseResult;
 import com.xiami.dto.PageRequestDto;
 import com.xiami.dto.UserDto;
 import com.xiami.dto.UserQueryDto;
-import com.xiami.entity.Role;
 import com.xiami.entity.User;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
@@ -77,12 +75,20 @@ public interface UserService {
     ResponseResult importExcel(List<List<Object>>  list);
 
     /**
-     * 导出功能
+     * 导出当页数据
      * @param out
      * @param userQueryDto
      * @return
      */
     void exportUserToExcel(OutputStream out,UserQueryDto userQueryDto) throws IOException;
+
+    /**
+     * 导出全部数据
+     * @param out
+     * @param userQueryDto
+     * @return
+     */
+    void exportAllUserToExcel(OutputStream out,UserQueryDto userQueryDto) throws IOException;
 
     /**
      * 删除用户

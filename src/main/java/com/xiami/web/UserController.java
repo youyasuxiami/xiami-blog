@@ -10,15 +10,18 @@ import com.xiami.entity.User;
 import com.xiami.service.UserService;
 import com.xiami.utils.ImprotExcelUtil;
 import org.apache.shiro.crypto.hash.Md5Hash;
-import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Date;
 import java.util.List;
@@ -180,6 +183,28 @@ public class UserController {
         //log.error("导出用户数据异常！", e);
                 userService.exportUserToExcel(out, userQueryDto);
     }
+    /**
+     * 导出用户数据
+     *
+     * @param response
+     * @param userQueryDto
+     * @return
+     * @throws IOException
+     */
+    @GetMapping(value = "/exportAllUserToExcel")
+    public void exportAllUserToExcel(HttpServletResponse response,  UserQueryDto userQueryDto) throws Exception {
+
+        //PageData pd = this.getPageData(page, limit);
+        String fileName = URLEncoder.encode("用户表" + ".xlsx", "UTF-8");
+        String headStr = "attachment; filename=\"" + fileName + "\"";
+        response.setContentType("APPLICATION/OCTET-STREAM");
+        response.setHeader("Content-Disposition", headStr);
+        OutputStream out = response.getOutputStream();
+        //userService.exportUserToExcel(out, userQueryDto);
+        //log.error("导出用户数据异常！", e);
+        userService.exportAllUserToExcel(out, userQueryDto);
+    }
+
 
     /**
      * 批量删除User

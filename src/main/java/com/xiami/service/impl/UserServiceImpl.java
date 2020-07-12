@@ -142,13 +142,12 @@ public class UserServiceImpl implements UserService {
             //criteria.andEqualTo("createTime", userQueryDto.getCreateTime());
             criteria.andBetween("createTime", userQueryDto.getCreateTime()[0], userQueryDto.getCreateTime()[1]);
         }
-
         //先在角色-用户表中，筛选出搜索框的角色id，得出所有筛选到的用户id
-        String roleId = userQueryDto.getRoleId();
-        if (!StringUtils.isEmpty(roleId)) {
+        Integer[] ids = userQueryDto.getRoleIds();
+        if (null!=ids&&ids.length!=0) {
             Example exampleRole = new Example(RoleUser.class);
             Example.Criteria criteria1 = exampleRole.createCriteria();
-            criteria1.andEqualTo("roleId", roleId);
+            criteria1.andIn("roleId", Arrays.asList(ids));
             List<RoleUser> roleUsers = roleUserMapper.selectByExample(exampleRole);
             List<Integer> collect = roleUsers.stream().map(RoleUser::getUserId)
                     .collect(Collectors.toList());
@@ -445,7 +444,7 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * 导出用户表excel
+     * 导出当页数据用户表excel
      *
      * @param out
      * @param userQueryDto
@@ -476,16 +475,15 @@ public class UserServiceImpl implements UserService {
         if (null == userQueryDto.getCreateTime() || userQueryDto.getCreateTime().length == 0) {
             // TODO: 2020/6/1
         } else {
-            //criteria.andEqualTo("createTime", userQueryDto.getCreateTime());
             criteria.andBetween("createTime", userQueryDto.getCreateTime()[0], userQueryDto.getCreateTime()[1]);
         }
 
         //先在角色-用户表中，筛选出搜索框的角色id，得出所有筛选到的用户id
-        String roleId = userQueryDto.getRoleId();
-        if (!StringUtils.isEmpty(roleId)) {
+        Integer[] ids = userQueryDto.getRoleIds();
+        if (null!=ids&&ids.length!=0) {
             Example exampleRole = new Example(RoleUser.class);
             Example.Criteria criteria1 = exampleRole.createCriteria();
-            criteria1.andEqualTo("roleId", roleId);
+            criteria1.andIn("roleId", Arrays.asList(ids));
             List<RoleUser> roleUsers = roleUserMapper.selectByExample(exampleRole);
             List<Integer> collect = roleUsers.stream().map(RoleUser::getUserId)
                     .collect(Collectors.toList());
@@ -555,6 +553,119 @@ public class UserServiceImpl implements UserService {
             e.printStackTrace();
         }
     }
+
+    /**
+     * 导出全部数据用户表excel
+     *
+     * @param out
+     * @param userQueryDto
+     * @throws Exception
+     */
+    @Override
+    public void exportAllUserToExcel(OutputStream out, UserQueryDto userQueryDto) {
+        //获取用户列表中所有的数据
+        //对哪个实体类（表）进行筛选
+        Example example = new Example(User.class);
+        Example.Criteria criteria = example.createCriteria();
+        //实体类属性
+        if (!StringUtils.isEmpty(userQueryDto.getName())) {
+            criteria.andEqualTo("name", userQueryDto.getName());
+        }
+        if (!StringUtils.isEmpty(userQueryDto.getNickName())) {
+            criteria.andEqualTo("nickName", userQueryDto.getNickName());
+        }
+        if (!StringUtils.isEmpty(userQueryDto.getSex())) {
+            criteria.andEqualTo("sex", userQueryDto.getSex());
+        }
+
+        //if (!StringUtils.isEmpty(userQueryDto.getAccountStatus())&&!"null".equals(userQueryDto.getAccountStatus())) {
+        if (!StringUtils.isEmpty(userQueryDto.getAccountStatus())) {
+            criteria.andEqualTo("status", userQueryDto.getAccountStatus());
+        }
+
+        if (null == userQueryDto.getCreateTime() || userQueryDto.getCreateTime().length == 0) {
+            // TODO: 2020/6/1
+        } else {
+            //criteria.andEqualTo("createTime", userQueryDto.getCreateTime());
+            criteria.andBetween("createTime", userQueryDto.getCreateTime()[0], userQueryDto.getCreateTime()[1]);
+        }
+
+        //先在角色-用户表中，筛选出搜索框的角色id，得出所有筛选到的用户id
+        Integer[] ids = userQueryDto.getRoleIds();
+        if (null!=ids&&ids.length!=0) {
+            Example exampleRole = new Example(RoleUser.class);
+            Example.Criteria criteria1 = exampleRole.createCriteria();
+            criteria1.andIn("roleId", Arrays.asList(ids));
+            List<RoleUser> roleUsers = roleUserMapper.selectByExample(exampleRole);
+            List<Integer> collect = roleUsers.stream().map(RoleUser::getUserId)
+                    .collect(Collectors.toList());
+            //获取用户表中，是筛选后的角色编号id的用户编号id
+            if (null == collect || collect.isEmpty()) {
+                // TODO: 2020/6/26 管理员不存在怎么办
+                //管理员不存在怎么办
+                //PageResult pageResult = new PageResult(0l, null);
+                //return pageResult;
+                //return new ResponseResult<>(ResponseResult.CodeStatus.FAIL, "管理员不存在");
+            }
+            criteria.andIn("id", collect);
+        }
+
+        //PageHelper.startPage(userQueryDto.getPageNum(), userQueryDto.getPageSize());
+        List<User> lists = userMapper.selectByExample(example);
+        lists.stream().forEach(user -> {
+            String sexValue = dictionaryUtils.toChinese("sex", user.getSex());
+            String statusValue = dictionaryUtils.toChinese("account_status", user.getStatus());
+            user.setSex(sexValue);
+            user.setStatus(statusValue);
+        });
+
+        String title = "用户列表";
+
+        // 1、创建一个工作簿 07
+        Workbook workbook = new SXSSFWorkbook();
+        // 2、创建一个工作表
+        Sheet sheet = workbook.createSheet(title);
+        Row row0 = sheet.createRow(0);
+        row0.createCell(0).setCellValue("用户表");
+        Row row1 = sheet.createRow(1);
+        row1.createCell(0).setCellValue("序号");
+        row1.createCell(1).setCellValue("用户名");
+        row1.createCell(2).setCellValue("昵称");
+        row1.createCell(3).setCellValue("性别");
+        row1.createCell(4).setCellValue("年龄");
+        row1.createCell(5).setCellValue("联系方式");
+        row1.createCell(6).setCellValue("电子邮箱");
+        row1.createCell(7).setCellValue("备注");
+        row1.createCell(8).setCellValue("账号状态");
+
+        Row row = null;
+        Cell cell = null;
+        for (int i = 0; i < lists.size(); i++) {
+            row = sheet.createRow(i + 2);
+            row.createCell(0).setCellValue(i + 1);
+            row.createCell(1).setCellValue(lists.get(i).getName());
+            row.createCell(2).setCellValue(lists.get(i).getNickName());
+            row.createCell(3).setCellValue(lists.get(i).getSex());
+            row.createCell(4).setCellValue(lists.get(i).getAge());
+            row.createCell(5).setCellValue(lists.get(i).getPhone());
+            row.createCell(6).setCellValue(lists.get(i).getEmail());
+            row.createCell(7).setCellValue(lists.get(i).getPs());
+            row.createCell(8).setCellValue(lists.get(i).getStatus());
+
+        }
+        // 输出
+        try {
+            workbook.write(out);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     /**
      * 相对路径转绝对路径

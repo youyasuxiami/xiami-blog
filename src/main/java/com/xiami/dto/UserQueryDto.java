@@ -16,7 +16,7 @@ public class UserQueryDto extends  PageRequestDto {
 
     private String name;
 
-    private String roleId;
+    //private String roleId;
 
     private String sex;
 
@@ -25,4 +25,9 @@ public class UserQueryDto extends  PageRequestDto {
     //private Date createTime;
     //因为连续的日期是字符串.
     private String[] createTime;
+
+    /**
+     * 角色数组id
+     */
+    private Integer[] roleIds;
 }
