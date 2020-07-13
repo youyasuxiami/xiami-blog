@@ -6,7 +6,7 @@ import com.xiami.base.ResponseResult;
 import com.xiami.dto.LoginInfo;
 import com.xiami.dto.LoginParam;
 import com.xiami.entity.User;
-import com.xiami.service.UserService;
+import com.xiami.service.LoginService;
 import com.xiami.utils.ShiroUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -25,6 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 
@@ -40,7 +41,7 @@ public class LoginController {
     private DefaultKaptcha kaptcha;
 
     @Autowired
-    private UserService userService;
+    private LoginService loginService;
 
     //@GetMapping(value="/login")
     //public ResponseResult1 login(){
@@ -62,8 +63,13 @@ public class LoginController {
         LoginInfo loginInfo = new LoginInfo();
         loginInfo.setName(user.getName());
         loginInfo.setAvatar(user.getAvatar());
-        loginInfo.setRoles(new String[]{"admin"});
+        List<String> roleNames = loginService.getRoleNames(user.getName());
+        String[] arrs=new String[roleNames.size()];
+        String[] objects = roleNames.toArray(arrs);
+        loginInfo.setRoles(objects);
+        // TODO: 2020/7/13
         loginInfo.setDesc("i am a admin");
+        
         return new ResponseResult<LoginInfo>(ResponseResult.CodeStatus.OK, "获取用户信息", loginInfo);
     }
 

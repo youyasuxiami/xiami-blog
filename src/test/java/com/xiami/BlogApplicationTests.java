@@ -131,4 +131,13 @@ class BlogApplicationTests {
         List<RolePermission> select = rolePermissionMapper.select(rolePermission);
         System.out.println(1111);
     }
+    @Test
+    public void say(){
+        String a="111";
+        String b="111";
+        String c=new String("111");
+        System.out.println(a.hashCode());
+        System.out.println(b.hashCode());
+        System.out.println(c.hashCode());
+    }
 }
