@@ -14,4 +14,6 @@ public interface UserMapper extends MyMapper<User> {
 
     //批量删除用户
     int deleteUsers(Integer[] ids);
+
+
 }

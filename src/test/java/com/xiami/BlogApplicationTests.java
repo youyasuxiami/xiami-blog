@@ -9,6 +9,7 @@ import com.xiami.entity.RolePermission;
 import com.xiami.entity.SysDictionary;
 import com.xiami.entity.TBlog;
 import com.xiami.entity.User;
+import com.xiami.service.ProfileService;
 import com.xiami.utils.DictionaryUtils;
 import com.xiami.utils.MapperUtils;
 import org.junit.jupiter.api.Test;
@@ -40,6 +41,8 @@ class BlogApplicationTests {
     @Autowired
     private RolePermissionMapper rolePermissionMapper;
 
+    @Autowired
+    private ProfileService profileService;
     @Test
     void contextLoads() {
         List<TBlog> tBlogs = tBlogMapper.selectAll();

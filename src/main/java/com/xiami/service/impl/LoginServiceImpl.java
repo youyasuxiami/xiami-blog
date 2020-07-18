@@ -18,4 +18,14 @@ public class LoginServiceImpl implements LoginService {
         List<String> roleNames = loginMapper.getRoleNames(userName);
         return roleNames;
     }
+
+    /**
+     * 根据账号获取所拥有的菜单
+     * @param name
+     * @return
+     */
+    @Override
+    public List<String> getAllMenusByAccount(String name) {
+        return loginMapper.getAllMenusByName(name);
+    }
 }

@@ -77,4 +77,10 @@ public class ProfileController {
             return new ResponseResult<Void>(ResponseResult.CodeStatus.FAIL, "更新头像失败");
         }
     }
+
+    @GetMapping("/firstMenus")
+    public ResponseResult<User> getFirstMenus() {
+        return profileService.getFirstMenus();
+    }
+
 }

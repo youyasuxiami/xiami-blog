@@ -15,4 +15,11 @@ public interface LoginService {
      * @return
      */
     List<String> getRoleNames(String userName);
+
+    /**
+     * 根据用户名获取用户所拥有的菜单url
+     * @param name
+     * @return
+     */
+    List<String> getAllMenusByAccount(String name);
 }

@@ -63,10 +63,16 @@ public class LoginController {
         LoginInfo loginInfo = new LoginInfo();
         loginInfo.setName(user.getName());
         loginInfo.setAvatar(user.getAvatar());
+
         List<String> roleNames = loginService.getRoleNames(user.getName());
         String[] arrs=new String[roleNames.size()];
         String[] objects = roleNames.toArray(arrs);
         loginInfo.setRoles(objects);
+
+        List<String> urlNames = loginService.getAllMenusByAccount(user.getName());
+        String[] arrs2=new String[urlNames.size()];
+        String[] objects2 = urlNames.toArray(arrs2);
+        loginInfo.setUrls(objects2);
         // TODO: 2020/7/13
         loginInfo.setDesc("i am a admin");
         

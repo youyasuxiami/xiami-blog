@@ -19,9 +19,12 @@ public class LoginInfo implements Serializable {
     //头像
     private String avatar;
 
-    //角色权限
+    //角色菜单
     private String[] roles;
     //描述
     private String desc;
+
+    //url菜单
+    private String[] urls;
 
 }

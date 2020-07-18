@@ -43,6 +43,7 @@ public class MenuServiceImpl implements MenuService {
         supers.sort(Comparator.comparingInt(Menu::getOrderNum));
         JSONArray jsonArr = new JSONArray();
         for (Menu sysMenu : supers) {
+            //参数一:一个父菜单，参数二:全部的菜单
             Menu child = child(sysMenu, menus, 0, 0);
             jsonArr.add(child);
         }

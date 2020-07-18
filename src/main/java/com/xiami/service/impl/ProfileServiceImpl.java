@@ -1,5 +1,7 @@
 package com.xiami.service.impl;
 
+import com.xiami.base.ResponseResult;
+import com.xiami.dao.MenuMapper;
 import com.xiami.dao.UserMapper;
 import com.xiami.entity.User;
 import com.xiami.service.ProfileService;
@@ -18,6 +20,9 @@ import tk.mybatis.mapper.entity.Example;
 public class ProfileServiceImpl implements ProfileService {
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private MenuMapper menuMapper;
 
     /**
      * 根据用户名：获取用户信息
@@ -58,4 +63,9 @@ public class ProfileServiceImpl implements ProfileService {
         return userMapper.updateByPrimaryKey(user1);
     }
 
+    @Override
+    public ResponseResult getFirstMenus() {
+        // TODO: 2020/7/18 先获取该用户的所有角色
+        return null;
+    }
 }
