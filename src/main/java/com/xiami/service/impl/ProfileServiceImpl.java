@@ -3,11 +3,16 @@ package com.xiami.service.impl;
 import com.xiami.base.ResponseResult;
 import com.xiami.dao.MenuMapper;
 import com.xiami.dao.UserMapper;
+import com.xiami.entity.Menu;
 import com.xiami.entity.User;
 import com.xiami.service.ProfileService;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
+
+import java.util.List;
 
 /**
  * Description：
@@ -65,7 +70,13 @@ public class ProfileServiceImpl implements ProfileService {
 
     @Override
     public ResponseResult getFirstMenus() {
-        // TODO: 2020/7/18 先获取该用户的所有角色
-        return null;
+        //获取登录用户的信息
+        Subject subject = SecurityUtils.getSubject();
+        User user = (User) subject.getPrincipal();
+        String name=user.getName();
+
+        //先获取该用户的所有的一级菜单
+        List<Menu> allMenusByName = menuMapper.getAllMenusByName(name);
+        return new ResponseResult(ResponseResult.CodeStatus.OK,"获取该用户的一级菜单成功",allMenusByName);
     }
 }

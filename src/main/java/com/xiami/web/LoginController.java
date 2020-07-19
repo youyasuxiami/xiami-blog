@@ -13,6 +13,7 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -55,7 +56,7 @@ public class LoginController {
 
 
     @GetMapping(value = "/info")
-    public ResponseResult<LoginInfo> info() {
+    public ResponseResult<LoginInfo> info(Integer firstMenuId) {
         //获取登录用户的信息
         Subject subject = SecurityUtils.getSubject();
         User user = (User) subject.getPrincipal();
@@ -69,7 +70,10 @@ public class LoginController {
         String[] objects = roleNames.toArray(arrs);
         loginInfo.setRoles(objects);
 
-        List<String> urlNames = loginService.getAllMenusByAccount(user.getName());
+        if(StringUtils.isEmpty(firstMenuId)){
+            firstMenuId=102;
+        }
+        List<String> urlNames = loginService.getAllMenusByAccount(user.getName(),firstMenuId);
         String[] arrs2=new String[urlNames.size()];
         String[] objects2 = urlNames.toArray(arrs2);
         loginInfo.setUrls(objects2);

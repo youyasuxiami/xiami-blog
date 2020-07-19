@@ -10,4 +10,11 @@ public interface MenuMapper extends MyMapper<Menu> {
 
     //删除一个菜单
     int deleteMenu(List<Integer> menuIds);
+
+    /**
+     * 获得一个账号的所有菜单url
+     * @param name
+     * @return
+     */
+    List<Menu> getAllMenusByName(String name);
 }

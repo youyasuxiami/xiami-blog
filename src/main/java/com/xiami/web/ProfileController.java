@@ -82,5 +82,4 @@ public class ProfileController {
     public ResponseResult<User> getFirstMenus() {
         return profileService.getFirstMenus();
     }
-
 }

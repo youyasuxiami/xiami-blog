@@ -1,5 +1,6 @@
 package com.xiami;
 
+import com.xiami.base.ResponseResult;
 import com.xiami.dao.RolePermissionMapper;
 import com.xiami.dao.SysDictionaryMapper;
 import com.xiami.dao.TBlogMapper;
@@ -142,5 +143,12 @@ class BlogApplicationTests {
         System.out.println(a.hashCode());
         System.out.println(b.hashCode());
         System.out.println(c.hashCode());
+    }
+
+    @Test
+    public void testFirstMenus(){
+        ResponseResult firstMenus = profileService.getFirstMenus();
+        System.out.println(firstMenus);
+
     }
 }

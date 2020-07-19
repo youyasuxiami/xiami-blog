@@ -21,5 +21,5 @@ public interface LoginService {
      * @param name
      * @return
      */
-    List<String> getAllMenusByAccount(String name);
+    List<String> getAllMenusByAccount(String name,Integer firstMenuId);
 }
