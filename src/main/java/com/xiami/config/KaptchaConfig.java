@@ -19,9 +19,9 @@ public class KaptchaConfig {
 
         properties.setProperty("kaptcha.border", "no");// 图片边框
         properties.setProperty("kaptcha.textproducer.char.length", "4");//验证码个数
-        properties.setProperty("kaptcha.textproducer.font.color", "blue");//字体颜色
-        properties.setProperty("kaptcha.image.width", "166");// 图片宽
-        properties.setProperty("kaptcha.image.height", "47"); // 图片高
+        properties.setProperty("kaptcha.textproducer.font.color", "64,158,255");//字体颜色
+        //properties.setProperty("kaptcha.image.width", "166");// 图片宽
+        //properties.setProperty("kaptcha.image.height", "47"); // 图片高
         properties.setProperty("kaptcha.noise.color", "red"); //验证码噪点颜色,默认为Color.BLACK
 
         // 边框颜色

@@ -71,7 +71,7 @@ public class LoginController {
         loginInfo.setRoles(objects);
 
         if(StringUtils.isEmpty(firstMenuId)){
-            firstMenuId=102;
+            firstMenuId=101;
         }
         List<String> urlNames = loginService.getAllMenusByAccount(user.getName(),firstMenuId);
         String[] arrs2=new String[urlNames.size()];
