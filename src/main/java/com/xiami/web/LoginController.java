@@ -7,6 +7,7 @@ import com.xiami.dto.LoginInfo;
 import com.xiami.dto.LoginParam;
 import com.xiami.entity.User;
 import com.xiami.service.LoginService;
+import com.xiami.utils.AccountSecurityUtils;
 import com.xiami.utils.ShiroUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -134,11 +135,13 @@ public class LoginController {
         //    return new ResponseResult<Map<String, Object>>(ResponseResult.CodeStatus.CODE_ERROR,"验证码错误" );
         //}
         Subject subject = SecurityUtils.getSubject();
-
-        String newPass = new Md5Hash(loginParam.getPassword(), loginParam.getUsername(), 1024).toBase64();
-        //String newPass = MD5Utils.md5(userDTO.getPassword(), userDTO.getUsername(), 1024);
+        //解密
+        String passwordJieMi = AccountSecurityUtils.decrypt(loginParam.getPassword().trim());
+        String passwordJiaMi = new Md5Hash(passwordJieMi, loginParam.getUsername(), 1024).toBase64();
+        //加密
+        //String passwordJiaMi = MD5Utils.md5(passwordJieMi, loginParam.getUsername(), 1024);
         //通过subject 身份认证
-        UsernamePasswordToken token = new UsernamePasswordToken(loginParam.getUsername(), newPass);
+        UsernamePasswordToken token = new UsernamePasswordToken(loginParam.getUsername(), passwordJiaMi);
         //if (userDTO.isRememberMe()) {
         //    token.setRememberMe(true);
         //}
@@ -148,4 +151,16 @@ public class LoginController {
         result.put("token", token);
         return new ResponseResult<Map<String, Object>>(ResponseResult.CodeStatus.OK, "登录成功", result);
     }
+
+    /**
+     * 返回公钥给前端
+     *
+     * @return
+     */
+    @GetMapping("/getPublicKey")
+    public ResponseResult getPublicKey() {
+        System.out.println(AccountSecurityUtils.PUBLIC_KEY);
+        return new ResponseResult (ResponseResult.CodeStatus.OK, "登录成功", AccountSecurityUtils.PUBLIC_KEY);
+    }
+
 }

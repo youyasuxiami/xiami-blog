@@ -6,6 +6,7 @@ import com.xiami.dao.UserMapper;
 import com.xiami.entity.Menu;
 import com.xiami.entity.User;
 import com.xiami.service.ProfileService;
+import com.xiami.utils.AccountSecurityUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.subject.Subject;
@@ -86,20 +87,26 @@ public class ProfileServiceImpl implements ProfileService {
     public ResponseResult modifyPassword(String oldPassword, String newPassword) {
         Subject subject = SecurityUtils.getSubject();
         User user = (User) subject.getPrincipal();
-        User user1 = userMapper.selectOne(user);
+        User user0=new User();
+        user0.setName(user.getName());
+        User user1 = userMapper.selectOne(user0);
         if(null==user1){
             return new ResponseResult<Void>(ResponseResult.CodeStatus.FAIL, "该系统不存在该用户，请联系管理员");
         }
         if(StringUtils.isEmpty(oldPassword)){
             return new ResponseResult<Void>(ResponseResult.CodeStatus.FAIL, "旧密码不能为空，请重新输入");
         }
-
-        String oldPasswordJiaMi = new Md5Hash(oldPassword, user.getName(), 1024).toBase64();
+        //旧密码解密
+        String oldPassworddJieMi = AccountSecurityUtils.decrypt(oldPassword.trim());
+        //旧密码加密
+        String oldPasswordJiaMi = new Md5Hash(oldPassworddJieMi, user.getName(), 1024).toBase64();
         if (!oldPasswordJiaMi.equals(user1.getPassword())){
             return new ResponseResult<Void>(ResponseResult.CodeStatus.FAIL, "旧密码错误，请重新输入");
         }
-
-        String newPasswordJiaMi = new Md5Hash(newPassword, user.getName(), 1024).toBase64();
+        //新密码解密
+        String newPasswordJieMi = AccountSecurityUtils.decrypt(newPassword.trim());
+        //新密码加密
+        String newPasswordJiaMi = new Md5Hash(newPasswordJieMi, user.getName(), 1024).toBase64();
         user1.setPassword(newPasswordJiaMi);
         int i = 0;
         try {

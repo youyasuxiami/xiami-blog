@@ -90,6 +90,7 @@ public class ShiroConfig {
 
         Map<String,String> map = new LinkedHashMap<>();
         map.put("/login","anon");//匿名访问
+        map.put("/getPublicKey","anon");//公钥放行
         map.put("/info","anon");//匿名访问
         map.put("/logout","anon");//匿名访问
         map.put("/captcha.jpg","anon");//验证码放行
