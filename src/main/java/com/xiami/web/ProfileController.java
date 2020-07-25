@@ -82,4 +82,17 @@ public class ProfileController {
     public ResponseResult<User> getFirstMenus() {
         return profileService.getFirstMenus();
     }
+
+    /**
+     * 修改密码
+     * @param oldPassword
+     * @param newPassword
+     * @return
+     */
+    @PostMapping(value = "/profile/modify/password")
+    public ResponseResult<Void> modifyPassword(String oldPassword,String newPassword ) {
+        return profileService.modifyPassword(oldPassword,newPassword);
+
+    }
+
 }

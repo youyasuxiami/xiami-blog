@@ -7,9 +7,11 @@ import com.xiami.entity.Menu;
 import com.xiami.entity.User;
 import com.xiami.service.ProfileService;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.List;
@@ -78,5 +80,40 @@ public class ProfileServiceImpl implements ProfileService {
         //先获取该用户的所有的一级菜单
         List<Menu> allMenusByName = menuMapper.getAllMenusByName(name);
         return new ResponseResult(ResponseResult.CodeStatus.OK,"获取该用户的一级菜单成功",allMenusByName);
+    }
+
+    @Override
+    public ResponseResult modifyPassword(String oldPassword, String newPassword) {
+        Subject subject = SecurityUtils.getSubject();
+        User user = (User) subject.getPrincipal();
+        User user1 = userMapper.selectOne(user);
+        if(null==user1){
+            return new ResponseResult<Void>(ResponseResult.CodeStatus.FAIL, "该系统不存在该用户，请联系管理员");
+        }
+        if(StringUtils.isEmpty(oldPassword)){
+            return new ResponseResult<Void>(ResponseResult.CodeStatus.FAIL, "旧密码不能为空，请重新输入");
+        }
+
+        String oldPasswordJiaMi = new Md5Hash(oldPassword, user.getName(), 1024).toBase64();
+        if (!oldPasswordJiaMi.equals(user1.getPassword())){
+            return new ResponseResult<Void>(ResponseResult.CodeStatus.FAIL, "旧密码错误，请重新输入");
+        }
+
+        String newPasswordJiaMi = new Md5Hash(newPassword, user.getName(), 1024).toBase64();
+        user1.setPassword(newPasswordJiaMi);
+        int i = 0;
+        try {
+            i = userMapper.updateByPrimaryKey(user1);
+            if (i > 0) {
+                return new ResponseResult<Void>(ResponseResult.CodeStatus.OK, "修改密码成功");
+            }
+            // 失败
+            else {
+                return new ResponseResult<Void>(ResponseResult.CodeStatus.FAIL, "修改密码失败");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseResult<Void>(ResponseResult.CodeStatus.FAIL, "修改密码失败");
+        }
     }
 }

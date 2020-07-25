@@ -38,4 +38,12 @@ public interface ProfileService {
       * @return
       */
      ResponseResult getFirstMenus();
+
+     /**
+      * 修改密码
+      * @param oldPassword
+      * @param newPassword
+      * @return
+      */
+     ResponseResult  modifyPassword(String oldPassword,String newPassword );
 }
