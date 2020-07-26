@@ -1,9 +1,7 @@
 package com.xiami.service;
 
+import com.xiami.base.ResponseResult;
 import com.xiami.entity.User;
-import org.springframework.web.bind.annotation.PathVariable;
-
-import java.util.List;
 
 /**
  * Description：
@@ -35,4 +33,17 @@ public interface ProfileService {
       */
      int modifyIcon(String username,String path);
 
+     /**
+      * 获取该用户所有的一级菜单
+      * @return
+      */
+     ResponseResult getFirstMenus();
+
+     /**
+      * 修改密码
+      * @param oldPassword
+      * @param newPassword
+      * @return
+      */
+     ResponseResult  modifyPassword(String oldPassword,String newPassword );
 }

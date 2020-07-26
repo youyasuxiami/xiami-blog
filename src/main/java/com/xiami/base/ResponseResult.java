@@ -60,6 +60,22 @@ public class ResponseResult<T> implements Serializable {
     public void setData(T data) {
         this.data = data;
     }
+
+    /**
+     * 根据数据变更条数，返回响应结果
+     * @param b
+     * @param 提交成功
+     * @param 提交失败
+     * @return
+     */
+    public static ResponseResult  getResponseResult(boolean b, String 提交成功, String 提交失败) {
+        if (b) {
+            return new ResponseResult<>(ResponseResult.CodeStatus.OK, 提交成功);
+            //return null;
+        } else {
+            return new ResponseResult<>(ResponseResult.CodeStatus.FAIL, 提交失败);
+        }
+    }
     /**
      *
      * Description：状态码

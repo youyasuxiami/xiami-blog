@@ -3,10 +3,10 @@ package com.xiami.service;
 import com.xiami.base.PageResult;
 import com.xiami.base.ResponseResult;
 import com.xiami.dto.PageRequestDto;
+import com.xiami.dto.UserDto;
 import com.xiami.dto.UserQueryDto;
 import com.xiami.entity.User;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
@@ -41,17 +41,17 @@ public interface UserService {
 
     /**
      * 新增用户
-     * @param user
+     * @param userDto
      * @return
      */
-    ResponseResult addUser(User user);
+    ResponseResult addUser(UserDto userDto);
 
     /**
      * 编辑用户
-     * @param user
+     * @param userDto
      * @return
      */
-    ResponseResult updateUser(User user);
+    ResponseResult updateUser(UserDto userDto);
 
     /**
      * 启用/禁用账号
@@ -61,11 +61,11 @@ public interface UserService {
     ResponseResult updateUserStatus(User user);
 
     /**
-     * 删除用户
-     * @param user
+     * 删除一个用户
+     * @param id
      * @return
      */
-    ResponseResult deleteUser(User user);
+    ResponseResult deleteUser(Integer id);
 
     /**
      * 批量导入excel
@@ -75,11 +75,37 @@ public interface UserService {
     ResponseResult importExcel(List<List<Object>>  list);
 
     /**
-     * 导出功能
+     * 导出当页数据
      * @param out
      * @param userQueryDto
      * @return
      */
     void exportUserToExcel(OutputStream out,UserQueryDto userQueryDto) throws IOException;
 
+    /**
+     * 导出全部数据
+     * @param out
+     * @param userQueryDto
+     * @return
+     */
+    void exportAllUserToExcel(OutputStream out,UserQueryDto userQueryDto) throws IOException;
+
+    /**
+     * 删除用户
+     * @param ids
+     * @return
+     */
+    ResponseResult deleteUsers(Integer[] ids);
+
+    /**
+     * 获取所有角色
+     * @return
+     */
+    ResponseResult getRoles();
+
+    /**
+     * 获取该用户拥有的所有角色
+     * @return
+     */
+    ResponseResult getCheckedRoles(Integer id);
 }

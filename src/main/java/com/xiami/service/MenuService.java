@@ -1,7 +1,8 @@
 package com.xiami.service;
 
-import com.alibaba.fastjson.JSONArray;
 import com.xiami.base.ResponseResult;
+import com.xiami.entity.Menu;
+import com.xiami.entity.User;
 
 /**
  * Description：
@@ -13,5 +14,25 @@ import com.xiami.base.ResponseResult;
 public interface MenuService {
     ResponseResult getMenuJsonList();
 
+    /**
+     * 新增用户
+     * @param menu
+     * @return
+     */
+    ResponseResult addMenu(Menu menu);
+
+    /**
+     * 编辑用户
+     * @param menu
+     * @return
+     */
+    ResponseResult updateMenu(Menu menu);
+
+    /**
+     * 删除一个菜单
+     * @param id
+     * @return
+     */
+    ResponseResult deleteMenu(Integer id);
 }
 

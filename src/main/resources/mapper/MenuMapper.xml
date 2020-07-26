@@ -12,6 +12,8 @@
     <result column="type" jdbcType="INTEGER" property="type" />
     <result column="icon" jdbcType="VARCHAR" property="icon" />
     <result column="order_num" jdbcType="INTEGER" property="orderNum" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated generated on Sun Jun 28 00:27:32 CST 2020.-->
@@ -28,6 +30,45 @@
 	INNER JOIN `user` u ON u.id = ru.user_id
     WHERE
 	    u.id =1
+  </select>
+
+  <update id="updateMenu" parameterType="com.xiami.entity.Menu" >
+    UPDATE menu
+    <set>
+      update_time=now()
+      <if test="name !=null and name !=''">
+         ,name = #{name}
+      </if>
+      <if test="url !=null and url !=''">
+        , url = #{url}
+      </if>
+      <if test="orderNum !=null and orderNum !=''">
+        , order_num = #{orderNum}
+      </if>
+      <if test="perms !=null and perms !=''">
+        , perms = #{perms}
+      </if>
+    </set>
+    where id=#{id}
+  </update>
+
+  <delete id="deleteMenu" parameterType="list">
+    delete from menu
+    where id in
+    <foreach collection="list" open="("  separator="," close=")" item="id">
+      #{id}
+    </foreach>
+  </delete>
+
+  <select id="getAllMenusByName" parameterType="string" resultMap="BaseResultMap" >
+    SELECT m.*
+    FROM
+    menu m
+    INNER JOIN role_permission rp ON m.id = rp.permission_id
+    INNER JOIN role_user ru ON rp.role_id = ru.role_id
+    INNER JOIN `user` u ON u.id = ru.user_id
+    WHERE
+    u.name=#{name} and m.type="0"
   </select>
 
 </mapper>

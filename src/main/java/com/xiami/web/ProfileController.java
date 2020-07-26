@@ -2,7 +2,7 @@ package com.xiami.web;
 
 import com.xiami.base.ResponseResult;
 import com.xiami.dto.IconParam;
-import com.xiami.dto.UserParam;
+import com.xiami.dto.ProfileParam;
 import com.xiami.entity.User;
 import com.xiami.service.ProfileService;
 import org.springframework.beans.BeanUtils;
@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Description：
- *
  * @version v1.0.0
  * @author：zj
  * @date：2020­05­24 17:09
@@ -42,13 +41,13 @@ public class ProfileController {
 
     /**
      * 更新账号信息
-     * @param userParam
+     * @param profileParam
      * @return
      */
     @PostMapping("/profile/update")
-    public ResponseResult<User> updateUserInfo(@RequestBody UserParam userParam) {
+    public ResponseResult<User> updateUserInfo(@RequestBody ProfileParam profileParam) {
         User user=new User();
-        BeanUtils.copyProperties(userParam,user);
+        BeanUtils.copyProperties(profileParam,user);
         int result = profileService.updateUserInfo(user);
 
         //成功
@@ -78,4 +77,22 @@ public class ProfileController {
             return new ResponseResult<Void>(ResponseResult.CodeStatus.FAIL, "更新头像失败");
         }
     }
+
+    @GetMapping("/firstMenus")
+    public ResponseResult<User> getFirstMenus() {
+        return profileService.getFirstMenus();
+    }
+
+    /**
+     * 修改密码
+     * @param oldPassword
+     * @param newPassword
+     * @return
+     */
+    @PostMapping(value = "/profile/modify/password")
+    public ResponseResult<Void> modifyPassword(String oldPassword,String newPassword ) {
+        return profileService.modifyPassword(oldPassword,newPassword);
+
+    }
+
 }

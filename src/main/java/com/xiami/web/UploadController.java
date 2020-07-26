@@ -4,7 +4,6 @@ import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClientBuilder;
 import com.xiami.base.ResponseResult;
 import com.xiami.dto.FileInfo;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,7 +16,7 @@ import java.util.UUID;
 /**
  * Author：郑锦
  * Date：2020­05­26 22:47
- * Description：<描述>
+ * Description：
  */
 @RestController
 @RequestMapping("/upload")

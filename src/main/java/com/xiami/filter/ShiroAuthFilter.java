@@ -3,7 +3,6 @@ package com.xiami.filter;
 import com.xiami.utils.MapperUtils;
 import com.xiami.utils.ShiroUtils;
 import org.apache.shiro.session.Session;
-import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Description：
+ * Description：shiro
  *
  * @version v1.0.0
  * @author：zj
@@ -64,8 +63,8 @@ public class ShiroAuthFilter extends FormAuthenticationFilter {
 
         PrintWriter writer = res.getWriter();
         Map<String, Object> map= new HashMap<>();
-        map.put("status", 3);
-        map.put("msg", "未登录");
+        map.put("code", 401);
+        map.put("message", "未登录");
         writer.write(MapperUtils.mapToJson(map));
         writer.close();
         //return false 拦截， true 放行
