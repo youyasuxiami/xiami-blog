@@ -63,8 +63,8 @@ public class ShiroAuthFilter extends FormAuthenticationFilter {
 
         PrintWriter writer = res.getWriter();
         Map<String, Object> map= new HashMap<>();
-        map.put("status", 3);
-        map.put("msg", "未登录");
+        map.put("code", 401);
+        map.put("message", "未登录");
         writer.write(MapperUtils.mapToJson(map));
         writer.close();
         //return false 拦截， true 放行
