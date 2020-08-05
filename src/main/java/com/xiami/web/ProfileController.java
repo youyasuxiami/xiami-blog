@@ -35,7 +35,6 @@ public class ProfileController {
     @GetMapping("/profile/info/{username}")
     public ResponseResult<User> getUserInfo(@PathVariable String username) {
         User userInfo = profileService.getUserInfo(username);
-        System.out.println(userInfo);
         return new ResponseResult<>(ResponseResult.CodeStatus.OK, "获取个人信息成功", userInfo);
     }
 

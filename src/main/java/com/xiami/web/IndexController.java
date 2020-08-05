@@ -21,13 +21,11 @@ public class IndexController {
         //if(blog==null){
         //    throw new NotFoundException("博客不存在");
         //}
-        System.out.println("----------index-----------");
         return "index";
     }
 
     @GetMapping("/blog")
     public String blog() {
-        System.out.println("--------------blog");
         return "blog";
     }
 }

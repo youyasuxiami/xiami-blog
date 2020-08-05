@@ -14,13 +14,4 @@ public class MD5Utils {
 
         return  md5Hash.toString();
     }
-
-
-    public static void main(String[] args) {
-        System.out.println(md5("admin","admin",1024));
-
-//        System.out.println(md5("zhangsan","zhangsan",1024));
-
-    }
-
 }

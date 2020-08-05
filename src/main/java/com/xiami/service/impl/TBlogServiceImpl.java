@@ -1,19 +1,255 @@
 package com.xiami.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.xiami.base.PageResult;
+import com.xiami.base.ResponseResult;
 import com.xiami.dao.TBlogMapper;
+import com.xiami.dao.TBlogTagsMapper;
+import com.xiami.dao.TTypeMapper;
+import com.xiami.dao.UserMapper;
+import com.xiami.dto.BlogDto;
+import com.xiami.dto.BlogListDto;
+import com.xiami.dto.BlogQueryDto;
+import com.xiami.entity.TBlog;
+import com.xiami.entity.TBlogTags;
+import com.xiami.entity.TType;
+import com.xiami.entity.User;
 import com.xiami.service.TBlogService;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
 
-/**
- * Author：郑锦
- * Date：2020­05­14 0:39
- * Description：<描述>
- */
 @Service
 public class TBlogServiceImpl implements TBlogService {
 
     @Resource
     private TBlogMapper tBlogMapper;
+
+    @Resource
+    private TBlogTagsMapper tBlogTagsMapper;
+
+    @Resource
+    private UserMapper userMapper;
+
+    @Resource
+    private TTypeMapper tTypeMapper;
+
+    /**
+     * 获得所有的分类
+     *
+     * @return
+     */
+    @Override
+    public ResponseResult getBlogTypes() {
+        List<TBlog> tBlogs = tBlogMapper.selectAll();
+        return null;
+    }
+
+    @Transactional
+    @Override
+    public ResponseResult addBlog(BlogDto blogDto) {
+        Subject subject = SecurityUtils.getSubject();
+        User user = (User) subject.getPrincipal();
+
+        TBlog tBlog = new TBlog();
+        BeanUtils.copyProperties(blogDto, tBlog);
+        tBlog.setPublished(1);
+        tBlog.setUserId(user.getId());//作者id
+        tBlog.setRecommend(BooleanToInteger(blogDto.getRecommend()));//推荐
+        tBlog.setShareStatement(BooleanToInteger(blogDto.getShareStatement()));//转载声明
+        tBlog.setAppreciation(BooleanToInteger(blogDto.getAppreciation()));//赞赏
+        tBlog.setCommentabled(BooleanToInteger(blogDto.getCommentabled()));//评论
+        tBlog.setCreateTime(new Date());
+        tBlog.setUpdateTime(new Date());
+        tBlog.setViews(0);
+
+        try {
+            int i = tBlogMapper.insertUseGeneratedKeys(tBlog);
+
+            TBlogTags tBlogTags = new TBlogTags();
+            tBlogTags.setBlogsId(tBlog.getId());
+
+            //插入标签-博客表
+            List<TBlogTags> tBlogTagsList=new ArrayList<>();
+            Integer[] tagIds = blogDto.getTagIds();
+            List<Integer> tagIdList = Arrays.asList(tagIds);
+            for (Integer integer : tagIdList) {
+                TBlogTags tBlogTags1=new TBlogTags();
+                tBlogTags1.setTagsId(integer);
+                tBlogTags1.setBlogsId(tBlog.getId());//设置新增的博客的id
+                tBlogTagsList.add(tBlogTags1);
+            }
+            int insert = tBlogTagsMapper.insertList(tBlogTagsList);
+
+            if (i > 0 && insert > 0) {
+                return new ResponseResult(ResponseResult.CodeStatus.OK, "新增博客成功");
+            }
+            return new ResponseResult(ResponseResult.CodeStatus.FAIL, "新增博客失败");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseResult(ResponseResult.CodeStatus.FAIL, "新增博客失败");
+        }
+    }
+
+    public Integer BooleanToInteger(Boolean b) {
+        if (b) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
+    @Override
+    public ResponseResult getBlogs(BlogQueryDto blogQueryDto) {
+        PageHelper.startPage(blogQueryDto.getPageNum(), blogQueryDto.getPageSize());
+        List<TBlog> tBlogs = tBlogMapper.selectBySearch(blogQueryDto);
+
+        List<BlogListDto> blogListDtos = new ArrayList<>();
+        for (TBlog tBlog : tBlogs) {
+            BlogListDto blogListDto = new BlogListDto();
+            BeanUtils.copyProperties(tBlog, blogListDto);
+
+            //翻译用户名
+            User user = new User();
+            user.setId(tBlog.getUserId());
+            String userName = userMapper.selectOne(user).getName();
+            blogListDto.setUserName(userName);
+
+            //翻译分类名
+            TType tType = new TType();
+            tType.setId(tBlog.getTypeId());
+            String typeName = tTypeMapper.selectOne(tType).getName();
+            blogListDto.setTypeName(typeName);
+
+            //翻译发布还是草稿状态
+            if (tBlog.getPublished() == 1) {
+                blogListDto.setPublish("发布");
+            } else if (tBlog.getPublished() == 2) {
+                blogListDto.setPublish("已保存");
+            }
+
+            //翻译原创
+            if ("1".equals(tBlog.getFlag())) {
+                blogListDto.setFlag("原创");
+            } else if ("2".equals(tBlog.getFlag())) {
+                blogListDto.setFlag("转载声明");
+            } else if ("3".equals(tBlog.getFlag())) {
+                blogListDto.setFlag("翻译");
+            }
+            blogListDtos.add(blogListDto);
+        }
+
+        PageInfo<TBlog> info = new PageInfo<>(tBlogs);
+        long total = info.getTotal();
+        PageResult pageResult = new PageResult(total, blogListDtos);
+        return new ResponseResult(ResponseResult.CodeStatus.OK, "获取博客分页数据成功", pageResult);
+    }
+
+    @Override
+    public ResponseResult changeRecommend(Integer id, Integer recommend) {
+        String msg = "";
+        TBlog tBlog = new TBlog();
+        tBlog.setId(id);
+        tBlog.setRecommend(recommend);
+        if (recommend == 1) {
+            msg = "开启推荐";
+        } else {
+            msg = "关闭推荐";
+        }
+        return getResponseResult(msg, tBlog);
+    }
+
+    @Override
+    public ResponseResult changeShareStatement(Integer id, Integer shareStatement) {
+        String msg = "";
+        TBlog tBlog = new TBlog();
+        tBlog.setId(id);
+        tBlog.setShareStatement(shareStatement);
+        if (shareStatement == 1) {
+            msg = "开启可转载";
+        } else {
+            msg = "关闭可转载";
+        }
+        return getResponseResult(msg, tBlog);
+    }
+
+    @Override
+    public ResponseResult changeAppreciation(Integer id, Integer appreciation) {
+        String msg = "";
+        TBlog tBlog = new TBlog();
+        tBlog.setId(id);
+        tBlog.setAppreciation(appreciation);
+        if (appreciation == 1) {
+            msg = "开启赞赏";
+        } else {
+            msg = "关闭赞赏";
+        }
+        return getResponseResult(msg, tBlog);
+    }
+
+    @Override
+    public ResponseResult changeCommentabled(Integer id, Integer commentabled) {
+        String msg = "";
+        TBlog tBlog = new TBlog();
+        tBlog.setId(id);
+        tBlog.setCommentabled(commentabled);
+        if (commentabled == 1) {
+            msg = "开启可评论";
+        } else {
+            msg = "关闭可评论";
+        }
+        return getResponseResult(msg, tBlog);
+    }
+
+    private ResponseResult getResponseResult(String msg, TBlog tBlog) {
+        try {
+            int i = tBlogMapper.updateByPrimaryKeySelective(tBlog);
+            if (i > 0) {
+                return new ResponseResult(ResponseResult.CodeStatus.OK, msg + "成功");
+            }
+            return new ResponseResult(ResponseResult.CodeStatus.FAIL, msg + "失败");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseResult(ResponseResult.CodeStatus.FAIL, msg + "失败");
+        }
+    }
+
+
+    @Override
+    public ResponseResult deleteBlog(Integer id) {
+        try {
+            int i = tBlogMapper.deleteByPrimaryKey(id);
+            if(i>0){
+                return new ResponseResult(ResponseResult.CodeStatus.OK,"删除博客成功");
+            }
+            return new ResponseResult(ResponseResult.CodeStatus.OK,"删除博客失败");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseResult(ResponseResult.CodeStatus.FAIL,"删除博客失败");
+        }
+    }
+
+    @Override
+    public ResponseResult deleteBlogs(Integer[] ids) {
+        try {
+            int i = tBlogMapper.deleteByIds(ids);
+            if(i>0){
+                return new ResponseResult(ResponseResult.CodeStatus.OK,"批量删除博客成功");
+            }
+            return new ResponseResult(ResponseResult.CodeStatus.OK,"批量删除博客失败");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseResult(ResponseResult.CodeStatus.FAIL,"批量删除博客失败");
+        }
+    }
 }
+

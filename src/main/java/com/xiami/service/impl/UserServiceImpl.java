@@ -140,7 +140,7 @@ public class UserServiceImpl implements UserService {
 
         if (null != userQueryDto.getCreateTime() && userQueryDto.getCreateTime().length != 0) {
             //criteria.andEqualTo("createTime", userQueryDto.getCreateTime());
-            criteria.andBetween("createTime", userQueryDto.getCreateTime()[0], userQueryDto.getCreateTime()[1]);
+            criteria.andBetween("createTime", userQueryDto.getCreateTime()[0], userQueryDto.getCreateTime()[1]+" 23:59:59");
         }
         //先在角色-用户表中，筛选出搜索框的角色id，得出所有筛选到的用户id
         Integer[] ids = userQueryDto.getRoleIds();

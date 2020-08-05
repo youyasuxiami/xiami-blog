@@ -1,27 +1,32 @@
 package com.xiami.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Data;
+
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.*;
-import lombok.Data;
 
 @Data
 @Table(name = "t_blog")
 public class TBlog implements Serializable {
     @Id
     @Column(name = "id")
-    private Long id;
+    private Integer id;
 
     @Column(name = "appreciation")
-    private Boolean appreciation;
+    private Integer appreciation;
 
     @Column(name = "commentabled")
-    private Boolean commentabled;
+    private Integer commentabled;
 
     @Column(name = "content")
     private String content;
 
     @Column(name = "create_time")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
 
     @Column(name = "description")
@@ -34,28 +39,30 @@ public class TBlog implements Serializable {
     private String flag;
 
     @Column(name = "published")
-    private Boolean published;
+    private Integer published;
 
     @Column(name = "recommend")
-    private Boolean recommend;
+    private Integer recommend;
 
     @Column(name = "share_statement")
-    private Boolean shareStatement;
+    private Integer shareStatement;
 
     @Column(name = "title")
     private String title;
 
     @Column(name = "update_time")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
 
     @Column(name = "views")
     private Integer views;
 
     @Column(name = "type_id")
-    private Long typeId;
+    private Integer typeId;
 
     @Column(name = "user_id")
-    private Long userId;
+    private Integer userId;
 
     private static final long serialVersionUID = 1L;
+
 }

@@ -218,6 +218,12 @@
             <version>2.10.1</version>
         </dependency>
         <!--日期格式化工具 end-->
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.9</version>
+        </dependency>
     </dependencies>
 
     <build>
