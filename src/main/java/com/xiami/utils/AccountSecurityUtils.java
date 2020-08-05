@@ -1,4 +1,5 @@
 package com.xiami.utils;
+
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;

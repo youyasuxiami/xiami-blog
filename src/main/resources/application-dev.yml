@@ -18,17 +18,24 @@ spring:
 mybatis:
   type-aliases-package: package com.xiami.entity
   mapper-locations: classpath:mapper/*.xml
+#  开启控制台打印sql
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 #日志
 logging:
   level:
     #    root日志以INFO级别输出
-    root: info
+#    root: info
     #    此包下所有class以DEBUG级别输出
-    com.xiami.blog: debug
-  file: log/xiami-blog-dev.log
+    com.xiami.dao.*: DEBUG
+#    org.springframework: WARN
+#    org.spring.springboot.dao: debug
+#    mapper: debug
+
+#  file: log/xiami-blog-dev.log
   #  默认就是下面这个，所以不写也没关系
-  config: classpath:logback-spring.xml
+#  config: classpath:logback-spring.xml
 
 ######### 分页插件 ##########
 pagehelper:

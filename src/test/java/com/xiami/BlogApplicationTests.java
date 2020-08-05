@@ -4,11 +4,15 @@ import com.xiami.base.ResponseResult;
 import com.xiami.dao.RolePermissionMapper;
 import com.xiami.dao.SysDictionaryMapper;
 import com.xiami.dao.TBlogMapper;
+import com.xiami.dao.TTagMapper;
+import com.xiami.dao.TTypeMapper;
 import com.xiami.dao.UserMapper;
 import com.xiami.dto.UserQueryDto;
 import com.xiami.entity.RolePermission;
 import com.xiami.entity.SysDictionary;
 import com.xiami.entity.TBlog;
+import com.xiami.entity.TTag;
+import com.xiami.entity.TType;
 import com.xiami.entity.User;
 import com.xiami.service.ProfileService;
 import com.xiami.utils.DictionaryUtils;
@@ -18,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import tk.mybatis.mapper.entity.Example;
 
+import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.List;
@@ -44,6 +49,13 @@ class BlogApplicationTests {
 
     @Autowired
     private ProfileService profileService;
+
+    @Resource
+    private TTypeMapper tTypeMapper;
+
+    @Resource
+    private TTagMapper tTagMapper;
+
     @Test
     void contextLoads() {
         List<TBlog> tBlogs = tBlogMapper.selectAll();
@@ -150,5 +162,50 @@ class BlogApplicationTests {
         ResponseResult firstMenus = profileService.getFirstMenus();
         System.out.println(firstMenus);
 
+    }
+
+    @Test
+    public void getTypes(){
+        List<TType> tTypes = tTypeMapper.selectAll();
+        System.out.println(tTypes);
+    }
+
+    @Test
+    public void getTags(){
+        List<TTag> tTags = tTagMapper.selectAll();
+        System.out.println(tTags);
+    }
+
+    @Test
+    public void getBlogs(){
+        List<TBlog> tBlogs = tBlogMapper.selectAll();
+        System.out.println(tBlogs);
+    }
+
+
+    @Test
+    public void insertType(){
+        List<TType> tTypes = tTypeMapper.selectAll();
+        TType tType=new TType();
+        tType.setName("1");
+
+        //int insert = tTypeMapper.insert(tType);
+        //System.out.println(tType);
+        //System.out.println(insert);
+        //TType(id=11, name=111, createTime=null, updateTime=null)
+        //1
+
+
+        int insert = tTypeMapper.insertSelective(tType);
+        System.out.println(tType);
+        System.out.println(insert);
+        //TType(id=12, name=222, createTime=null, updateTime=null)
+        //1
+
+        //int insert = tTypeMapper.insertUseGeneratedKeys(tType);
+        //System.out.println(tType);
+        //System.out.println(insert);
+        //TType(id=13, name=333, createTime=null, updateTime=null)
+        //1
     }
 }

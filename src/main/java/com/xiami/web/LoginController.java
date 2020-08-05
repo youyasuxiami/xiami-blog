@@ -159,7 +159,6 @@ public class LoginController {
      */
     @GetMapping("/getPublicKey")
     public ResponseResult getPublicKey() {
-        System.out.println(AccountSecurityUtils.PUBLIC_KEY);
         return new ResponseResult (ResponseResult.CodeStatus.OK, "登录成功", AccountSecurityUtils.PUBLIC_KEY);
     }
 
