@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Description：
+ *
  * @version v1.0.0
  * @author：zj
  * @date：2020­05­24 17:09
@@ -40,24 +41,26 @@ public class ProfileController {
 
     /**
      * 更新账号信息
+     *
      * @param profileParam
      * @return
      */
     @PostMapping("/profile/update")
     public ResponseResult<User> updateUserInfo(@RequestBody ProfileParam profileParam) {
-        User user=new User();
-        BeanUtils.copyProperties(profileParam,user);
+        User user = new User();
+        BeanUtils.copyProperties(profileParam, user);
         int result = profileService.updateUserInfo(user);
 
         //成功
-        if(result>0){
+        if (result > 0) {
             return new ResponseResult<>(ResponseResult.CodeStatus.OK, "更新个人信息成功");
         }
         //失败
-        else{
+        else {
             return new ResponseResult<>(ResponseResult.CodeStatus.FAIL, "更新个人信息失败");
         }
     }
+
     /**
      * 修改头像
      *
@@ -84,13 +87,14 @@ public class ProfileController {
 
     /**
      * 修改密码
+     *
      * @param oldPassword
      * @param newPassword
      * @return
      */
     @PostMapping(value = "/profile/modify/password")
-    public ResponseResult<Void> modifyPassword(String oldPassword,String newPassword ) {
-        return profileService.modifyPassword(oldPassword,newPassword);
+    public ResponseResult<Void> modifyPassword(String oldPassword, String newPassword) {
+        return profileService.modifyPassword(oldPassword, newPassword);
 
     }
 

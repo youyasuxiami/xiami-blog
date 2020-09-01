@@ -22,7 +22,7 @@ public enum ErrorCodeEnum {
     ;
 
     /**
-     *  错误码
+     * 错误码
      */
     private Integer code;
 

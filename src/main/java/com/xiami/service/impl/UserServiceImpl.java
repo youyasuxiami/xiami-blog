@@ -29,6 +29,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import tk.mybatis.mapper.entity.Example;
+
 import javax.annotation.Resource;
 import java.io.File;
 import java.io.IOException;
@@ -117,6 +118,7 @@ public class UserServiceImpl implements UserService {
         PageResult pageResult = new PageResult(total, lists);
         return pageResult;
     }
+
     @Transactional
     @Override
     public PageResult getUsersBySearch(UserQueryDto userQueryDto) {
@@ -140,11 +142,11 @@ public class UserServiceImpl implements UserService {
 
         if (null != userQueryDto.getCreateTime() && userQueryDto.getCreateTime().length != 0) {
             //criteria.andEqualTo("createTime", userQueryDto.getCreateTime());
-            criteria.andBetween("createTime", userQueryDto.getCreateTime()[0], userQueryDto.getCreateTime()[1]+" 23:59:59");
+            criteria.andBetween("createTime", userQueryDto.getCreateTime()[0], userQueryDto.getCreateTime()[1] + " 23:59:59");
         }
         //先在角色-用户表中，筛选出搜索框的角色id，得出所有筛选到的用户id
         Integer[] ids = userQueryDto.getRoleIds();
-        if (null!=ids&&ids.length!=0) {
+        if (null != ids && ids.length != 0) {
             Example exampleRole = new Example(RoleUser.class);
             Example.Criteria criteria1 = exampleRole.createCriteria();
             criteria1.andIn("roleId", Arrays.asList(ids));
@@ -480,7 +482,7 @@ public class UserServiceImpl implements UserService {
 
         //先在角色-用户表中，筛选出搜索框的角色id，得出所有筛选到的用户id
         Integer[] ids = userQueryDto.getRoleIds();
-        if (null!=ids&&ids.length!=0) {
+        if (null != ids && ids.length != 0) {
             Example exampleRole = new Example(RoleUser.class);
             Example.Criteria criteria1 = exampleRole.createCriteria();
             criteria1.andIn("roleId", Arrays.asList(ids));
@@ -592,7 +594,7 @@ public class UserServiceImpl implements UserService {
 
         //先在角色-用户表中，筛选出搜索框的角色id，得出所有筛选到的用户id
         Integer[] ids = userQueryDto.getRoleIds();
-        if (null!=ids&&ids.length!=0) {
+        if (null != ids && ids.length != 0) {
             Example exampleRole = new Example(RoleUser.class);
             Example.Criteria criteria1 = exampleRole.createCriteria();
             criteria1.andIn("roleId", Arrays.asList(ids));

@@ -29,35 +29,38 @@
     </sql>
 
     <select id="selectBySearch" parameterType="com.xiami.dto.BlogQueryDto" resultMap="BaseResultMap">
-    select t.id, t.appreciation, t.commentabled, t.content, t.create_time, t.description, t.first_picture,
-    t.flag, t.published, t.recommend, t.share_statement, t.title, t.update_time, t.views, t.type_id,
-    t.user_id,u.name
-     from t_blog t
-     left join  user u on t.user_id=u.id
-     <where>
-         <if test="userName != null and userName != ''">
-             AND u.name like concat('%', #{userName}, '%')
-         </if>
-         <if test="typeId != null and typeId != ''">
-             AND t.type_id = #{typeId}
-         </if>
-         <if test="title != null and title != ''">
-             AND t.title like concat('%', #{title}, '%')
-         </if>
-         <if test="flag != null and flag != ''">
-             AND t.flag = #{flag}
-         </if>
-         <if test="publish != null and publish != ''">
-             AND t.published = #{publish}
-         </if>
-         <if test="beginTime != null and beginTime != ''">
-             AND DATE_FORMAT(t.create_time, '%Y-%m-%d' ) &gt;= #{beginTime}
-         </if>
-         <if test="endTime != null and endTime != ''">
-             AND DATE_FORMAT(t.create_time, '%Y-%m-%d' ) &lt;= #{endTime}
-         </if>
-     </where>
-  </select>
+        select t.id, t.appreciation, t.commentabled, t.content, t.create_time, t.description, t.first_picture,
+        t.flag, t.published, t.recommend, t.share_statement, t.title, t.update_time, t.views, t.type_id,
+        t.user_id,u.name
+        from t_blog t
+        left join user u on t.user_id=u.id
+        <where>
+            <if test="userName != null and userName != ''">
+                AND u.name like concat('%', #{userName}, '%')
+            </if>
+            <if test="typeId != null and typeId != ''">
+                AND t.type_id = #{typeId}
+            </if>
+            <if test="title != null and title != ''">
+                AND t.title like concat('%', #{title}, '%')
+            </if>
+            <if test="flag != null and flag != ''">
+                AND t.flag = #{flag}
+            </if>
+            <if test="recommend != null">
+                AND t.recommend = #{recommend}
+            </if>
+            <if test="publish != null and publish != ''">
+                AND t.published = #{publish}
+            </if>
+            <if test="beginTime != null and beginTime != ''">
+                AND DATE_FORMAT(t.create_time, '%Y-%m-%d' ) &gt;= #{beginTime}
+            </if>
+            <if test="endTime != null and endTime != ''">
+                AND DATE_FORMAT(t.create_time, '%Y-%m-%d' ) &lt;= #{endTime}
+            </if>
+        </where>
+    </select>
 
     <delete id="deleteByIds">
         delete from t_blog

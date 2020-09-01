@@ -57,9 +57,9 @@ public class LoginServiceImpl implements LoginService {
                     .collect(Collectors.toList());
             menuIds.addAll(idss);//放入三级菜单们
         }
-        Map<String,Object> map=new HashMap<>();
-        map.put("name",name);
-        map.put("menuIds",menuIds);
+        Map<String, Object> map = new HashMap<>();
+        map.put("name", name);
+        map.put("menuIds", menuIds);
         List<String> allMenusByName = loginMapper.getAllMenusByName(map);
         return allMenusByName;
     }

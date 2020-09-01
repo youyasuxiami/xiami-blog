@@ -15,7 +15,7 @@ import java.io.Serializable;
 public class LoginInfo implements Serializable {
     //用户名
     private String name;
-    
+
     //头像
     private String avatar;
 

@@ -68,6 +68,7 @@ public class RoleServiceImpl implements RoleService {
         PageResult pageResult = new PageResult(total, roles);
         return new ResponseResult<>(ResponseResult.CodeStatus.OK, "获取角色列表数据成功", pageResult);
     }
+
     @Transactional
     @Override
     public ResponseResult addRole(RoleParam param) {
@@ -122,6 +123,7 @@ public class RoleServiceImpl implements RoleService {
                 .collect(Collectors.toList());
         return new ResponseResult<>(ResponseResult.CodeStatus.OK, "获取角色所拥有的菜单成功", permissionIds);
     }
+
     @Transactional
     @Override
     public ResponseResult updateRole(RoleParam param) {
@@ -139,16 +141,16 @@ public class RoleServiceImpl implements RoleService {
         }
 
         //勾选了菜单
-        if(null!=param.getMenusSelect()&&param.getMenusSelect().length!=0){
+        if (null != param.getMenusSelect() && param.getMenusSelect().length != 0) {
             //1、先删除所有菜单
             //获取原菜单，如果原来是空菜单，不需要删除
             RolePermission rolePermission = new RolePermission();
             rolePermission.setRoleId(param.getId());
             List<RolePermission> select = rolePermissionMapper.select(rolePermission);
 
-            if(null==select&&select.isEmpty()){
+            if (null == select && select.isEmpty()) {
                 return new ResponseResult<>(ResponseResult.CodeStatus.OK, "编辑角色成功");
-            }else{
+            } else {
                 int deleteNum = rolePermissionMapper.delete(rolePermission);
                 //2、再获取选中菜单，从而添加菜单
                 List<String> menuList = Arrays.asList(param.getMenusSelect());
@@ -170,14 +172,14 @@ public class RoleServiceImpl implements RoleService {
                     return new ResponseResult<>(ResponseResult.CodeStatus.FAIL, "数据库中已经存在该角色的数据，请重新编辑该角色");
                 }
             }
-        }else{//没有勾选菜单，如果原来是空菜单，那么不需要做操作，如果原来不是空菜单，那么要清空
+        } else {//没有勾选菜单，如果原来是空菜单，那么不需要做操作，如果原来不是空菜单，那么要清空
             //要删除的RolePermission
             RolePermission rolePermission = new RolePermission();
             rolePermission.setRoleId(param.getId());
             List<RolePermission> select = rolePermissionMapper.select(rolePermission);
-            if(null==select||select.isEmpty()){
+            if (null == select || select.isEmpty()) {
                 return new ResponseResult<>(ResponseResult.CodeStatus.OK, "编辑角色成功");
-            }else{
+            } else {
                 int deleteNum = rolePermissionMapper.delete(rolePermission);
                 if (deleteNum > 0) {
                     return new ResponseResult<>(ResponseResult.CodeStatus.OK, "编辑角色成功");
@@ -191,10 +193,10 @@ public class RoleServiceImpl implements RoleService {
     @Transactional
     @Override
     public ResponseResult deleteRole(Integer id) {
-        RoleUser roleUser=new RoleUser();
+        RoleUser roleUser = new RoleUser();
         roleUser.setRoleId(id);
         List<RoleUser> select = roleUserMapper.select(roleUser);
-        if(null!=select&&select.size()!=0){//有绑定用户，不能删除
+        if (null != select && select.size() != 0) {//有绑定用户，不能删除
             return new ResponseResult<>(ResponseResult.CodeStatus.FAIL, "选中的角色已经和用户绑定，请先在用户管理中解绑菜单");
         }
         //获取中间表中是否存在该角色的菜单
@@ -218,9 +220,9 @@ public class RoleServiceImpl implements RoleService {
                 int i = roleMapper.deleteByPrimaryKey(id);
                 //3、删除角色所选中的菜单
                 int i1 = rolePermissionMapper.deleteByIds(ids);
-                if (i > 0 && i1>0) {
+                if (i > 0 && i1 > 0) {
                     return new ResponseResult<>(ResponseResult.CodeStatus.OK, "删除角色成功");
-                }else{
+                } else {
                     return new ResponseResult<>(ResponseResult.CodeStatus.FAIL, "删除角色失败");
                 }
             } catch (Exception e) {
@@ -232,7 +234,7 @@ public class RoleServiceImpl implements RoleService {
                 int i = roleMapper.deleteByPrimaryKey(id);
                 if (i > 0) {
                     return new ResponseResult<>(ResponseResult.CodeStatus.OK, "删除角色成功");
-                }else{
+                } else {
                     return new ResponseResult<>(ResponseResult.CodeStatus.FAIL, "删除角色失败");
                 }
             } catch (Exception e) {

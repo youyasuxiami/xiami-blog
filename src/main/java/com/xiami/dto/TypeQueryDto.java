@@ -10,7 +10,7 @@ import lombok.Data;
  * @date：2020­08­03 23:01
  */
 @Data
-public class TypeQueryDto extends PageRequestDto  {
+public class TypeQueryDto extends PageRequestDto {
     private String typeName;
 
     private String beginTime;

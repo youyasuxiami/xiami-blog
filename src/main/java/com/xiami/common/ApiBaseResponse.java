@@ -1,4 +1,5 @@
 package com.xiami.common;
+
 import java.io.Serializable;
 
 /**

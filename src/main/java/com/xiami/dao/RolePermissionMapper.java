@@ -7,7 +7,7 @@ import tk.mybatis.mapper.MyMapper;
 import java.util.List;
 
 public interface RolePermissionMapper extends MyMapper<RolePermission> {
-    int  insertRolePermission(List<RolePermission> list);
+    int insertRolePermission(List<RolePermission> list);
 
     int deleteByIds(List<Integer> ids);
 

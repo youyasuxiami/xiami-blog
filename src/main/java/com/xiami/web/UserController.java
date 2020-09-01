@@ -171,7 +171,7 @@ public class UserController {
      * @throws IOException
      */
     @GetMapping(value = "/exportUserToExcel")
-    public void exportUserToExcel(HttpServletResponse response,  UserQueryDto userQueryDto) throws Exception {
+    public void exportUserToExcel(HttpServletResponse response, UserQueryDto userQueryDto) throws Exception {
 
         //PageData pd = this.getPageData(page, limit);
         String fileName = URLEncoder.encode("用户表" + ".xlsx", "UTF-8");
@@ -181,8 +181,9 @@ public class UserController {
         OutputStream out = response.getOutputStream();
         //userService.exportUserToExcel(out, userQueryDto);
         //log.error("导出用户数据异常！", e);
-                userService.exportUserToExcel(out, userQueryDto);
+        userService.exportUserToExcel(out, userQueryDto);
     }
+
     /**
      * 导出用户数据
      *
@@ -192,7 +193,7 @@ public class UserController {
      * @throws IOException
      */
     @GetMapping(value = "/exportAllUserToExcel")
-    public void exportAllUserToExcel(HttpServletResponse response,  UserQueryDto userQueryDto) throws Exception {
+    public void exportAllUserToExcel(HttpServletResponse response, UserQueryDto userQueryDto) throws Exception {
 
         //PageData pd = this.getPageData(page, limit);
         String fileName = URLEncoder.encode("用户表" + ".xlsx", "UTF-8");
@@ -219,6 +220,7 @@ public class UserController {
 
     /**
      * 获得所有角色
+     *
      * @return
      */
     @GetMapping("/getRoles")
@@ -228,6 +230,7 @@ public class UserController {
 
     /**
      * 获得一个用户所拥有的角色
+     *
      * @return
      */
     @GetMapping("/getCheckedRoles")

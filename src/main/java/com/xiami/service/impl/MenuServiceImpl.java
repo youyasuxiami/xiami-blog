@@ -37,7 +37,7 @@ public class MenuServiceImpl implements MenuService {
     public ResponseResult getMenuJsonList() {
         List<Menu> menus = menuMapper.selectAll();
         List<Menu> supers = menus.stream()
-                .filter(menu -> menu.getParentId()==0)
+                .filter(menu -> menu.getParentId() == 0)
                 .collect(Collectors.toList());
         menus.removeAll(supers);
         supers.sort(Comparator.comparingInt(Menu::getOrderNum));
@@ -48,7 +48,7 @@ public class MenuServiceImpl implements MenuService {
             jsonArr.add(child);
         }
         //JSONArray转list
-        List<Menu> lists = JSONObject.parseArray(jsonArr.toString(),Menu.class);
+        List<Menu> lists = JSONObject.parseArray(jsonArr.toString(), Menu.class);
         PageInfo<Menu> info = new PageInfo<Menu>(lists);
         long total = info.getTotal();
         PageResult pageResult = new PageResult(total, lists);
@@ -89,7 +89,7 @@ public class MenuServiceImpl implements MenuService {
 
     @Override
     public ResponseResult deleteMenu(Integer id) {
-        Menu menu=new Menu();
+        Menu menu = new Menu();
         menu.setParentId(id);
         //查找选中菜单的所有子菜单
         List<Menu> select = menuMapper.select(menu);
@@ -101,19 +101,19 @@ public class MenuServiceImpl implements MenuService {
 
         //先查有没有用户用到这些菜单，有就不能删除
         List<RolePermission> rolePermissions = rolePermissionMapper.selectByMenuIds(menuIds);
-        if(null!=rolePermissions&&rolePermissions.size()!=0){
-            return new ResponseResult(ResponseResult.CodeStatus.FAIL,"选中的菜单已经和角色绑定，请先在角色管理中解绑菜单");
+        if (null != rolePermissions && rolePermissions.size() != 0) {
+            return new ResponseResult(ResponseResult.CodeStatus.FAIL, "选中的菜单已经和角色绑定，请先在角色管理中解绑菜单");
         }
         try {
             int i = menuMapper.deleteMenu(menuIds);
-            if(i>0){
-                return new ResponseResult(ResponseResult.CodeStatus.OK,"删除菜单成功");
-            }else {
-                return new ResponseResult(ResponseResult.CodeStatus.FAIL,"删除菜单失败");
+            if (i > 0) {
+                return new ResponseResult(ResponseResult.CodeStatus.OK, "删除菜单成功");
+            } else {
+                return new ResponseResult(ResponseResult.CodeStatus.FAIL, "删除菜单失败");
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseResult(ResponseResult.CodeStatus.FAIL,"删除菜单失败");
+            return new ResponseResult(ResponseResult.CodeStatus.FAIL, "删除菜单失败");
         }
     }
 }

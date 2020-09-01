@@ -30,7 +30,7 @@ public class TableResultResponse<T> extends BaseResponse {
         return this;
     }
 
-    public TableResultResponse<T> msg(String msg){
+    public TableResultResponse<T> msg(String msg) {
         super.setMessage(msg);
         return this;
     }

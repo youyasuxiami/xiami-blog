@@ -4,19 +4,29 @@ import com.xiami.base.ResponseResult;
 import com.xiami.dto.BlogDto;
 import com.xiami.dto.BlogQueryDto;
 
-public interface TBlogService{
+public interface TBlogService {
 
     ResponseResult getBlogTypes();
 
     /**
      * 新增博客
+     *
      * @param blogDto
      * @return
      */
     ResponseResult addBlog(BlogDto blogDto);
 
     /**
+     * 编辑博客
+     *
+     * @param blogDto
+     * @return
+     */
+    ResponseResult updateBlog(BlogDto blogDto);
+
+    /**
      * 根据搜索框获得所有的博客分页数据
+     *
      * @param blogQueryDto
      * @return
      */
@@ -24,6 +34,7 @@ public interface TBlogService{
 
     /**
      * 更改推荐状态
+     *
      * @param id
      * @param recommend
      * @return

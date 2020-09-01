@@ -11,6 +11,7 @@ public interface LoginService {
 
     /**
      * 获得该用户的所有的角色名称
+     *
      * @param userName
      * @return
      */
@@ -18,8 +19,9 @@ public interface LoginService {
 
     /**
      * 根据用户名获取用户所拥有的菜单url
+     *
      * @param name
      * @return
      */
-    List<String> getAllMenusByAccount(String name,Integer firstMenuId);
+    List<String> getAllMenusByAccount(String name, Integer firstMenuId);
 }
