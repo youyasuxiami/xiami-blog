@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Description：
+ *
  * @version v1.0.0
  * @author：zj
  * @date：2020­05­30 17:19
@@ -32,13 +33,14 @@ public class RoleController {
 
     /**
      * 添加角色
+     *
      * @param param
      * @return
      */
     @PostMapping(value = "/addRole")
     public ResponseResult addRole(@RequestBody RoleParam param) {
         //新增
-        if(null==param.getId()){
+        if (null == param.getId()) {
             return roleService.addRole(param);
         }
         //编辑
@@ -47,6 +49,7 @@ public class RoleController {
 
     /**
      * 根据角色Id获取菜单列表
+     *
      * @param id
      * @return
      */
@@ -57,6 +60,7 @@ public class RoleController {
 
     /**
      * 删除一个角色
+     *
      * @param id
      * @return
      */

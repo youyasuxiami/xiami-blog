@@ -26,12 +26,12 @@ public class UtilsController {
 
 
     @GetMapping("/dictionaries")
-    public ResponseResult<List<SysDictionary>> getDictoryListByGroup(String group){
+    public ResponseResult<List<SysDictionary>> getDictoryListByGroup(String group) {
         List<SysDictionary> dictionaryList = dictionaryUtils.getDictionaryList(group);
-        if(dictionaryList!=null&&dictionaryList.isEmpty()){
+        if (dictionaryList != null && dictionaryList.isEmpty()) {
             return new ResponseResult<>(ResponseResult.CodeStatus.FAIL, "获取数据失败");
-        }else{
-            return new ResponseResult<>(ResponseResult.CodeStatus.OK, "获取数据成功",dictionaryList);
+        } else {
+            return new ResponseResult<>(ResponseResult.CodeStatus.OK, "获取数据成功", dictionaryList);
         }
     }
 }

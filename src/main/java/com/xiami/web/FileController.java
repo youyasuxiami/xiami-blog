@@ -72,7 +72,7 @@ public class FileController {
      * @throws Exception
      */
     @RequestMapping("/download")
-    public ResponseResult downloadFile(String fileName,HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public ResponseResult downloadFile(String fileName, HttpServletRequest request, HttpServletResponse response) throws Exception {
         String filePath = null;                       //linux下使用/opt/nfdw/
         if (fileName.equals("")) {
             return new ResponseResult(ResponseResult.CodeStatus.FAIL, "文件名不能为空");
@@ -90,7 +90,7 @@ public class FileController {
             // response.setContentType("application/force-download");// 设置强制下载不打开
             response.setContentType("multipart/form-data");
             //解决中文乱码
-            fileName=filenameEncoding(fileName,request);
+            fileName = filenameEncoding(fileName, request);
             response.addHeader("Content-Disposition", "attachment;fileName=" + fileName);// 设置文件名
             byte[] buffer = new byte[1024];
             FileInputStream fis = null;
@@ -120,7 +120,7 @@ public class FileController {
             filename = "=?utf-8?B?"
                     + base64Encoder.encode(filename.getBytes("utf-8"))
                     + "?=";
-        } else if(agent.contains("MSIE")) {
+        } else if (agent.contains("MSIE")) {
             filename = URLEncoder.encode(filename, "utf-8");
         } else {
             filename = URLEncoder.encode(filename, "utf-8");

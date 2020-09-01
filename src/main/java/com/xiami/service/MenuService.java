@@ -2,7 +2,6 @@ package com.xiami.service;
 
 import com.xiami.base.ResponseResult;
 import com.xiami.entity.Menu;
-import com.xiami.entity.User;
 
 /**
  * Description：
@@ -16,6 +15,7 @@ public interface MenuService {
 
     /**
      * 新增用户
+     *
      * @param menu
      * @return
      */
@@ -23,6 +23,7 @@ public interface MenuService {
 
     /**
      * 编辑用户
+     *
      * @param menu
      * @return
      */
@@ -30,6 +31,7 @@ public interface MenuService {
 
     /**
      * 删除一个菜单
+     *
      * @param id
      * @return
      */

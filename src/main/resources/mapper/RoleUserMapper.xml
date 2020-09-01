@@ -31,7 +31,7 @@
         </foreach>
     </select>
     <delete id="deleteByUserIds" parameterType="Integer">
-        delete from  role_user
+        delete from role_user
         where user_id in
         <foreach collection="array" open="(" close=")" separator="," item="id">
             #{id}

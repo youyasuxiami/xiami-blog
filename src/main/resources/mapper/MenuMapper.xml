@@ -1,74 +1,74 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xiami.dao.MenuMapper">
-  <resultMap id="BaseResultMap" type="com.xiami.entity.Menu">
-    <!--@mbg.generated generated on Sun Jun 28 00:27:32 CST 2020.-->
-    <!--@Table menu-->
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="parent_id" jdbcType="INTEGER" property="parentId" />
-    <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="url" jdbcType="VARCHAR" property="url" />
-    <result column="perms" jdbcType="VARCHAR" property="perms" />
-    <result column="type" jdbcType="INTEGER" property="type" />
-    <result column="icon" jdbcType="VARCHAR" property="icon" />
-    <result column="order_num" jdbcType="INTEGER" property="orderNum" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    <!--@mbg.generated generated on Sun Jun 28 00:27:32 CST 2020.-->
-    id, parent_id, `name`, url, perms, `type`, icon, order_num
-  </sql>
+    <resultMap id="BaseResultMap" type="com.xiami.entity.Menu">
+        <!--@mbg.generated generated on Sun Jun 28 00:27:32 CST 2020.-->
+        <!--@Table menu-->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="parent_id" jdbcType="INTEGER" property="parentId"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="url" jdbcType="VARCHAR" property="url"/>
+        <result column="perms" jdbcType="VARCHAR" property="perms"/>
+        <result column="type" jdbcType="INTEGER" property="type"/>
+        <result column="icon" jdbcType="VARCHAR" property="icon"/>
+        <result column="order_num" jdbcType="INTEGER" property="orderNum"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated generated on Sun Jun 28 00:27:32 CST 2020.-->
+        id, parent_id, `name`, url, perms, `type`, icon, order_num
+    </sql>
 
-  <select id="getMenuPerms" parameterType="integer" resultType="String">
-    SELECT DISTINCT
+    <select id="getMenuPerms" parameterType="integer" resultType="String">
+        SELECT DISTINCT
         m.perms
-    FROM
-	    menu m
-	INNER JOIN role_menu rm ON m.id = rm.menu_id
-	INNER JOIN role_user ru ON rm.role_id = ru.role_id
-	INNER JOIN `user` u ON u.id = ru.user_id
-    WHERE
-	    u.id =1
-  </select>
+        FROM
+        menu m
+        INNER JOIN role_menu rm ON m.id = rm.menu_id
+        INNER JOIN role_user ru ON rm.role_id = ru.role_id
+        INNER JOIN `user` u ON u.id = ru.user_id
+        WHERE
+        u.id =1
+    </select>
 
-  <update id="updateMenu" parameterType="com.xiami.entity.Menu" >
-    UPDATE menu
-    <set>
-      update_time=now()
-      <if test="name !=null and name !=''">
-         ,name = #{name}
-      </if>
-      <if test="url !=null and url !=''">
-        , url = #{url}
-      </if>
-      <if test="orderNum !=null and orderNum !=''">
-        , order_num = #{orderNum}
-      </if>
-      <if test="perms !=null and perms !=''">
-        , perms = #{perms}
-      </if>
-    </set>
-    where id=#{id}
-  </update>
+    <update id="updateMenu" parameterType="com.xiami.entity.Menu">
+        UPDATE menu
+        <set>
+            update_time=now()
+            <if test="name !=null and name !=''">
+                ,name = #{name}
+            </if>
+            <if test="url !=null and url !=''">
+                , url = #{url}
+            </if>
+            <if test="orderNum !=null and orderNum !=''">
+                , order_num = #{orderNum}
+            </if>
+            <if test="perms !=null and perms !=''">
+                , perms = #{perms}
+            </if>
+        </set>
+        where id=#{id}
+    </update>
 
-  <delete id="deleteMenu" parameterType="list">
-    delete from menu
-    where id in
-    <foreach collection="list" open="("  separator="," close=")" item="id">
-      #{id}
-    </foreach>
-  </delete>
+    <delete id="deleteMenu" parameterType="list">
+        delete from menu
+        where id in
+        <foreach collection="list" open="(" separator="," close=")" item="id">
+            #{id}
+        </foreach>
+    </delete>
 
-  <select id="getAllMenusByName" parameterType="string" resultMap="BaseResultMap" >
-    SELECT m.*
-    FROM
-    menu m
-    INNER JOIN role_permission rp ON m.id = rp.permission_id
-    INNER JOIN role_user ru ON rp.role_id = ru.role_id
-    INNER JOIN `user` u ON u.id = ru.user_id
-    WHERE
-    u.name=#{name} and m.type="0"
-  </select>
+    <select id="getAllMenusByName" parameterType="string" resultMap="BaseResultMap">
+        SELECT m.*
+        FROM
+        menu m
+        INNER JOIN role_permission rp ON m.id = rp.permission_id
+        INNER JOIN role_user ru ON rp.role_id = ru.role_id
+        INNER JOIN `user` u ON u.id = ru.user_id
+        WHERE
+        u.name=#{name} and m.type="0"
+    </select>
 
 </mapper>

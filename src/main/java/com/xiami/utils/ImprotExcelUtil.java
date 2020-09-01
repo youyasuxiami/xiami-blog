@@ -72,8 +72,8 @@ public class ImprotExcelUtil {
             int cellCount = rowTitle.getPhysicalNumberOfCells();
             for (int j = 0; j < cellCount; j++) {
                 cell = row.getCell(j);
-                if(cell==null){
-                    cell=row.createCell(j);
+                if (cell == null) {
+                    cell = row.createCell(j);
                 }
                 DecimalFormat df = new DecimalFormat("0");// 格式化 number String 字符
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");// 格式化日期字符串
@@ -149,8 +149,8 @@ public class ImprotExcelUtil {
             int cellCount = rowTitle.getPhysicalNumberOfCells();
             for (int j = 0; j < cellCount; j++) {
                 cell = row.getCell(j);
-                if(cell==null){
-                    cell=row.createCell(j);
+                if (cell == null) {
+                    cell = row.createCell(j);
                 }
                 DecimalFormat df = new DecimalFormat("0");// 格式化 number String 字符
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");// 格式化日期字符串

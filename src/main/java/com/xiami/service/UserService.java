@@ -14,12 +14,14 @@ import java.util.List;
 public interface UserService {
     /**
      * 获得用户列表数据
+     *
      * @return
      */
     List<User> getUsersByPage(PageRequestDto pageRequestDto);
 
     /**
      * 获取用户列表：方式二
+     *
      * @param pageRequestDto
      * @return
      */
@@ -27,6 +29,7 @@ public interface UserService {
 
     /**
      * 获取用户列表：根据单表条件
+     *
      * @param userQueryDto
      * @return
      */
@@ -34,6 +37,7 @@ public interface UserService {
 
     /**
      * 获取用户列表：根据多表的条件
+     *
      * @param userQueryDto
      * @return
      */
@@ -41,6 +45,7 @@ public interface UserService {
 
     /**
      * 新增用户
+     *
      * @param userDto
      * @return
      */
@@ -48,6 +53,7 @@ public interface UserService {
 
     /**
      * 编辑用户
+     *
      * @param userDto
      * @return
      */
@@ -55,6 +61,7 @@ public interface UserService {
 
     /**
      * 启用/禁用账号
+     *
      * @param user
      * @return
      */
@@ -62,6 +69,7 @@ public interface UserService {
 
     /**
      * 删除一个用户
+     *
      * @param id
      * @return
      */
@@ -69,29 +77,33 @@ public interface UserService {
 
     /**
      * 批量导入excel
+     *
      * @param list
      * @return
      */
-    ResponseResult importExcel(List<List<Object>>  list);
+    ResponseResult importExcel(List<List<Object>> list);
 
     /**
      * 导出当页数据
+     *
      * @param out
      * @param userQueryDto
      * @return
      */
-    void exportUserToExcel(OutputStream out,UserQueryDto userQueryDto) throws IOException;
+    void exportUserToExcel(OutputStream out, UserQueryDto userQueryDto) throws IOException;
 
     /**
      * 导出全部数据
+     *
      * @param out
      * @param userQueryDto
      * @return
      */
-    void exportAllUserToExcel(OutputStream out,UserQueryDto userQueryDto) throws IOException;
+    void exportAllUserToExcel(OutputStream out, UserQueryDto userQueryDto) throws IOException;
 
     /**
      * 删除用户
+     *
      * @param ids
      * @return
      */
@@ -99,12 +111,14 @@ public interface UserService {
 
     /**
      * 获取所有角色
+     *
      * @return
      */
     ResponseResult getRoles();
 
     /**
      * 获取该用户拥有的所有角色
+     *
      * @return
      */
     ResponseResult getCheckedRoles(Integer id);

@@ -40,7 +40,7 @@ public class ShiroAuthFilter extends FormAuthenticationFilter {
         //        return true;
         //    }
         //}
-
+        System.out.println("3333333");
 
         //Subject subject = this.getSubject(request, response);
         //subject.login(token);
@@ -51,18 +51,19 @@ public class ShiroAuthFilter extends FormAuthenticationFilter {
 
     @Override
     protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
+        System.out.println("1111");
         Session session = ShiroUtils.getSession();
-
+        System.out.println("22222");
 
         logger.info("SHIROFILTER authc拦截");
-        HttpServletResponse res = (HttpServletResponse)response;
+        HttpServletResponse res = (HttpServletResponse) response;
         res.setHeader("Access-Control-Allow-Origin", "true");
         res.setContentType("application/json; charset=utf-8");
         res.setStatus(HttpServletResponse.SC_OK);
 
 
         PrintWriter writer = res.getWriter();
-        Map<String, Object> map= new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
         map.put("code", 401);
         map.put("message", "未登录");
         writer.write(MapperUtils.mapToJson(map));

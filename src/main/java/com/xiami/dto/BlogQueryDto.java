@@ -10,12 +10,13 @@ import lombok.Data;
  * @date：2020­08­01 23:57
  */
 @Data
-public class BlogQueryDto extends  PageRequestDto {
+public class BlogQueryDto extends PageRequestDto {
 
     private String userName;
     private Integer typeId;
     private String title;
     private Integer flag;
+    private Integer recommend;
     private Integer publish;
     private String beginTime;
     private String endTime;

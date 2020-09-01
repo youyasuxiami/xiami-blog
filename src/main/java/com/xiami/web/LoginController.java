@@ -33,6 +33,7 @@ import java.util.Map;
 
 /**
  * Description：
+ *
  * @version v1.0.0
  * @author：zj
  * @date：2020­03­28 12:45
@@ -67,20 +68,20 @@ public class LoginController {
         loginInfo.setAvatar(user.getAvatar());
 
         List<String> roleNames = loginService.getRoleNames(user.getName());
-        String[] arrs=new String[roleNames.size()];
+        String[] arrs = new String[roleNames.size()];
         String[] objects = roleNames.toArray(arrs);
         loginInfo.setRoles(objects);
 
-        if(StringUtils.isEmpty(firstMenuId)){
-            firstMenuId=101;
+        if (StringUtils.isEmpty(firstMenuId)) {
+            firstMenuId = 101;
         }
-        List<String> urlNames = loginService.getAllMenusByAccount(user.getName(),firstMenuId);
-        String[] arrs2=new String[urlNames.size()];
+        List<String> urlNames = loginService.getAllMenusByAccount(user.getName(), firstMenuId);
+        String[] arrs2 = new String[urlNames.size()];
         String[] objects2 = urlNames.toArray(arrs2);
         loginInfo.setUrls(objects2);
         // TODO: 2020/7/13
         loginInfo.setDesc("i am a admin");
-        
+
         return new ResponseResult<LoginInfo>(ResponseResult.CodeStatus.OK, "获取用户信息", loginInfo);
     }
 
@@ -159,7 +160,7 @@ public class LoginController {
      */
     @GetMapping("/getPublicKey")
     public ResponseResult getPublicKey() {
-        return new ResponseResult (ResponseResult.CodeStatus.OK, "登录成功", AccountSecurityUtils.PUBLIC_KEY);
+        return new ResponseResult(ResponseResult.CodeStatus.OK, "登录成功", AccountSecurityUtils.PUBLIC_KEY);
     }
 
 }

@@ -27,9 +27,9 @@ public class UploadController {
     private static final String BUCKET_NAME = "youyasumi-oss";
 
     @PostMapping("")
-    public ResponseResult upload(MultipartFile multipartFile){
-        String fileName=multipartFile.getOriginalFilename();
-        String suffix= fileName.substring(fileName.lastIndexOf(".")+1);
+    public ResponseResult upload(MultipartFile multipartFile) {
+        String fileName = multipartFile.getOriginalFilename();
+        String suffix = fileName.substring(fileName.lastIndexOf(".") + 1);
         String newName = UUID.randomUUID() + "." + suffix;
         OSS client = new OSSClientBuilder().build(ENDPOINT, ACCESS_KEY_ID, ACCESS_KEY_SECRET);
         try {
@@ -37,7 +37,7 @@ public class UploadController {
             return new ResponseResult<FileInfo>(ResponseResult.CodeStatus.FAIL, "文件上传成功", new FileInfo("http://" + BUCKET_NAME + "." + ENDPOINT + "/" + newName));
         } catch (IOException e) {
             return new ResponseResult<FileInfo>(ResponseResult.CodeStatus.FAIL, "文件上传失败，请重试");
-        }finally {
+        } finally {
             client.shutdown();
         }
     }

@@ -10,7 +10,7 @@ import lombok.Data;
  * @date：2020­05­31 13:28
  */
 @Data
-public class UserQueryDto extends  PageRequestDto {
+public class UserQueryDto extends PageRequestDto {
 
     private String nickName;
 

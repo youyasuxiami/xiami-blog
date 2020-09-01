@@ -141,52 +141,53 @@ class BlogApplicationTests {
     }
 
     @Test
-    public void TestDelete(){
-        RolePermission rolePermission=new RolePermission();
+    public void TestDelete() {
+        RolePermission rolePermission = new RolePermission();
         rolePermission.setRoleId(56);
         List<RolePermission> select = rolePermissionMapper.select(rolePermission);
         System.out.println(1111);
     }
+
     @Test
-    public void say(){
-        String a="111";
-        String b="111";
-        String c=new String("111");
+    public void say() {
+        String a = "111";
+        String b = "111";
+        String c = new String("111");
         System.out.println(a.hashCode());
         System.out.println(b.hashCode());
         System.out.println(c.hashCode());
     }
 
     @Test
-    public void testFirstMenus(){
+    public void testFirstMenus() {
         ResponseResult firstMenus = profileService.getFirstMenus();
         System.out.println(firstMenus);
 
     }
 
     @Test
-    public void getTypes(){
+    public void getTypes() {
         List<TType> tTypes = tTypeMapper.selectAll();
         System.out.println(tTypes);
     }
 
     @Test
-    public void getTags(){
+    public void getTags() {
         List<TTag> tTags = tTagMapper.selectAll();
         System.out.println(tTags);
     }
 
     @Test
-    public void getBlogs(){
+    public void getBlogs() {
         List<TBlog> tBlogs = tBlogMapper.selectAll();
         System.out.println(tBlogs);
     }
 
 
     @Test
-    public void insertType(){
+    public void insertType() {
         List<TType> tTypes = tTypeMapper.selectAll();
-        TType tType=new TType();
+        TType tType = new TType();
         tType.setName("1");
 
         //int insert = tTypeMapper.insert(tType);

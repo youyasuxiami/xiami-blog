@@ -21,9 +21,11 @@ import java.util.Map;
  */
 public class MapperUtils {
     private final static ObjectMapper objectMapper = new ObjectMapper();
+
     public static ObjectMapper getInstance() {
         return objectMapper;
     }
+
     /**
      * 转换为 JSON 字符串
      *
@@ -34,6 +36,7 @@ public class MapperUtils {
     public static String obj2json(Object obj) throws Exception {
         return objectMapper.writeValueAsString(obj);
     }
+
     /**
      * 转换为 JSON 字符串，忽略空值
      *
@@ -46,6 +49,7 @@ public class MapperUtils {
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         return mapper.writeValueAsString(obj);
     }
+
     /**
      * 转换为 JavaBean
      *
@@ -58,6 +62,7 @@ public class MapperUtils {
         objectMapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
         return objectMapper.readValue(jsonString, clazz);
     }
+
     /**
      * 字符串转换为 Map<String, Object>
      *
@@ -70,6 +75,7 @@ public class MapperUtils {
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         return mapper.readValue(jsonString, Map.class);
     }
+
     /**
      * 字符串转换为 Map<String, T>
      */
@@ -84,6 +90,7 @@ public class MapperUtils {
         }
         return result;
     }
+
     /**
      * 深度转换 JSON 成 Map
      *
@@ -93,6 +100,7 @@ public class MapperUtils {
     public static Map<String, Object> json2mapDeeply(String json) throws Exception {
         return json2MapRecursion(json, objectMapper);
     }
+
     /**
      * 把 JSON 解析成 List，如果 List 内部的元素存在 jsonString，继续解析
      *
@@ -118,6 +126,7 @@ public class MapperUtils {
         }
         return list;
     }
+
     /**
      * 把 JSON 解析成 Map，如果 Map 内部的 Value 存在 jsonString，继续解析
      *
@@ -146,6 +155,7 @@ public class MapperUtils {
         }
         return map;
     }
+
     /**
      * 将 JSON 数组转换为集合
      *
@@ -159,6 +169,7 @@ public class MapperUtils {
         List<T> list = (List<T>) objectMapper.readValue(jsonArrayStr, javaType);
         return list;
     }
+
     /**
      * 获取泛型的 Collection Type
      *
@@ -170,6 +181,7 @@ public class MapperUtils {
     public static JavaType getCollectionType(Class<?> collectionClass, Class<?>... elementClasses) {
         return objectMapper.getTypeFactory().constructParametricType(collectionClass, elementClasses);
     }
+
     /**
      * 将 Map 转换为 JavaBean
      *
@@ -180,6 +192,7 @@ public class MapperUtils {
     public static <T> T map2pojo(Map map, Class<T> clazz) {
         return objectMapper.convertValue(map, clazz);
     }
+
     /**
      * 将 Map 转换为 JSON
      *
@@ -194,6 +207,7 @@ public class MapperUtils {
         }
         return "";
     }
+
     /**
      * 将 JSON 对象转换为 JavaBean
      *
@@ -204,6 +218,7 @@ public class MapperUtils {
     public static <T> T obj2pojo(Object obj, Class<T> clazz) {
         return objectMapper.convertValue(obj, clazz);
     }
+
     /**
      * 将指定节点的 JSON 数据转换为 JavaBean
      *
@@ -217,6 +232,7 @@ public class MapperUtils {
         JsonNode data = jsonNode.findPath(treeNode);
         return json2pojo(data.toString(), clazz);
     }
+
     /**
      * 将指定节点的 JSON 数组转换为集合
      *

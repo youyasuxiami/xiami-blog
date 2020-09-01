@@ -11,6 +11,7 @@ import lombok.Data;
  */
 @Data
 public class BlogDto {
+    private Integer id;
     private String flag;
     private String title;
     private String content;
@@ -18,7 +19,7 @@ public class BlogDto {
     private Integer[] tagIds;
     private String firstPicture;
     private String description;
-    private Boolean recommend;
+    private Integer recommend;
     private Boolean shareStatement;
     private Boolean appreciation;
     private Boolean commentabled;

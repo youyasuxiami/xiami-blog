@@ -37,7 +37,7 @@ public class BlogListDto {
 
     private String userName;
 
-    private Integer recommend;
+    private String recommend;
 
     private Integer shareStatement;
 

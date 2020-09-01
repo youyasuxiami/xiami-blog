@@ -4,7 +4,7 @@ import com.xiami.base.ResponseResult;
 import com.xiami.dto.TagQueryDto;
 import com.xiami.entity.TTag;
 
-public interface TTagService{
+public interface TTagService {
 
     ResponseResult getTags();
 
@@ -20,6 +20,7 @@ public interface TTagService{
 
     /**
      * 获取该博客拥有的所有标签
+     *
      * @return
      */
     ResponseResult getCheckedTags(Integer id);

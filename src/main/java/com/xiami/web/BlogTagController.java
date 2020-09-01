@@ -21,27 +21,30 @@ public class BlogTagController {
     private TTagService tTagService;
 
     @GetMapping("/getTags")
-    public ResponseResult getTags(){
+    public ResponseResult getTags() {
         return tTagService.getTags();
     }
+
     /**
      * 分页显示分类数据
+     *
      * @param tagQueryDto
      * @return
      */
     @GetMapping("/getTagList")
-    public ResponseResult getTypeList(TagQueryDto tagQueryDto){
+    public ResponseResult getTypeList(TagQueryDto tagQueryDto) {
         return tTagService.getTagList(tagQueryDto);
     }
 
     /**
      * 新增/编辑
+     *
      * @param tTag
      * @return
      */
     @PostMapping("/addTag")
-    public ResponseResult addTag(@RequestBody TTag tTag){
-        if(null==tTag.getId()){
+    public ResponseResult addTag(@RequestBody TTag tTag) {
+        if (null == tTag.getId()) {
             //新增
             return tTagService.addTag(tTag);
         }
@@ -50,17 +53,18 @@ public class BlogTagController {
     }
 
     @DeleteMapping("/deleteTag")
-    public ResponseResult deleteTag(Integer id){
+    public ResponseResult deleteTag(Integer id) {
         return tTagService.deleteTag(id);
     }
 
     @DeleteMapping("/deleteTags")
-    public ResponseResult deleteTags(Integer[] ids){
+    public ResponseResult deleteTags(Integer[] ids) {
         return tTagService.deleteTags(ids);
     }
 
     /**
      * 获得一个博客所有的标签
+     *
      * @return
      */
     @GetMapping("/getCheckedTags")

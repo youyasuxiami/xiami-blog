@@ -21,28 +21,30 @@ public class BlogTypeController {
     private TTypeService tTypeService;
 
     @GetMapping("/getTypes")
-    public ResponseResult getTypes(){
+    public ResponseResult getTypes() {
         return tTypeService.getTypes();
     }
 
     /**
      * 分页显示分类数据
+     *
      * @param typeQueryDto
      * @return
      */
     @GetMapping("/getTypeList")
-    public ResponseResult getTypeList(TypeQueryDto typeQueryDto){
+    public ResponseResult getTypeList(TypeQueryDto typeQueryDto) {
         return tTypeService.getTypeList(typeQueryDto);
     }
 
     /**
      * 新增/编辑
+     *
      * @param tType
      * @return
      */
     @PostMapping("/addType")
-    public ResponseResult addType(@RequestBody TType tType){
-        if(null==tType.getId()){
+    public ResponseResult addType(@RequestBody TType tType) {
+        if (null == tType.getId()) {
             //新增
             return tTypeService.addType(tType);
         }
@@ -51,12 +53,12 @@ public class BlogTypeController {
     }
 
     @DeleteMapping("/deleteType")
-    public ResponseResult deleteType(Integer id){
+    public ResponseResult deleteType(Integer id) {
         return tTypeService.deleteType(id);
     }
 
     @DeleteMapping("/deleteTypes")
-    public ResponseResult deleteTypes(Integer[] ids){
+    public ResponseResult deleteTypes(Integer[] ids) {
         return tTypeService.deleteTypes(ids);
     }
 }

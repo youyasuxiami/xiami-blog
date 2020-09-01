@@ -11,4 +11,5 @@ public interface TBlogMapper extends MyMapper<TBlog> {
     List<TBlog> selectBySearch(BlogQueryDto blogQueryDto);
 
     int deleteByIds(Integer[] ids);
+
 }

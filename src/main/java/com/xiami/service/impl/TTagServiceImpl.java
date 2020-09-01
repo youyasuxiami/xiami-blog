@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class TTagServiceImpl implements TTagService{
+public class TTagServiceImpl implements TTagService {
 
     @Resource
     private TTagMapper tTagMapper;
@@ -29,35 +29,36 @@ public class TTagServiceImpl implements TTagService{
     @Override
     public ResponseResult getTags() {
         List<TTag> tTags = tTagMapper.selectAll();
-        return new ResponseResult(ResponseResult.CodeStatus.OK,"获取所有的博客标签数据成功",tTags);
+        return new ResponseResult(ResponseResult.CodeStatus.OK, "获取所有的博客标签数据成功", tTags);
     }
 
     /**
      * 获得分页数据
+     *
      * @param tagQueryDto
      * @return
      */
     @Override
     public ResponseResult getTagList(TagQueryDto tagQueryDto) {
-        PageHelper.startPage(tagQueryDto.getPageNum(),tagQueryDto.getPageSize());
+        PageHelper.startPage(tagQueryDto.getPageNum(), tagQueryDto.getPageSize());
         List<TTag> tTags = tTagMapper.selectBySearch(tagQueryDto);
         PageInfo pageInfo = new PageInfo(tTags);
         long total = pageInfo.getTotal();
-        PageResult pageResult=new PageResult(total,tTags);
-        return new ResponseResult(ResponseResult.CodeStatus.OK,"获得类别分页数据",pageResult);
+        PageResult pageResult = new PageResult(total, tTags);
+        return new ResponseResult(ResponseResult.CodeStatus.OK, "获得类别分页数据", pageResult);
     }
 
     @Override
     public ResponseResult addTag(TTag tTag) {
         try {
             int insert = tTagMapper.insertSelective(tTag);
-            if(insert>0){
-                return new ResponseResult(ResponseResult.CodeStatus.OK,"新增标签成功");
+            if (insert > 0) {
+                return new ResponseResult(ResponseResult.CodeStatus.OK, "新增标签成功");
             }
-            return new ResponseResult(ResponseResult.CodeStatus.FAIL,"新增标签失败");
+            return new ResponseResult(ResponseResult.CodeStatus.FAIL, "新增标签失败");
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseResult(ResponseResult.CodeStatus.FAIL,"新增标签失败");
+            return new ResponseResult(ResponseResult.CodeStatus.FAIL, "新增标签失败");
         }
     }
 
@@ -66,13 +67,13 @@ public class TTagServiceImpl implements TTagService{
         try {
             tTag.setUpdateTime(new Date());
             int insert = tTagMapper.updateByPrimaryKeySelective(tTag);
-            if(insert>0){
-                return new ResponseResult(ResponseResult.CodeStatus.OK,"更新标签成功");
+            if (insert > 0) {
+                return new ResponseResult(ResponseResult.CodeStatus.OK, "更新标签成功");
             }
-            return new ResponseResult(ResponseResult.CodeStatus.FAIL,"更新标签失败");
+            return new ResponseResult(ResponseResult.CodeStatus.FAIL, "更新标签失败");
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseResult(ResponseResult.CodeStatus.FAIL,"更新标签失败");
+            return new ResponseResult(ResponseResult.CodeStatus.FAIL, "更新标签失败");
         }
     }
 
@@ -80,13 +81,13 @@ public class TTagServiceImpl implements TTagService{
     public ResponseResult deleteTag(Integer id) {
         try {
             int i = tTagMapper.deleteByPrimaryKey(id);
-            if(i>0){
-                return new ResponseResult(ResponseResult.CodeStatus.OK,"删除标签成功");
+            if (i > 0) {
+                return new ResponseResult(ResponseResult.CodeStatus.OK, "删除标签成功");
             }
-            return new ResponseResult(ResponseResult.CodeStatus.OK,"删除标签失败");
+            return new ResponseResult(ResponseResult.CodeStatus.OK, "删除标签失败");
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseResult(ResponseResult.CodeStatus.FAIL,"删除标签失败");
+            return new ResponseResult(ResponseResult.CodeStatus.FAIL, "删除标签失败");
         }
     }
 
@@ -94,13 +95,13 @@ public class TTagServiceImpl implements TTagService{
     public ResponseResult deleteTags(Integer[] ids) {
         try {
             int i = tTagMapper.deleteByIds(ids);
-            if(i>0){
-                return new ResponseResult(ResponseResult.CodeStatus.OK,"批量删除标签成功");
+            if (i > 0) {
+                return new ResponseResult(ResponseResult.CodeStatus.OK, "批量删除标签成功");
             }
-            return new ResponseResult(ResponseResult.CodeStatus.OK,"批量删除标签失败");
+            return new ResponseResult(ResponseResult.CodeStatus.OK, "批量删除标签失败");
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseResult(ResponseResult.CodeStatus.FAIL,"批量删除标签失败");
+            return new ResponseResult(ResponseResult.CodeStatus.FAIL, "批量删除标签失败");
         }
     }
 

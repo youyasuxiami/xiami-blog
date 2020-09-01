@@ -16,6 +16,7 @@ import com.xiami.entity.TBlogTags;
 import com.xiami.entity.TType;
 import com.xiami.entity.User;
 import com.xiami.service.TBlogService;
+import com.xiami.utils.DictionaryUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.BeanUtils;
@@ -43,6 +44,9 @@ public class TBlogServiceImpl implements TBlogService {
     @Resource
     private TTypeMapper tTypeMapper;
 
+    @Resource
+    private DictionaryUtils dictionaryUtils;
+
     /**
      * 获得所有的分类
      *
@@ -64,7 +68,6 @@ public class TBlogServiceImpl implements TBlogService {
         BeanUtils.copyProperties(blogDto, tBlog);
         tBlog.setPublished(1);
         tBlog.setUserId(user.getId());//作者id
-        tBlog.setRecommend(BooleanToInteger(blogDto.getRecommend()));//推荐
         tBlog.setShareStatement(BooleanToInteger(blogDto.getShareStatement()));//转载声明
         tBlog.setAppreciation(BooleanToInteger(blogDto.getAppreciation()));//赞赏
         tBlog.setCommentabled(BooleanToInteger(blogDto.getCommentabled()));//评论
@@ -79,11 +82,11 @@ public class TBlogServiceImpl implements TBlogService {
             tBlogTags.setBlogsId(tBlog.getId());
 
             //插入标签-博客表
-            List<TBlogTags> tBlogTagsList=new ArrayList<>();
+            List<TBlogTags> tBlogTagsList = new ArrayList<>();
             Integer[] tagIds = blogDto.getTagIds();
             List<Integer> tagIdList = Arrays.asList(tagIds);
             for (Integer integer : tagIdList) {
-                TBlogTags tBlogTags1=new TBlogTags();
+                TBlogTags tBlogTags1 = new TBlogTags();
                 tBlogTags1.setTagsId(integer);
                 tBlogTags1.setBlogsId(tBlog.getId());//设置新增的博客的id
                 tBlogTagsList.add(tBlogTags1);
@@ -100,6 +103,55 @@ public class TBlogServiceImpl implements TBlogService {
         }
     }
 
+    /**
+     * 编辑博客
+     * @param blogDto
+     * @return
+     */
+    @Transactional
+    @Override
+    public ResponseResult updateBlog(BlogDto blogDto) {
+
+        TBlog tBlog = new TBlog();
+        BeanUtils.copyProperties(blogDto, tBlog);
+        tBlog.setPublished(1);
+        tBlog.setShareStatement(BooleanToInteger(blogDto.getShareStatement()));//转载声明
+        tBlog.setAppreciation(BooleanToInteger(blogDto.getAppreciation()));//赞赏
+        tBlog.setCommentabled(BooleanToInteger(blogDto.getCommentabled()));//评论
+        tBlog.setUpdateTime(new Date());
+        tBlog.setViews(0);
+
+        try {
+            int i = tBlogMapper.updateByPrimaryKeySelective(tBlog);
+
+            TBlogTags tBlogTags = new TBlogTags();
+            tBlogTags.setBlogsId(tBlog.getId());
+            //根据主键删除
+            int i1 = tBlogTagsMapper.delete(tBlogTags);
+
+            //插入标签-博客表
+            List<TBlogTags> tBlogTagsList = new ArrayList<>();
+            Integer[] tagIds = blogDto.getTagIds();
+            List<Integer> tagIdList = Arrays.asList(tagIds);
+            for (Integer integer : tagIdList) {
+                TBlogTags tBlogTags1 = new TBlogTags();
+                tBlogTags1.setTagsId(integer);
+                tBlogTags1.setBlogsId(tBlog.getId());//设置新增的博客的id
+                tBlogTagsList.add(tBlogTags1);
+            }
+            int insert = tBlogTagsMapper.insertList(tBlogTagsList);
+
+            if (i > 0 && insert > 0 && i1>0) {
+                return new ResponseResult(ResponseResult.CodeStatus.OK, "编辑博客成功");
+            }
+            return new ResponseResult(ResponseResult.CodeStatus.FAIL, "编辑博客失败");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseResult(ResponseResult.CodeStatus.FAIL, "编辑博客失败");
+        }
+    }
+
+
     public Integer BooleanToInteger(Boolean b) {
         if (b) {
             return 1;
@@ -111,6 +163,8 @@ public class TBlogServiceImpl implements TBlogService {
     @Override
     public ResponseResult getBlogs(BlogQueryDto blogQueryDto) {
         PageHelper.startPage(blogQueryDto.getPageNum(), blogQueryDto.getPageSize());
+        System.out.println("---------");
+        System.out.println(blogQueryDto.getRecommend());
         List<TBlog> tBlogs = tBlogMapper.selectBySearch(blogQueryDto);
 
         List<BlogListDto> blogListDtos = new ArrayList<>();
@@ -129,6 +183,10 @@ public class TBlogServiceImpl implements TBlogService {
             tType.setId(tBlog.getTypeId());
             String typeName = tTypeMapper.selectOne(tType).getName();
             blogListDto.setTypeName(typeName);
+
+            //翻译推荐等级
+            String recommendValue = dictionaryUtils.toChinese("recommend_type", tBlog.getRecommend()+"");
+            blogListDto.setRecommend(recommendValue);
 
             //翻译发布还是草稿状态
             if (tBlog.getPublished() == 1) {
@@ -228,13 +286,13 @@ public class TBlogServiceImpl implements TBlogService {
     public ResponseResult deleteBlog(Integer id) {
         try {
             int i = tBlogMapper.deleteByPrimaryKey(id);
-            if(i>0){
-                return new ResponseResult(ResponseResult.CodeStatus.OK,"删除博客成功");
+            if (i > 0) {
+                return new ResponseResult(ResponseResult.CodeStatus.OK, "删除博客成功");
             }
-            return new ResponseResult(ResponseResult.CodeStatus.OK,"删除博客失败");
+            return new ResponseResult(ResponseResult.CodeStatus.OK, "删除博客失败");
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseResult(ResponseResult.CodeStatus.FAIL,"删除博客失败");
+            return new ResponseResult(ResponseResult.CodeStatus.FAIL, "删除博客失败");
         }
     }
 
@@ -242,13 +300,13 @@ public class TBlogServiceImpl implements TBlogService {
     public ResponseResult deleteBlogs(Integer[] ids) {
         try {
             int i = tBlogMapper.deleteByIds(ids);
-            if(i>0){
-                return new ResponseResult(ResponseResult.CodeStatus.OK,"批量删除博客成功");
+            if (i > 0) {
+                return new ResponseResult(ResponseResult.CodeStatus.OK, "批量删除博客成功");
             }
-            return new ResponseResult(ResponseResult.CodeStatus.OK,"批量删除博客失败");
+            return new ResponseResult(ResponseResult.CodeStatus.OK, "批量删除博客失败");
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseResult(ResponseResult.CodeStatus.FAIL,"批量删除博客失败");
+            return new ResponseResult(ResponseResult.CodeStatus.FAIL, "批量删除博客失败");
         }
     }
 }

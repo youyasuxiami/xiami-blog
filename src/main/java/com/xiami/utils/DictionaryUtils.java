@@ -36,22 +36,23 @@ public class DictionaryUtils {
 
     /**
      * 根据字典表的group的值：获取所有下拉框的值
+     *
      * @param group
      * @return
      */
-    public static List<SysDictionary> getDictionaryList(String group){
-        Example example =new Example(SysDictionary.class);
+    public static List<SysDictionary> getDictionaryList(String group) {
+        Example example = new Example(SysDictionary.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("group",group);
+        criteria.andEqualTo("group", group);
         List<SysDictionary> sysDictionaries = dictionaryUtils.sysDictionaryMapper.selectByExample(example);
         return sysDictionaries;
     }
 
-    public static String toChinese(String group,String code){
-        Example example =new Example(SysDictionary.class);
+    public static String toChinese(String group, String code) {
+        Example example = new Example(SysDictionary.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("group",group);
-        criteria.andEqualTo("code",code);
+        criteria.andEqualTo("group", group);
+        criteria.andEqualTo("code", code);
         List<SysDictionary> sysDictionaries = dictionaryUtils.sysDictionaryMapper.selectByExample(example);
         String s = sysDictionaries.get(0).getValue();
         //List<String> lists = sysDictionaries.stream().map(SysDictionary::getValue).collect(Collectors.toList());

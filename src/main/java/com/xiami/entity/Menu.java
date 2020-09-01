@@ -78,9 +78,9 @@ public class Menu implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private List<Menu> children=new ArrayList<>();
+    private List<Menu> children = new ArrayList<>();
 
-    public void addChild(Menu menu){
+    public void addChild(Menu menu) {
         children.add(menu);
     }
 }

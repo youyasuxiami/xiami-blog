@@ -3,6 +3,7 @@ package com.xiami.entity;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.*;
+
 import lombok.Data;
 
 @Data

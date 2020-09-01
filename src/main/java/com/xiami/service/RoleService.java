@@ -16,6 +16,7 @@ public interface RoleService {
 
     /**
      * 获得所有的角色名称
+     *
      * @param userId
      * @return
      */
@@ -23,12 +24,14 @@ public interface RoleService {
 
     /**
      * 获取所有的角色
+     *
      * @return
      */
     ResponseResult getRoleList(RoleQueryDto roleQueryDto);
 
     /**
      * 添加角色
+     *
      * @param param
      * @return
      */
@@ -36,6 +39,7 @@ public interface RoleService {
 
     /**
      * 根据角色id获取菜单
+     *
      * @param id
      * @return
      */
@@ -43,6 +47,7 @@ public interface RoleService {
 
     /**
      * 编辑角色
+     *
      * @param param
      * @return
      */
@@ -50,6 +55,7 @@ public interface RoleService {
 
     /**
      * 删除一个角色
+     *
      * @param id
      * @return
      */

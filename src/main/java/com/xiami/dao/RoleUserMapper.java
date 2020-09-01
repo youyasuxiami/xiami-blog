@@ -10,6 +10,7 @@ public interface RoleUserMapper extends MyMapper<RoleUser> {
 
     /**
      * 获得选中的所有用户   在用户-角色表中的数据
+     *
      * @param ids
      * @return
      */
@@ -17,6 +18,7 @@ public interface RoleUserMapper extends MyMapper<RoleUser> {
 
     /**
      * 根据userIds删除数据
+     *
      * @param ids
      * @return
      */

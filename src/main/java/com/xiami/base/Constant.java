@@ -16,5 +16,5 @@ public class Constant {
     /**
      * 默认密码：123456
      */
-    public static final String DEFAULT_PASSWORD= "uSDLLCz0MugGUB2lo94DeA==";
+    public static final String DEFAULT_PASSWORD = "uSDLLCz0MugGUB2lo94DeA==";
 }
