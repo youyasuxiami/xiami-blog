@@ -122,4 +122,14 @@ public interface UserService {
      * @return
      */
     ResponseResult getCheckedRoles(Integer id);
+
+    /**
+     * 新增前台用户
+     *
+     * @param userDto
+     * @return
+     */
+    ResponseResult addMember(UserDto userDto);
+
+    ResponseResult getUserInfo(Integer blogId);
 }

@@ -38,4 +38,21 @@
             #{id}
         </foreach>
     </delete>
+
+    <select id="selectTagsName"  resultMap="BaseResultMap">
+        select * from t_tag
+        where id in
+        <foreach collection="list" open="(" close=")" separator="," item="item">
+            #{item.tag}
+        </foreach>
+    </select>
+
+    <select id="selectByTagIds"  resultMap="BaseResultMap">
+        select * from t_tag
+        where id in
+        <foreach collection="list" open="(" close=")" separator="," item="item">
+            #{item}
+        </foreach>
+    </select>
+
 </mapper>

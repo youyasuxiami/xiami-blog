@@ -11,4 +11,10 @@ import com.xiami.base.ResponseResult;
  */
 public interface HomeService {
     ResponseResult getBlogs(int currentPage,int pageSize);
+
+    ResponseResult getHotTags();
+
+    ResponseResult getBlogByLevel(int level);
+
+    ResponseResult getHotBlog();
 }
