@@ -67,7 +67,7 @@ public class FrontLoginController {
         User user = (User) subject.getPrincipal();
 
         FrontLoginInfo frontLoginInfo = new FrontLoginInfo();
-        BeanUtils.copyProperties(user,frontLoginInfo);
+        //BeanUtils.copyProperties(user,frontLoginInfo);
         frontLoginInfo.setUserId(user.getId());
 
         return new ResponseResult(ResponseResult.CodeStatus.OK, "获取用户信息", frontLoginInfo);

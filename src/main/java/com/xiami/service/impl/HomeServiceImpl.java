@@ -64,6 +64,7 @@ public class HomeServiceImpl implements HomeService {
             //获取该博客的所有标签
             TBlogTags tBlogTags=new TBlogTags();
             tBlogTags.setBlogsId(tBlog.getId());
+
             //获得所有的标签id
             List<Integer> collect = tBlogTagsMapper.select(tBlogTags).stream().map(TBlogTags::getTagsId).collect(Collectors.toList());
             List<TTag> tTags = tTagMapper.selectByTagIds(collect);
