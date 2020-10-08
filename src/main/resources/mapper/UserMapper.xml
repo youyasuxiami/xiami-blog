@@ -32,21 +32,7 @@
     <insert id="insertUsers" parameterType="java.util.List">
         insert into
         user
-        (
-        `name`,
-        `password`,
-        `nick_name`,
-        `sex`,
-        `age`,
-        `phone`,
-        `email`,
-        `avatar`,
-        `create_time`,
-        `update_time`,
-        `login_time`,
-        `ps`,
-        `status`
-        )
+        (`name`,`password`,`nick_name`,`sex`,`age`,`phone`,`email`,`avatar`,`create_time`,`update_time`,`login_time`,`ps`,`status`)
         values
         <foreach collection="list" item="user" separator=",">
             (
@@ -65,6 +51,9 @@
             #{user.status}
             )
         </foreach>
+        on duplicate key update
+        id=VALUES(id),
+        nick_name=VALUES(nick_name)
     </insert>
 
     <delete id="deleteUsers" parameterType="Integer">

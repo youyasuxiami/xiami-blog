@@ -25,4 +25,21 @@ public class HomeController {
         ResponseResult blogs = homeService.getBlogs(currentPage, pageSize);
         return blogs;
     }
+
+    @RequestMapping("/getHotTag")
+    public ResponseResult getHotTag() {
+        ResponseResult blogs = homeService.getHotTags();
+        return blogs;
+    }
+    @RequestMapping("/getBlogByLevel")
+    public ResponseResult getBlogByLevel(int level) {
+        ResponseResult blogs = homeService.getBlogByLevel(level);
+        return blogs;
+    }
+
+    @RequestMapping("/getHotBlog")
+    public ResponseResult getHotBlog() {
+        ResponseResult blogs = homeService.getHotBlog();
+        return blogs;
+    }
 }

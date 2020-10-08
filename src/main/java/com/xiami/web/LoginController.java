@@ -139,7 +139,7 @@ public class LoginController {
         //解密
         String passwordJieMi = AccountSecurityUtils.decrypt(loginParam.getPassword().trim());
         String passwordJiaMi = new Md5Hash(passwordJieMi, loginParam.getUsername(), 1024).toBase64();
-        //加密
+        //加密（数据库的密码）
         //String passwordJiaMi = MD5Utils.md5(passwordJieMi, loginParam.getUsername(), 1024);
         //通过subject 身份认证
         UsernamePasswordToken token = new UsernamePasswordToken(loginParam.getUsername(), passwordJiaMi);

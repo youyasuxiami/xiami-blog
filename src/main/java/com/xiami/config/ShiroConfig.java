@@ -90,7 +90,9 @@ public class ShiroConfig {
         shiroFilterFactoryBean.setFilters(filterMap);
 
         Map<String, String> map = new LinkedHashMap<>();
-        map.put("/index/getNewBlog", "anon");//匿名访问
+        map.put("/index/**", "anon");//匿名访问
+        map.put("/login/**", "anon");//匿名访问
+        map.put("/content/**", "anon");//匿名访问
         map.put("/login", "anon");//匿名访问
         map.put("/getPublicKey", "anon");//公钥放行
         map.put("/info", "anon");//匿名访问

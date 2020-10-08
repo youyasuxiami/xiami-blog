@@ -10,4 +10,8 @@ public interface TTagMapper extends MyMapper<TTag> {
     List<TTag> selectBySearch(TagQueryDto tagQueryDto);
 
     int deleteByIds(Integer[] ids);
+
+    List<TTag> selectTagsName(List collect);
+
+    List<TTag> selectByTagIds(List collect);
 }

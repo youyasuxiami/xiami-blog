@@ -74,6 +74,7 @@ public class TBlogServiceImpl implements TBlogService {
         tBlog.setCreateTime(new Date());
         tBlog.setUpdateTime(new Date());
         tBlog.setViews(0);
+        tBlog.setCollectCount(0);
 
         try {
             int i = tBlogMapper.insertUseGeneratedKeys(tBlog);
@@ -120,6 +121,7 @@ public class TBlogServiceImpl implements TBlogService {
         tBlog.setCommentabled(BooleanToInteger(blogDto.getCommentabled()));//评论
         tBlog.setUpdateTime(new Date());
         tBlog.setViews(0);
+        tBlog.setCollectCount(0);
 
         try {
             int i = tBlogMapper.updateByPrimaryKeySelective(tBlog);
@@ -162,9 +164,8 @@ public class TBlogServiceImpl implements TBlogService {
 
     @Override
     public ResponseResult getBlogs(BlogQueryDto blogQueryDto) {
+        //第一个参数是当前页
         PageHelper.startPage(blogQueryDto.getPageNum(), blogQueryDto.getPageSize());
-        System.out.println("---------");
-        System.out.println(blogQueryDto.getRecommend());
         List<TBlog> tBlogs = tBlogMapper.selectBySearch(blogQueryDto);
 
         List<BlogListDto> blogListDtos = new ArrayList<>();

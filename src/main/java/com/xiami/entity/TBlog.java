@@ -57,6 +57,9 @@ public class TBlog implements Serializable {
     @Column(name = "views")
     private Integer views;
 
+    @Column(name = "collect_count")
+    private Integer collectCount;
+
     @Column(name = "type_id")
     private Integer typeId;
 

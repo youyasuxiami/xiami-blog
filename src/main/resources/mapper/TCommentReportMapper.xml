@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xiami.dao.TCommentReportMapper">
+  <resultMap id="BaseResultMap" type="com.xiami.entity.TCommentReport">
+    <!--@mbg.generated generated on Sat Sep 19 15:10:41 CST 2020.-->
+    <!--@Table t_comment_report-->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="report_user_id" jdbcType="INTEGER" property="reportUserId" />
+    <result column="report_to_user_id" jdbcType="INTEGER" property="reportToUserId" />
+    <result column="report_comment_id" jdbcType="INTEGER" property="reportCommentId" />
+    <result column="reason" jdbcType="VARCHAR" property="reason" />
+    <result column="progress_status" jdbcType="TINYINT" property="progressStatus" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated generated on Sat Sep 19 15:10:41 CST 2020.-->
+    id, report_user_id, report_to_user_id, report_comment_id, reason, progress_status, 
+    create_time, update_time
+  </sql>
+
+  <update id="updateStatus">
+    update t_comment_report
+    set progress_status=99
+    where id=#{id}
+  </update>
+</mapper>

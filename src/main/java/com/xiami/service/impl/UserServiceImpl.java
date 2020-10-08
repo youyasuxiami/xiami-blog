@@ -8,22 +8,25 @@ import com.xiami.base.ResponseResult;
 import com.xiami.dao.RoleMapper;
 import com.xiami.dao.RoleUserMapper;
 import com.xiami.dao.SysMapper;
+import com.xiami.dao.TBlogMapper;
 import com.xiami.dao.UserMapper;
 import com.xiami.dto.PageRequestDto;
 import com.xiami.dto.UserDto;
 import com.xiami.dto.UserQueryDto;
 import com.xiami.entity.RoleUser;
+import com.xiami.entity.TBlog;
 import com.xiami.entity.User;
 import com.xiami.service.UserService;
+import com.xiami.utils.AccountSecurityUtils;
 import com.xiami.utils.BeanUtil;
 import com.xiami.utils.DictionaryUtils;
-import org.springframework.beans.BeanUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.apache.shiro.crypto.hash.Md5Hash;
+import org.springframework.beans.BeanUtils;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -62,6 +65,9 @@ public class UserServiceImpl implements UserService {
 
     @Resource
     private RoleMapper roleMapper;
+
+    @Resource
+    private TBlogMapper tBlogMapper;
 
     public final static String EXCEL_PATH_PREFIX = "static/upload/excels";
     public final static String PATH = new UserServiceImpl().getAbsolutePath();
@@ -739,6 +745,55 @@ public class UserServiceImpl implements UserService {
             code = split[0];
         }
         return code;
+    }
+
+    @Transactional
+    @Override
+    public ResponseResult addMember(UserDto userDto) {
+        User user = new User();
+        try {
+            BeanUtils.copyProperties(userDto, user);
+            user.setCreateTime(new Date());
+            user.setUpdateTime(new Date());
+            user.setLoginTime(new Date());
+            user.setStatus("1");
+            //密码解密
+            String PassworddJieMi = AccountSecurityUtils.decrypt(userDto.getPassword().trim());
+            //密码加密
+            String PassworddJiaMi = new Md5Hash(PassworddJieMi, user.getName(), 1024).toBase64();
+            user.setPassword(PassworddJiaMi);
+            user.setAvatar("http://youyasumi-oss.oss-cn-beijing.aliyuncs.com/76e11fce-e7fd-4985-84ec-2332b9dfef84.png");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseResult<>(ResponseResult.CodeStatus.FAIL, "提交失败");
+        }
+        try {
+            //插入用户
+            int i = userMapper.insert(user);
+            //插入角色-用户表,先获取所有的插入数据
+            RoleUser roleUser = new RoleUser();
+            roleUser.setUserId(user.getId());
+            roleUser.setRoleId(71);
+            roleUser.setCreateTime(new Date());
+            roleUser.setUpdateTime(new Date());
+            int i1 = roleUserMapper.insert(roleUser);
+            return ResponseResult.getResponseResult(i > 0 && i1 > 0, "注册成功", "注册失败");
+        } catch (DuplicateKeyException e) {
+            String code = getDuplicateKeyExceptionMsg(e);
+            return new ResponseResult<>(ResponseResult.CodeStatus.FAIL, "数据库中已经存在用户名为 " + code + " 的数据，请重新输入信息");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseResult<>(ResponseResult.CodeStatus.FAIL, "注册失败");
+        }
+    }
+
+    @Override
+    public ResponseResult getUserInfo(Integer blogId) {
+        TBlog tBlog = tBlogMapper.selectByPrimaryKey(blogId);
+        User user=new User();
+        user.setId(tBlog.getUserId());
+        User user1 = userMapper.selectOne(user);
+        return new ResponseResult<>(ResponseResult.CodeStatus.OK, "获取账号信息成功",user1);
     }
 }
 

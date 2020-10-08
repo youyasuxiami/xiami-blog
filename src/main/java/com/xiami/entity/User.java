@@ -1,11 +1,14 @@
 package com.xiami.entity;
 
-import java.io.Serializable;
-import java.util.Date;
-import javax.persistence.*;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import java.io.Serializable;
+import java.util.Date;
 
 @Data
 @Table(name = "`user`")
@@ -92,6 +95,18 @@ public class User implements Serializable {
      */
     @Column(name = "status")
     private String status;
+
+    /**
+     * 账号状态
+     */
+    @Column(name = "ali_pay")
+    private String aliPay;
+
+    /**
+     * 账号状态
+     */
+    @Column(name = "weixin_pay")
+    private String weixinPay;
 
     private static final long serialVersionUID = 1L;
 }

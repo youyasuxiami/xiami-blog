@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xiami.dao.TCommentMapper">
+  <resultMap id="BaseResultMap" type="com.xiami.entity.TComment">
+    <!--@mbg.generated generated on Sun Sep 13 10:40:38 CST 2020.-->
+    <!--@Table t_comment-->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="first_comment_id" jdbcType="INTEGER" property="firstCommentId" />
+    <result column="parent_comment_id" jdbcType="INTEGER" property="parentCommentId" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="to_user_id" jdbcType="INTEGER" property="toUserId" />
+    <result column="user_avatar" jdbcType="VARCHAR" property="userAvatar" />
+    <result column="to_user_avatar" jdbcType="VARCHAR" property="toUserAvatar" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="blog_id" jdbcType="INTEGER" property="blogId" />
+    <result column="likes" jdbcType="INTEGER" property="likes" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    <!--@mbg.generated generated on Sun Sep 13 10:40:38 CST 2020.-->
+    id, first_comment_id, parent_comment_id, user_id, to_user_id, user_avatar, to_user_avatar, 
+    content, blog_id, likes, `status`, create_time, update_time, `type`
+  </sql>
+
+  <select id="getCommentList" parameterType="int" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
+    from t_comment
+    where blog_id=#{blogId}
+    and `type`="0"
+    and parent_comment_id is null
+<!--    and first_comment_id is null-->
+  </select>
+
+  <select id="getReplyList" parameterType="int" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
+    from t_comment
+    where first_comment_id=#{toCommentId}
+    and type="0"
+  </select>
+
+  <update id="updateByTCommentIds" parameterType="java.util.List">
+    update t_comment
+    set status="0"
+    where id in
+    <foreach collection="list" item="item" open="(" close=")" separator=",">
+    #{item}
+    </foreach>
+  </update>
+</mapper>
