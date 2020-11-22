@@ -795,5 +795,25 @@ public class UserServiceImpl implements UserService {
         User user1 = userMapper.selectOne(user);
         return new ResponseResult<>(ResponseResult.CodeStatus.OK, "获取账号信息成功",user1);
     }
+
+    @Override
+    public String getPassword(String username) {
+        User user1=new User();
+        user1.setName(username);
+        User user = userMapper.selectOne(user1);
+        if(user==null){
+            return null;
+        }
+        String password=user.getPassword();
+        return password;
+    }
+
+    @Override
+    public User getUserByName(String name) {
+        User user1=new User();
+        user1.setName(name);
+        User user = userMapper.selectOne(user1);
+        return user;
+    }
 }
 

@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.xiami.base.PageResult;
 import com.xiami.base.ResponseResult;
+import com.xiami.dao.RoleMapper;
 import com.xiami.dao.RolePermissionMapper;
 import com.xiami.dao.RoleUserMapper;
 import com.xiami.dto.RoleParam;
@@ -11,20 +12,15 @@ import com.xiami.dto.RoleQueryDto;
 import com.xiami.entity.Role;
 import com.xiami.entity.RolePermission;
 import com.xiami.entity.RoleUser;
-import com.xiami.entity.SysDictionary;
-import com.xiami.entity.User;
 import com.xiami.service.RoleService;
 import com.xiami.utils.BeanUtil;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
-
-import javax.annotation.Resource;
-
-import com.xiami.dao.RoleMapper;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import tk.mybatis.mapper.entity.Example;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -242,5 +238,16 @@ public class RoleServiceImpl implements RoleService {
                 return new ResponseResult<>(ResponseResult.CodeStatus.FAIL, "删除角色失败");
             }
         }
+    }
+
+    /**
+     * 根据用户名，获得全部的角色
+     * @param name
+     * @return
+     */
+    @Override
+    public List<Role> getAllRolesByName(String name) {
+        List<Role> roles = roleMapper.getAllRolesByName(name);
+        return roles;
     }
 }

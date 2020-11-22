@@ -5,6 +5,7 @@ import com.xiami.dto.IconParam;
 import com.xiami.dto.ProfileParam;
 import com.xiami.entity.User;
 import com.xiami.service.ProfileService;
+import com.xiami.utils.JWTUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Description：
@@ -41,7 +44,6 @@ public class ProfileController {
 
     /**
      * 更新账号信息
-     *
      * @param profileParam
      * @return
      */
@@ -95,7 +97,5 @@ public class ProfileController {
     @PostMapping(value = "/profile/modify/password")
     public ResponseResult<Void> modifyPassword(String oldPassword, String newPassword) {
         return profileService.modifyPassword(oldPassword, newPassword);
-
     }
-
 }

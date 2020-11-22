@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Table(name = "`user`")
@@ -107,6 +108,8 @@ public class User implements Serializable {
      */
     @Column(name = "weixin_pay")
     private String weixinPay;
+
+    private List<Role> roleList;
 
     private static final long serialVersionUID = 1L;
 }

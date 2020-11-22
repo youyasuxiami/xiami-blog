@@ -5,8 +5,10 @@ import com.xiami.dao.MenuMapper;
 import com.xiami.dao.UserMapper;
 import com.xiami.entity.Menu;
 import com.xiami.entity.User;
+import com.xiami.jwt.BaseJwtInfo;
 import com.xiami.service.ProfileService;
 import com.xiami.utils.AccountSecurityUtils;
+import com.xiami.utils.UserUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.subject.Subject;
@@ -76,21 +78,19 @@ public class ProfileServiceImpl implements ProfileService {
     public ResponseResult getFirstMenus() {
         //获取登录用户的信息
         Subject subject = SecurityUtils.getSubject();
-        User user = (User) subject.getPrincipal();
-        String name = user.getName();
+        BaseJwtInfo baseJwtInfo = (BaseJwtInfo) subject.getPrincipal();
+        String name = baseJwtInfo.getName();
 
         //先获取该用户的所有的一级菜单
-        List<Menu> allMenusByName = menuMapper.getAllMenusByName(name);
+        List<Menu> allMenusByName = menuMapper.getAllMenusByNameAndType(name);
         return new ResponseResult(ResponseResult.CodeStatus.OK, "获取该用户的一级菜单成功", allMenusByName);
     }
 
     @Override
     public ResponseResult modifyPassword(String oldPassword, String newPassword) {
-        Subject subject = SecurityUtils.getSubject();
-        User user = (User) subject.getPrincipal();
-        User user0 = new User();
-        user0.setName(user.getName());
-        User user1 = userMapper.selectOne(user0);
+        User user1 = UserUtils.getUser();
+        String name=user1.getName();
+
         if (null == user1) {
             return new ResponseResult<Void>(ResponseResult.CodeStatus.FAIL, "该系统不存在该用户，请联系管理员");
         }
@@ -100,14 +100,14 @@ public class ProfileServiceImpl implements ProfileService {
         //旧密码解密
         String oldPassworddJieMi = AccountSecurityUtils.decrypt(oldPassword.trim());
         //旧密码加密
-        String oldPasswordJiaMi = new Md5Hash(oldPassworddJieMi, user.getName(), 1024).toBase64();
+        String oldPasswordJiaMi = new Md5Hash(oldPassworddJieMi, name, 1024).toBase64();
         if (!oldPasswordJiaMi.equals(user1.getPassword())) {
             return new ResponseResult<Void>(ResponseResult.CodeStatus.FAIL, "旧密码错误，请重新输入");
         }
         //新密码解密
         String newPasswordJieMi = AccountSecurityUtils.decrypt(newPassword.trim());
         //新密码加密
-        String newPasswordJiaMi = new Md5Hash(newPasswordJieMi, user.getName(), 1024).toBase64();
+        String newPasswordJiaMi = new Md5Hash(newPasswordJieMi, name, 1024).toBase64();
         user1.setPassword(newPasswordJiaMi);
         int i = 0;
         try {

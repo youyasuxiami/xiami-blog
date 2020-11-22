@@ -203,6 +203,7 @@ class BlogApplicationTests {
 
     @Test
     public void testFirstMenus() {
+        String name="zhengjin";
         ResponseResult firstMenus = profileService.getFirstMenus();
         System.out.println(firstMenus);
 

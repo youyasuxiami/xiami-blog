@@ -17,6 +17,7 @@
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
         <result column="login_time" jdbcType="TIMESTAMP" property="loginTime"/>
     </resultMap>
+
     <sql id="Base_Column_List">
         <!--@mbg.generated generated on Fri May 15 12:21:45 CST 2020.-->
         id, nick_name, `password`, `name`, sex, age, phone, email, avatar, create_time, update_time,

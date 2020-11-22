@@ -116,5 +116,11 @@ public class MenuServiceImpl implements MenuService {
             return new ResponseResult(ResponseResult.CodeStatus.FAIL, "删除菜单失败");
         }
     }
+
+    @Override
+    public List<Menu> getAllMenusByName(String name) {
+        List<Menu> menuList=menuMapper.getAllMenusByName(name);
+        return menuList;
+    }
 }
 

@@ -45,7 +45,6 @@ public interface ProfileService {
 
     /**
      * 修改密码
-     *
      * @param oldPassword
      * @param newPassword
      * @return

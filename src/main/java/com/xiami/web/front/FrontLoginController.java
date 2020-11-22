@@ -5,13 +5,13 @@ import com.xiami.dto.FrontLoginInfo;
 import com.xiami.dto.FrontLoginParam;
 import com.xiami.dto.UserDto;
 import com.xiami.entity.User;
+import com.xiami.jwt.BaseJwtInfo;
 import com.xiami.service.UserService;
 import com.xiami.utils.AccountSecurityUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.subject.Subject;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -64,14 +64,15 @@ public class FrontLoginController {
     public ResponseResult info() {
         //获取登录用户的信息
         Subject subject = SecurityUtils.getSubject();
-        User user = (User) subject.getPrincipal();
+        BaseJwtInfo baseJwtInfo = (BaseJwtInfo) subject.getPrincipal();
+        String name = baseJwtInfo.getName();
+        User user = userService.getUserByName(name);
 
         FrontLoginInfo frontLoginInfo = new FrontLoginInfo();
         //BeanUtils.copyProperties(user,frontLoginInfo);
         frontLoginInfo.setUserId(user.getId());
 
         return new ResponseResult(ResponseResult.CodeStatus.OK, "获取用户信息", frontLoginInfo);
-        //return new ResponseResult(ResponseResult.CodeStatus.OK, "获取用户信息");
     }
 
     /**

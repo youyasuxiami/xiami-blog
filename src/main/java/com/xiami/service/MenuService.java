@@ -3,6 +3,8 @@ package com.xiami.service;
 import com.xiami.base.ResponseResult;
 import com.xiami.entity.Menu;
 
+import java.util.List;
+
 /**
  * Description：
  *
@@ -36,5 +38,12 @@ public interface MenuService {
      * @return
      */
     ResponseResult deleteMenu(Integer id);
+
+    /**
+     * 根据用户名获得全部的菜单（菜单中有权限）
+     * @param name
+     * @return
+     */
+    List<Menu>getAllMenusByName(String name);
 }
 
