@@ -6,11 +6,14 @@ import com.xiami.base.ResponseResult;
 import com.xiami.dto.LoginInfo;
 import com.xiami.dto.LoginParam;
 import com.xiami.entity.User;
+import com.xiami.filter.JWTToken;
 import com.xiami.service.LoginService;
+import com.xiami.service.UserService;
 import com.xiami.utils.AccountSecurityUtils;
+import com.xiami.utils.JWTUtil;
 import com.xiami.utils.ShiroUtils;
+import com.xiami.utils.UserUtils;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +30,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -46,6 +50,9 @@ public class LoginController {
     @Autowired
     private LoginService loginService;
 
+    @Autowired
+    private UserService userService;
+
     //@GetMapping(value="/login")
     //public ResponseResult1 login(){
     //    return new ResponseResult1(ResponseResult1.CodeStatus.OK,"成功",null);
@@ -59,9 +66,8 @@ public class LoginController {
 
     @GetMapping(value = "/info")
     public ResponseResult<LoginInfo> info(Integer firstMenuId) {
-        //获取登录用户的信息
-        Subject subject = SecurityUtils.getSubject();
-        User user = (User) subject.getPrincipal();
+        //获取用户名
+        User user = UserUtils.getUser();
 
         LoginInfo loginInfo = new LoginInfo();
         loginInfo.setName(user.getName());
@@ -142,11 +148,18 @@ public class LoginController {
         //加密（数据库的密码）
         //String passwordJiaMi = MD5Utils.md5(passwordJieMi, loginParam.getUsername(), 1024);
         //通过subject 身份认证
-        UsernamePasswordToken token = new UsernamePasswordToken(loginParam.getUsername(), passwordJiaMi);
+        //UsernamePasswordToken token = new UsernamePasswordToken(loginParam.getUsername(), passwordJiaMi);
         //if (userDTO.isRememberMe()) {
         //    token.setRememberMe(true);
         //}
-        subject.login(token);
+
+        //储存,生成token
+        Map<String, String> map = new HashMap<>();
+        map.put("name", loginParam.getUsername());
+        //String token = JWTUtil.createToken(loginParam.getUsername());
+        String token = JWTUtil.createToken(map);
+        JWTToken jwtToken = new JWTToken(token);
+        subject.login(jwtToken);
 
         Map<String, Object> result = Maps.newHashMap();
         result.put("token", token);
@@ -162,5 +175,4 @@ public class LoginController {
     public ResponseResult getPublicKey() {
         return new ResponseResult(ResponseResult.CodeStatus.OK, "登录成功", AccountSecurityUtils.PUBLIC_KEY);
     }
-
 }

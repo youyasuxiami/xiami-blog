@@ -17,8 +17,7 @@ import com.xiami.entity.TType;
 import com.xiami.entity.User;
 import com.xiami.service.TBlogService;
 import com.xiami.utils.DictionaryUtils;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.subject.Subject;
+import com.xiami.utils.UserUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -61,8 +60,7 @@ public class TBlogServiceImpl implements TBlogService {
     @Transactional
     @Override
     public ResponseResult addBlog(BlogDto blogDto) {
-        Subject subject = SecurityUtils.getSubject();
-        User user = (User) subject.getPrincipal();
+        User user = UserUtils.getUser();
 
         TBlog tBlog = new TBlog();
         BeanUtils.copyProperties(blogDto, tBlog);

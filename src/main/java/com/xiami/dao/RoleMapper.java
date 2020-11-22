@@ -1,7 +1,6 @@
 package com.xiami.dao;
 
 import com.xiami.entity.Role;
-import com.xiami.entity.User;
 import tk.mybatis.mapper.MyMapper;
 
 import java.util.List;
@@ -12,4 +11,10 @@ public interface RoleMapper extends MyMapper<Role> {
 
     List<Map<String, Object>> selectRoles();
 
+    /**
+     * 根据用户名获得全部角色
+     * @param name
+     * @return
+     */
+    List<Role> getAllRolesByName(String name);
 }

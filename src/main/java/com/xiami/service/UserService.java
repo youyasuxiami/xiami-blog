@@ -132,4 +132,17 @@ public interface UserService {
     ResponseResult addMember(UserDto userDto);
 
     ResponseResult getUserInfo(Integer blogId);
+
+    /**
+     * 根据用户名获取密码
+     * @param username
+     * @return
+     */
+    String getPassword(String username);
+
+    /**
+     * 根据用户名获取用户
+     * @return
+     */
+    User getUserByName(String name);
 }

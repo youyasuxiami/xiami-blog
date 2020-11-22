@@ -3,7 +3,7 @@ package com.xiami.service;
 import com.xiami.base.ResponseResult;
 import com.xiami.dto.RoleParam;
 import com.xiami.dto.RoleQueryDto;
-import com.xiami.entity.User;
+import com.xiami.entity.Role;
 
 import java.util.List;
 
@@ -60,4 +60,11 @@ public interface RoleService {
      * @return
      */
     ResponseResult deleteRole(Integer id);
+
+    /**
+     * 根据用户名获得全部的角色
+     * @param name
+     * @return
+     */
+    List<Role> getAllRolesByName(String name);
 }

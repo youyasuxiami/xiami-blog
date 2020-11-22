@@ -60,7 +60,7 @@
         </foreach>
     </delete>
 
-    <select id="getAllMenusByName" parameterType="string" resultMap="BaseResultMap">
+    <select id="getAllMenusByNameAndType" parameterType="string" resultMap="BaseResultMap">
         SELECT m.*
         FROM
         menu m
@@ -69,6 +69,17 @@
         INNER JOIN `user` u ON u.id = ru.user_id
         WHERE
         u.name=#{name} and m.type="0"
+    </select>
+
+    <select id="getAllMenusByName" parameterType="string" resultMap="BaseResultMap">
+        SELECT m.*
+        FROM
+        menu m
+        INNER JOIN role_permission rp ON m.id = rp.permission_id
+        INNER JOIN role_user ru ON rp.role_id = ru.role_id
+        INNER JOIN `user` u ON u.id = ru.user_id
+        WHERE
+        u.name=#{name}
     </select>
 
 </mapper>

@@ -29,4 +29,11 @@
     <select id="selectRoles" resultMap="RoleMap">
         select id,role_name from role
     </select>
+
+    <select id="getAllRolesByName">
+        SELECT r.* FROM role r
+        INNER JOIN role_user ru ON r.id=ru.role_id
+        INNER JOIN user u ON u.id=ru.user_id
+        where u.name=#{name}
+    </select>
 </mapper>
