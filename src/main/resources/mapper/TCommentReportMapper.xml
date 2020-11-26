@@ -13,6 +13,11 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
+
+  <resultMap id="ResultMap" type="com.xiami.dto.TCommentReportListDto" extends="BaseResultMap">
+    <result column="content" jdbcType="VARCHAR" property="reportCommentContent" />
+  </resultMap>
+
   <sql id="Base_Column_List">
     <!--@mbg.generated generated on Sat Sep 19 15:10:41 CST 2020.-->
     id, report_user_id, report_to_user_id, report_comment_id, reason, progress_status, 
@@ -24,4 +29,39 @@
     set progress_status=99
     where id=#{id}
   </update>
+
+  <select id="selectBySearch" resultMap="ResultMap" parameterType="com.xiami.dto.TcommentReportQueryDto">
+    select tcr.*,tc.content from t_comment_report tcr
+    left join t_comment tc
+    on tcr.report_comment_id = tc.id
+    <where>
+      <if test="userId!=null and userId!=''" >
+        AND tcr.report_user_id in
+        <foreach collection="userId" open="(" close=")" separator="," item="item">
+          #{item}
+        </foreach>
+      </if>
+      <if test="toUserId!=null and toUserId!=''" >
+        AND tcr.report_to_user_id in
+        <foreach collection="toUserId" open="(" close=")" separator="," item="item">
+          #{item}
+        </foreach>
+      </if>
+      <if test="reportCommentContent!=null and reportCommentContent!=''" >
+        AND tc.content like concat('%',#{reportCommentContent},'%')
+      </if>
+      <if test="reason!=null and reason!=''" >
+        AND tcr.reason like concat('%',#{reason},'%')
+      </if>
+      <if test="statusId!=null and statusId!=''">
+        AND tcr.progress_status=#{statusId}
+      </if>
+      <if test="beginTime != null and beginTime != ''">
+        AND DATE_FORMAT(tcr.create_time, '%Y-%m-%d' ) &gt;= #{beginTime}
+      </if>
+      <if test="endTime != null and endTime != ''">
+        AND DATE_FORMAT(tcr.create_time, '%Y-%m-%d' ) &lt;= #{endTime}
+      </if>
+    </where>
+  </select>
 </mapper>

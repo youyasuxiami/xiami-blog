@@ -1,6 +1,7 @@
 package com.xiami.config;
 
 import com.xiami.filter.JWTFilter;
+import com.xiami.filter.ShiroFilterConfig;
 import com.xiami.realm.UserRealm;
 import org.apache.shiro.mgt.DefaultSessionStorageEvaluator;
 import org.apache.shiro.mgt.DefaultSubjectDAO;
@@ -20,16 +21,20 @@ import java.util.Map;
 
 @Configuration
 public class ShiroConfig {
-    @Bean
+    @Bean  //不指定名字的话，自动创建一个方法名第一个字母小写的bean
     public ShiroFilterFactoryBean shiroFilterFactoryBean(SecurityManager securityManager){
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
-        //创建自定义过滤器
+        //设置securityManager
+        shiroFilterFactoryBean.setSecurityManager(securityManager);
+        //设置过滤器
         Map<String, Filter> filterMap = new LinkedHashMap<>();
+        //filterMap.put(shiroFilterConfig.getAuthc(), new JWTFilter(aepAuthConfig, authService));
+        //shiroFilterFactoryBean.setFilters(filterMap);
+        //shiroFilterFactoryBean.setFilterChainDefinitionMap(shiroFilterConfig.getMap());
+
         //将JWTFilter命名为jwt
         filterMap.put("jwt",new JWTFilter());
         shiroFilterFactoryBean.setFilters(filterMap);
-        //设置securityManager
-        shiroFilterFactoryBean.setSecurityManager(securityManager);
         //设置无权限时跳转的url
         shiroFilterFactoryBean.setUnauthorizedUrl("/unauthorized/无权限");
         //shiroFilterFactoryBean.setLoginUrl("/login");

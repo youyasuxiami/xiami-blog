@@ -64,4 +64,9 @@
             #{id}
         </foreach>
     </delete>
+
+    <select id="getUserByName" resultMap="BaseResultMap" parameterType="string">
+        select * from user
+        where name like concat('%',#{name},'%')
+    </select>
 </mapper>
