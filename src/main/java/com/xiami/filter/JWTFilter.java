@@ -1,5 +1,6 @@
 package com.xiami.filter;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import com.xiami.base.Constant;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -74,8 +75,15 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
     @Override
     protected boolean isLoginAttempt(ServletRequest request, ServletResponse response) {
         HttpServletRequest req = (HttpServletRequest) request;
-        String token = req.getHeader("Authorization");
-        return token != null;
+        String token = req.getHeader("authorization");
+        Boolean flag=true;//false表示带了token，非登录请求或者游客模式
+        if(token == null){
+            flag=false;
+        }
+        if(flag=="undefined".equals(token)){//表示带了token，非登录请求或者游客模式
+            flag=false;
+        }
+        return flag;
     }
 
     @Override

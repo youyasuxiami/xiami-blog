@@ -7,7 +7,7 @@ spring:
       url: jdbc:mysql://8.129.212.55:3306/myblog?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai&allowMultiQueries=true
 
       username: root
-      password: 123456
+      password: zj123456
       initial-size: 1
       min-idle: 1
       max-active: 20
@@ -54,3 +54,6 @@ pagehelper:
   #  设置为true时，如果pageSize=0或者RowBounds.limit = 0就会查询出全部的结果
   #  （相当于没有执行分页查询，但是返回结果仍然是Page类型）
   pageSizeZero: true
+
+auth:
+  token-header: Authorization

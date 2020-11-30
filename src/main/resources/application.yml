@@ -4,3 +4,4 @@ spring:
     #    active: dev
     #    联想
     active: lianxiangdev
+#    active: prod
