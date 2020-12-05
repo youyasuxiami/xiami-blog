@@ -15,6 +15,7 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.subject.Subject;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -81,8 +82,13 @@ public class FrontLoginController {
         User user = userService.getUserByName(name);
 
         FrontLoginInfo frontLoginInfo = new FrontLoginInfo();
-        //BeanUtils.copyProperties(user,frontLoginInfo);
+        BeanUtils.copyProperties(user,frontLoginInfo);
         frontLoginInfo.setUserId(user.getId());
+        frontLoginInfo.setAvatar(user.getAvatar());
+        frontLoginInfo.setName(user.getName());
+        frontLoginInfo.setWeixinPay(user.getWeixinPay());
+        frontLoginInfo.setAliPay(user.getAliPay());
+
 
         return new ResponseResult(ResponseResult.CodeStatus.OK, "获取用户信息", frontLoginInfo);
     }
