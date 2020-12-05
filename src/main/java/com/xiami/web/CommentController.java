@@ -9,6 +9,7 @@ import com.xiami.entity.TCommentReport;
 import com.xiami.entity.User;
 import com.xiami.service.TBlogService;
 import com.xiami.service.TCommentService;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/comment")
 public class CommentController {

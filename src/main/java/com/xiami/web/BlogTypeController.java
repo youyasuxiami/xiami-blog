@@ -4,6 +4,7 @@ import com.xiami.base.ResponseResult;
 import com.xiami.dto.TypeQueryDto;
 import com.xiami.entity.TType;
 import com.xiami.service.TTypeService;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/type")
 public class BlogTypeController {

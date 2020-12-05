@@ -1,6 +1,7 @@
 package com.xiami.web;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @author：zj
  * @date：2020­05­04 11:04
  */
+@CrossOrigin(origins = "*", maxAge = 3600)
 @Controller
 public class IndexController {
 

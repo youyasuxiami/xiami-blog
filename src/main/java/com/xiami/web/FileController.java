@@ -15,6 +15,7 @@ import java.net.URLEncoder;
  * Date：2020­06­17 23:17
  * Description：文件上传
  */
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/file")
 public class FileController {

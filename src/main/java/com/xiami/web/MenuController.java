@@ -5,6 +5,7 @@ import com.xiami.entity.Menu;
 import com.xiami.entity.User;
 import com.xiami.service.MenuService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,6 +22,7 @@ import java.util.Date;
  * @author：zj
  * @date：2020­05­30 17:19
  */
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping("/menu")
 @RestController
 public class MenuController {

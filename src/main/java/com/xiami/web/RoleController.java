@@ -5,6 +5,7 @@ import com.xiami.dto.RoleParam;
 import com.xiami.dto.RoleQueryDto;
 import com.xiami.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author：zj
  * @date：2020­05­30 17:19
  */
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping("/role")
 @RestController
 public class RoleController {

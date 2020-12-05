@@ -3,6 +3,7 @@ package com.xiami.web;
 import com.xiami.base.ResponseResult;
 import com.xiami.entity.SysDictionary;
 import com.xiami.utils.DictionaryUtils;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +18,7 @@ import java.util.List;
  * @author：zj
  * @date：2020­05­30 23:41
  */
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping("/utils")
 @RestController
 public class UtilsController {

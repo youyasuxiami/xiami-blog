@@ -10,6 +10,7 @@ import com.xiami.entity.User;
 import com.xiami.service.UserService;
 import com.xiami.utils.ImprotExcelUtil;
 import org.apache.shiro.crypto.hash.Md5Hash;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,6 +32,7 @@ import java.util.List;
  * Date：2020­06­10 22:24
  * Description：<描述>
  */
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/user")
 public class UserController {
