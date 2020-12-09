@@ -14,4 +14,7 @@ public interface TTagMapper extends MyMapper<TTag> {
     List<TTag> selectTagsName(List collect);
 
     List<TTag> selectByTagIds(List collect);
+
+    List<TTag> selectByBlogId(Integer blogId);
+
 }

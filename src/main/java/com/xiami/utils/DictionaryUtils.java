@@ -1,12 +1,20 @@
 package com.xiami.utils;
 
 import com.xiami.dao.SysDictionaryMapper;
+import com.xiami.dao.TTypeMapper;
+import com.xiami.dao.UserMapper;
+import com.xiami.dto.BlogListDto;
 import com.xiami.entity.SysDictionary;
+import com.xiami.entity.TBlog;
+import com.xiami.entity.TType;
+import com.xiami.entity.User;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,6 +33,14 @@ public class DictionaryUtils {
     @Resource
     private SysDictionaryMapper sysDictionaryMapper;
 
+    @Resource
+    private UserMapper userMapper;
+
+    @Resource
+    private TTypeMapper tTypeMapper;
+
+
+
     /**
      * @PostConstruct注解的方法将会在依赖注入完成后被自动调用。
      */
@@ -32,6 +48,8 @@ public class DictionaryUtils {
     public void init() {
         dictionaryUtils = this;
         dictionaryUtils.sysDictionaryMapper = this.sysDictionaryMapper;
+        dictionaryUtils.userMapper = this.userMapper;
+        dictionaryUtils.tTypeMapper = this.tTypeMapper;
     }
 
     /**
@@ -60,5 +78,45 @@ public class DictionaryUtils {
         return s;
     }
 
+    public static List<BlogListDto> toBlogListDtos(List<TBlog> tBlogs) {
+        List<BlogListDto> blogListDtos = new ArrayList<>();
+        for (TBlog tBlog : tBlogs) {
+            BlogListDto blogListDto = new BlogListDto();
+            BeanUtils.copyProperties(tBlog, blogListDto);
 
+            //翻译用户名
+            User user = new User();
+            user.setId(tBlog.getUserId());
+            String userName = dictionaryUtils.userMapper.selectOne(user).getName();
+            blogListDto.setUserName(userName);
+
+            //翻译分类名
+            TType tType = new TType();
+            tType.setId(tBlog.getTypeId());
+            String typeName = dictionaryUtils.tTypeMapper.selectOne(tType).getName();
+            blogListDto.setTypeName(typeName);
+
+            //翻译推荐等级
+            String recommendValue = dictionaryUtils.toChinese("recommend_type", tBlog.getRecommend()+"");
+            blogListDto.setRecommend(recommendValue);
+
+            //翻译发布还是草稿状态
+            if (tBlog.getPublished() == 1) {
+                blogListDto.setPublish("发布");
+            } else if (tBlog.getPublished() == 2) {
+                blogListDto.setPublish("已保存");
+            }
+
+            //翻译原创
+            if ("1".equals(tBlog.getFlag())) {
+                blogListDto.setFlag("原创");
+            } else if ("2".equals(tBlog.getFlag())) {
+                blogListDto.setFlag("转载声明");
+            } else if ("3".equals(tBlog.getFlag())) {
+                blogListDto.setFlag("翻译");
+            }
+            blogListDtos.add(blogListDto);
+        }
+        return blogListDtos;
+    }
 }

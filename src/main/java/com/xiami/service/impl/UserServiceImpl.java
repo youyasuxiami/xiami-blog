@@ -377,9 +377,9 @@ public class UserServiceImpl implements UserService {
                 if (StringUtils.isEmpty(dataList.get(i).get(1))) {
                     return new ResponseResult<>(ResponseResult.CodeStatus.FAIL, "第" + i + "行用户名不能为空，请重新导入模板");
                 }
-                if (StringUtils.isEmpty(dataList.get(i).get(2))) {
-                    return new ResponseResult<>(ResponseResult.CodeStatus.FAIL, "第" + i + "行昵称不能为空，请重新导入模板");
-                }
+                //if (StringUtils.isEmpty(dataList.get(i).get(2))) {
+                //    return new ResponseResult<>(ResponseResult.CodeStatus.FAIL, "第" + i + "行昵称不能为空，请重新导入模板");
+                //}
                 if (StringUtils.isEmpty(dataList.get(i).get(3))) {
                     return new ResponseResult<>(ResponseResult.CodeStatus.FAIL, "第" + i + "行性别不能为空，请重新导入模板");
                 }

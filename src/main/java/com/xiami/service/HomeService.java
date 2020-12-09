@@ -14,7 +14,7 @@ public interface HomeService {
 
     ResponseResult getHotTags();
 
-    ResponseResult getBlogByLevel(int level);
+    ResponseResult getBlogByLevel(Integer level);
 
     ResponseResult getHotBlog();
 }

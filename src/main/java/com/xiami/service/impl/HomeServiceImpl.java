@@ -87,15 +87,40 @@ public class HomeServiceImpl implements HomeService {
     }
 
     @Override
-    public ResponseResult getBlogByLevel(int level) {
+    public ResponseResult getBlogByLevel(Integer level) {
         List<TBlog> tBlogs = tBlogMapper.selectAll();
+        String msg="获取数据成功";
+        if(level==1){
+            tBlogs = tBlogs.stream()
+                    .filter(tBlog -> tBlog.getRecommend().equals(level))
+                    .limit(5)
+                    .collect(Collectors.toList());
+            msg="获取一级推荐数据成功";
+        }
+
+        if(level==2){
+            tBlogs = tBlogs.stream()
+                    .filter(tBlog -> tBlog.getRecommend().equals(level))
+                    .limit(2)
+                    .collect(Collectors.toList());
+            msg="获取二级推荐数据成功";
+        }
+
         if(level==3){
-            tBlogs = tBlogs.stream().limit(3).collect(Collectors.toList());
+            tBlogs = tBlogs.stream()
+                    .filter(tBlog -> tBlog.getRecommend().equals(level))
+                    .limit(3)
+                    .collect(Collectors.toList());
+            msg="获取三级推荐数据成功";
         }
         if(level==4){
-            tBlogs = tBlogs.stream().limit(5).collect(Collectors.toList());
+            tBlogs = tBlogs.stream()
+                    .filter(tBlog -> tBlog.getRecommend().equals(level))
+                    .limit(5)
+                    .collect(Collectors.toList());
+            msg="获取四级推荐数据成功";
         }
-        return new ResponseResult(ResponseResult.CodeStatus.OK,"获取数据成功",tBlogs);
+        return new ResponseResult(ResponseResult.CodeStatus.OK,msg,tBlogs);
     }
 
     @Override

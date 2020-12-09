@@ -34,7 +34,7 @@ public class HomeController {
         return blogs;
     }
     @RequestMapping("/getBlogByLevel")
-    public ResponseResult getBlogByLevel(int level) {
+    public ResponseResult getBlogByLevel(Integer level) {
         ResponseResult blogs = homeService.getBlogByLevel(level);
         return blogs;
     }

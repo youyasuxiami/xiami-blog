@@ -288,4 +288,11 @@ class BlogApplicationTests {
 
     }
 
+    public static void main(String[] args) {
+        String str="2020年06月";
+        String str1=str.replace("年","-").replace("月","");
+        System.out.println("-------"+str1+"---------");
+
+    }
+
 }

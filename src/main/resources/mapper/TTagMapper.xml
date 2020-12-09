@@ -55,4 +55,13 @@
         </foreach>
     </select>
 
+    <select id="selectByBlogId"  resultMap="BaseResultMap">
+        select tt.* from t_tag tt
+        inner join t_blog_tags  tbt
+        on tt.id=tbt.tags_id
+        inner join t_blog tb
+        on tbt.blogs_id=tb.id
+        where tb.id=#{blogId}
+    </select>
+
 </mapper>

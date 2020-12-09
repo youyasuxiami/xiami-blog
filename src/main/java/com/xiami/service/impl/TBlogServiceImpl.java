@@ -28,6 +28,8 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import static com.xiami.utils.DictionaryUtils.toBlogListDtos;
+
 @Service
 public class TBlogServiceImpl implements TBlogService {
 
@@ -166,50 +168,15 @@ public class TBlogServiceImpl implements TBlogService {
         PageHelper.startPage(blogQueryDto.getPageNum(), blogQueryDto.getPageSize());
         List<TBlog> tBlogs = tBlogMapper.selectBySearch(blogQueryDto);
 
-        List<BlogListDto> blogListDtos = new ArrayList<>();
-        for (TBlog tBlog : tBlogs) {
-            BlogListDto blogListDto = new BlogListDto();
-            BeanUtils.copyProperties(tBlog, blogListDto);
-
-            //翻译用户名
-            User user = new User();
-            user.setId(tBlog.getUserId());
-            String userName = userMapper.selectOne(user).getName();
-            blogListDto.setUserName(userName);
-
-            //翻译分类名
-            TType tType = new TType();
-            tType.setId(tBlog.getTypeId());
-            String typeName = tTypeMapper.selectOne(tType).getName();
-            blogListDto.setTypeName(typeName);
-
-            //翻译推荐等级
-            String recommendValue = dictionaryUtils.toChinese("recommend_type", tBlog.getRecommend()+"");
-            blogListDto.setRecommend(recommendValue);
-
-            //翻译发布还是草稿状态
-            if (tBlog.getPublished() == 1) {
-                blogListDto.setPublish("发布");
-            } else if (tBlog.getPublished() == 2) {
-                blogListDto.setPublish("已保存");
-            }
-
-            //翻译原创
-            if ("1".equals(tBlog.getFlag())) {
-                blogListDto.setFlag("原创");
-            } else if ("2".equals(tBlog.getFlag())) {
-                blogListDto.setFlag("转载声明");
-            } else if ("3".equals(tBlog.getFlag())) {
-                blogListDto.setFlag("翻译");
-            }
-            blogListDtos.add(blogListDto);
-        }
+        List<BlogListDto> blogListDtos = toBlogListDtos(tBlogs);
 
         PageInfo<TBlog> info = new PageInfo<>(tBlogs);
         long total = info.getTotal();
         PageResult pageResult = new PageResult(total, blogListDtos);
         return new ResponseResult(ResponseResult.CodeStatus.OK, "获取博客分页数据成功", pageResult);
     }
+
+
 
     @Override
     public ResponseResult changeRecommend(Integer id, Integer recommend) {
