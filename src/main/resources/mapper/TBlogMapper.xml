@@ -73,6 +73,22 @@
 
     <select id="getArticleByMonth" resultMap="BaseResultMap">
         select * from t_blog
-        where DATE_FORMAT( create_time, '%Y%m' ) = DATE_FORMAT(   #{monthDate}, '%Y%m' )
+        where DATE_FORMAT( create_time, '%Y%m' ) = DATE_FORMAT( #{monthDate}, '%Y%m' )
+    </select>
+
+    <select id="getArticleByBlogType" resultMap="BaseResultMap">
+       select * from t_blog b
+       left join t_type t
+       on b.type_id=t.id
+       where t.name=#{blogType}
+    </select>
+
+    <select id="getArticleByBlogTag" resultMap="BaseResultMap">
+        select tb.*  from t_blog tb
+        left join t_blog_tags tbt
+        on tb.id=tbt.blogs_id
+        left join t_tag tt
+        on tt.id=tbt.tags_id
+        where tt.name=#{tagName}
     </select>
 </mapper>

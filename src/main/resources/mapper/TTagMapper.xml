@@ -64,4 +64,12 @@
         where tb.id=#{blogId}
     </select>
 
+    <select id="getAllTagName" resultType="java.lang.String">
+        select distinct tt.name from t_blog tb
+        left join t_blog_tags tbt
+        on tb.id=tbt.blogs_id
+        left join t_tag tt
+        on tt.id=tbt.tags_id
+    </select>
+
 </mapper>

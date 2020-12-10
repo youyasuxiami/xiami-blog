@@ -96,10 +96,17 @@ public class TCommentServiceImpl implements TCommentService {
             }
 
             //翻译回复者的用户名
-            User user1 = new User();
-            user1.setId(tComment.getUserId());
-            String userName = userMapper.selectOne(user1).getName();
-            tCommentListDto.setUserName(userName);
+            Integer userId = tComment.getUserId();
+            if(userId!=null){
+                User user1 = new User();
+                user1.setId(userId);
+                System.out.println("----------------");
+                System.out.println(userId);
+                User user = userMapper.selectOne(user1);
+                String userName = user.getName();
+                tCommentListDto.setUserName(userName);
+            }
+
 
             //翻译评论审核状态
             String status1 = tComment.getStatus();
@@ -182,10 +189,16 @@ public class TCommentServiceImpl implements TCommentService {
             }
 
             //翻译被举报人用户名
-            User user1 = new User();
-            user1.setId(tCommentReportListDto.getReportToUserId());
-            String userName = userMapper.selectOne(user1).getName();
-            tCommentReportListDto.setReportToUserName(userName);
+            Integer reportToUserId = tCommentReportListDto.getReportToUserId();
+            if(reportToUserId!=null){
+                User user1 = new User();
+                user1.setId(reportToUserId);
+                System.out.println("***********");
+                System.out.println(reportToUserId);
+                String userName = userMapper.selectOne(user1).getName();
+                tCommentReportListDto.setReportToUserName(userName);
+            }
+
 
             //翻译评论审核状态
             Integer progressStatus1 = tCommentReportListDto.getProgressStatus();

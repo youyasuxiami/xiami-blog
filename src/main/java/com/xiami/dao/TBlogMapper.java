@@ -14,4 +14,9 @@ public interface TBlogMapper extends MyMapper<TBlog> {
     int deleteByIds(Integer[] ids);
 
     List<TBlog> getArticleByMonth(Date monthDate);
+
+    List<TBlog> getArticleByBlogType(String blogType);
+
+    List<TBlog> getArticleByBlogTag(String tagName);
+
 }

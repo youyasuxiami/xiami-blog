@@ -38,4 +38,14 @@
             #{id}
         </foreach>
     </delete>
+
+    <select id="getAllTypeNames" resultType="java.lang.String">
+        select distinct name from t_type ty
+        right join t_blog tb
+        on ty.id=tb.type_id
+<!--        where tb.id in-->
+<!--        <foreach collection="array" open="(" close=")" separator="," item="item">-->
+<!--            #{item}-->
+<!--        </foreach>-->
+    </select>
 </mapper>

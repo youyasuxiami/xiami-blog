@@ -17,4 +17,7 @@ public interface TTagMapper extends MyMapper<TTag> {
 
     List<TTag> selectByBlogId(Integer blogId);
 
+    List<String> getAllTagName();
+
+
 }

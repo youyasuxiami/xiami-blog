@@ -10,4 +10,7 @@ public interface TTypeMapper extends MyMapper<TType> {
     List<TType> selectBySearch(TypeQueryDto typeQueryDto);
 
     int deleteByIds(Integer[] ids);
+
+    List<String> getAllTypeNames();
+
 }
