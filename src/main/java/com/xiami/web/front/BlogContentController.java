@@ -91,5 +91,4 @@ public class BlogContentController  {
         ResponseResult commentList = blogContentService.deleteComment(commentDeteleDto);
         return commentList;
     }
-
 }

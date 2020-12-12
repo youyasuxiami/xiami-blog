@@ -17,6 +17,7 @@ import com.xiami.entity.TBlog;
 import com.xiami.entity.TComment;
 import com.xiami.entity.TCommentReport;
 import com.xiami.entity.TTag;
+import com.xiami.entity.User;
 import com.xiami.enums.ECommentStatus;
 import com.xiami.service.BlogContentService;
 import com.xiami.utils.MarkdownUtils;
@@ -133,9 +134,10 @@ public class BlogContentServiceImpl implements BlogContentService {
             CommentListDto commentListDto = new CommentListDto();
             BeanUtils.copyProperties(tComment, commentListDto);
             //设置用户名
-            commentListDto.setUserName(userMapper.selectByPrimaryKey(tComment.getUserId()).getName());
+            User user = userMapper.selectByPrimaryKey(tComment.getUserId());
+            commentListDto.setUserName(user.getName());
             //设置被@的用户名
-            if (null!=tComment.getToUserId()) {
+            if (null != tComment.getToUserId()) {
                 //设置被@的用户名
                 commentListDto.setToUserName(userMapper.selectByPrimaryKey(tComment.getToUserId()).getName());
             }
@@ -180,13 +182,13 @@ public class BlogContentServiceImpl implements BlogContentService {
                 commentListDto1.setUserName(userMapper.selectByPrimaryKey(r.getUserId()).getName());
                 //设置被@的用户名
                 commentListDto1.setToUserName(userMapper.selectByPrimaryKey(r.getToUserId()).getName());
-                if(ECommentStatus.ENABLE.equals(commentListDto1.getStatus())){//激活才添加进来
+                if (ECommentStatus.ENABLE.equals(commentListDto1.getStatus())) {//激活才添加进来
                     replyDtoList.add(commentListDto1);
                 }
             });
 
             commentListDto.setReplyList(replyDtoList);
-            if(ECommentStatus.ENABLE.equals(commentListDto.getStatus())){//激活才添加进来
+            if (ECommentStatus.ENABLE.equals(commentListDto.getStatus())) {//激活才添加进来
                 listDtos.add(commentListDto);
             }
         }
@@ -224,31 +226,31 @@ public class BlogContentServiceImpl implements BlogContentService {
     public ResponseResult deleteComment(CommentDeteleDto commentDeteleDto) {
         Integer commentId = commentDeteleDto.getCommentId();
         TComment tComment = tCommentMapper.selectByPrimaryKey(commentId);
-            Integer parentCommentId = tComment.getParentCommentId();
-            if(parentCommentId!=null) {
-                TComment tComment1 = new TComment();
-                tComment1.setId(commentDeteleDto.getCommentId());
-                tComment1.setStatus(ECommentStatus.DISABLED);//设置为删除状态
-                int i = tCommentMapper.updateByPrimaryKeySelective(tComment1);
-                if (i > 0) {
-                    return new ResponseResult(ResponseResult.CodeStatus.OK, "删除成功", tComment);
-                }
-                return new ResponseResult(ResponseResult.CodeStatus.FAIL, "删除失败");
-            }else{//根评论
-                Example example=new Example(TComment.class);
-                Example.Criteria criteria = example.createCriteria();
-                criteria.orEqualTo("id",commentDeteleDto.getCommentId());
-                criteria.orEqualTo("firstCommentId",commentDeteleDto.getCommentId());
-                List<Integer> collect = tCommentMapper.selectByExample(example).stream()
-                        .map(TComment::getId)
-                        .collect(Collectors.toList());
-                int i = tCommentMapper.updateByTCommentIds(collect);
-                if(i>0){
-                    //查根评论的信息
-                    TComment tComment1 = tCommentMapper.selectByPrimaryKey(commentDeteleDto.getCommentId());
-                    return new ResponseResult(ResponseResult.CodeStatus.OK, "删除成功", tComment1);
-                }
-                return new ResponseResult(ResponseResult.CodeStatus.FAIL, "删除失败");
+        Integer parentCommentId = tComment.getParentCommentId();
+        if (parentCommentId != null) {
+            TComment tComment1 = new TComment();
+            tComment1.setId(commentDeteleDto.getCommentId());
+            tComment1.setStatus(ECommentStatus.DISABLED);//设置为删除状态
+            int i = tCommentMapper.updateByPrimaryKeySelective(tComment1);
+            if (i > 0) {
+                return new ResponseResult(ResponseResult.CodeStatus.OK, "删除成功", tComment);
             }
+            return new ResponseResult(ResponseResult.CodeStatus.FAIL, "删除失败");
+        } else {//根评论
+            Example example = new Example(TComment.class);
+            Example.Criteria criteria = example.createCriteria();
+            criteria.orEqualTo("id", commentDeteleDto.getCommentId());
+            criteria.orEqualTo("firstCommentId", commentDeteleDto.getCommentId());
+            List<Integer> collect = tCommentMapper.selectByExample(example).stream()
+                    .map(TComment::getId)
+                    .collect(Collectors.toList());
+            int i = tCommentMapper.updateByTCommentIds(collect);
+            if (i > 0) {
+                //查根评论的信息
+                TComment tComment1 = tCommentMapper.selectByPrimaryKey(commentDeteleDto.getCommentId());
+                return new ResponseResult(ResponseResult.CodeStatus.OK, "删除成功", tComment1);
+            }
+            return new ResponseResult(ResponseResult.CodeStatus.FAIL, "删除失败");
+        }
     }
 }
