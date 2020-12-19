@@ -1,4 +1,4 @@
-package com.xiami.web;
+package com.xiami.controller;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;

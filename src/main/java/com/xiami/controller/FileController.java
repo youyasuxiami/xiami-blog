@@ -1,4 +1,4 @@
-package com.xiami.web;
+package com.xiami.controller;
 
 import com.xiami.base.ResponseResult;
 import org.springframework.web.bind.annotation.*;

@@ -1,10 +1,14 @@
-package com.xiami.web;
+package com.xiami.controller;
 
 import com.xiami.base.ResponseResult;
 import com.xiami.dto.BlogDto;
-import com.xiami.dto.BlogQueryDto;
+import com.xiami.dto.TcommentQueryDto;
+import com.xiami.dto.TcommentReportQueryDto;
+import com.xiami.entity.TComment;
+import com.xiami.entity.TCommentReport;
+import com.xiami.entity.User;
 import com.xiami.service.TBlogService;
-import com.xiami.utils.JWTUtil;
+import com.xiami.service.TCommentService;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,15 +19,63 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/blog")
-public class BlogController {
+@RequestMapping("/comment")
+public class CommentController {
 
     @Resource
     private TBlogService tBlogService;
+
+    @Resource
+    private TCommentService tCommentService;
+
+    @GetMapping("/getComments")
+    public ResponseResult getBlogs(TcommentQueryDto tCommentQueryDto) {
+        return tCommentService.getComments(tCommentQueryDto);
+    }
+
+    /**
+     * 更新评论状态
+     * @param id
+     * @param status
+     * @return
+     */
+    @PostMapping("/updateCommentStatus")
+    public ResponseResult<User> updateCommentStatus(Integer id, String status) {
+        TComment comment=new TComment();
+        comment.setId(id);
+        comment.setStatus(status);
+        return tCommentService.updateCommentStatus(comment);
+    }
+
+    /**
+     * 获得举报列表
+     * @param tCommentQueryDto
+     * @return
+     */
+    @GetMapping("/getCommentReportList")
+    public ResponseResult getCommentReportList(TcommentReportQueryDto tCommentQueryDto) {
+        return tCommentService.getCommentReportList(tCommentQueryDto);
+    }
+
+    /**
+     * 更新进展状态
+     * @param id
+     * @param status
+     * @return
+     */
+    @PostMapping("/updateProgressStatusName")
+    public ResponseResult updateProgressStatusName(Integer id, String status) {
+        TCommentReport tCommentReport=new TCommentReport();
+        tCommentReport.setId(id);
+        tCommentReport.setProgressStatus(Integer.valueOf(status));
+        return tCommentService.updateProgressStatusName(tCommentReport);
+    }
+
+
+
 
     @GetMapping("/getBlogTypes")
     public ResponseResult getBlogTypes() {
@@ -38,11 +90,6 @@ public class BlogController {
         }
         //编辑博客
         return tBlogService.updateBlog(blogDto);
-    }
-
-    @GetMapping("/getBlogs")
-    public ResponseResult getBlogs(BlogQueryDto blogQueryDto) {
-        return tBlogService.getBlogs(blogQueryDto);
     }
 
     @PutMapping("/changeRecommend")

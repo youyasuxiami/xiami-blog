@@ -1,11 +1,10 @@
-package com.xiami.web;
+package com.xiami.controller;
 
 import com.xiami.base.ResponseResult;
 import com.xiami.dto.IconParam;
 import com.xiami.dto.ProfileParam;
 import com.xiami.entity.User;
 import com.xiami.service.ProfileService;
-import com.xiami.utils.JWTUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -15,8 +14,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * Description：

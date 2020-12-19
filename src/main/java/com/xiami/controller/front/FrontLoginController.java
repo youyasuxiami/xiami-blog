@@ -1,4 +1,4 @@
-package com.xiami.web.front;
+package com.xiami.controller.front;
 
 import com.google.common.collect.Maps;
 import com.xiami.base.ResponseResult;
@@ -12,7 +12,6 @@ import com.xiami.service.UserService;
 import com.xiami.utils.AccountSecurityUtils;
 import com.xiami.utils.JWTUtil;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.BeanUtils;

@@ -1,4 +1,4 @@
-package com.xiami.web;
+package com.xiami.controller;
 
 import com.google.code.kaptcha.impl.DefaultKaptcha;
 import com.google.common.collect.Maps;

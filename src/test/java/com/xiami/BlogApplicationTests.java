@@ -28,6 +28,7 @@ import com.xiami.utils.MapperUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.core.RedisTemplate;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
@@ -39,6 +40,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 
@@ -292,7 +294,34 @@ class BlogApplicationTests {
         String str="2020年06月";
         String str1=str.replace("年","-").replace("月","");
         System.out.println("-------"+str1+"---------");
+    }
 
+    @Autowired
+    private RedisTemplate<String,String> redisTemplate;
+
+    @Test
+    public void set(){
+        //redisTemplate.opsForValue().set("name","zhengjin");
+        //System.out.println(redisTemplate.opsForValue().get("name"));
+
+        //redisTemplate.opsForList().leftPush("hobby","play game");
+        //redisTemplate.opsForList().leftPush("hobby","watch Tv");
+        //redisTemplate.opsForList().leftPush("hobby","work");
+        //System.out.println(redisTemplate.opsForList().range("hobby",0l,-1l));
+
+        //redisTemplate.opsForSet().add("set","1");
+        //redisTemplate.opsForSet().add("set","2");
+        //redisTemplate.opsForSet().add("set","3");
+        //System.out.println(redisTemplate.opsForSet().members("set"));
+
+        //redisTemplate.opsForZSet().add("Zset","A",1);
+        //redisTemplate.opsForZSet().add("Zset","C",2);
+        //redisTemplate.opsForZSet().add("Zset","B",3);
+        //Set<String> zset = redisTemplate.opsForZSet().range("Zset", 0, -1);
+        //System.out.println(zset);
+
+        redisTemplate.opsForHash().put("hash","name","zhengjin");
+        System.out.println(redisTemplate.opsForHash().get("hash","name"));
     }
 
 }

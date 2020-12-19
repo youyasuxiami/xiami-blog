@@ -1,4 +1,4 @@
-package com.xiami.web;
+package com.xiami.controller;
 
 import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClientBuilder;

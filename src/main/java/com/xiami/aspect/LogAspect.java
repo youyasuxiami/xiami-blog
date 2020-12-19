@@ -22,7 +22,7 @@ public class LogAspect {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    @Pointcut("execution(* com.xiami.web.*.*(..))")
+    @Pointcut("execution(* com.xiami.controller.*.*(..))")
     public void log() {
     }
 

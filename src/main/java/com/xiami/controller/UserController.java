@@ -1,4 +1,4 @@
-package com.xiami.web;
+package com.xiami.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.xiami.base.PageResult;

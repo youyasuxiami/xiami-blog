@@ -1,4 +1,4 @@
-package com.xiami.web.front;
+package com.xiami.controller.front;
 
 import com.xiami.base.ResponseResult;
 import com.xiami.dto.CommentDeteleDto;
