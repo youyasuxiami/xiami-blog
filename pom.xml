@@ -19,7 +19,9 @@
     <modules>
         <module>xiami-dependencies</module>
         <module>xiami-common</module>
+        <module>xiami-background</module>
         <module>xiami-web</module>
+        <module>xiami-front</module>
     </modules>
 
 <properties>
@@ -51,19 +53,19 @@
         </license>
     </licenses>
 
-    <build>
-        <plugins>
-            <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.0</version>
-                <configuration>
-                    <target>${maven.compiler.target}</target>
-                    <source>${maven.compiler.source}</source>
-                    <encoding>UTF-8</encoding>
-                    <skip>true</skip>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
+<!--    <build>-->
+<!--        <plugins>-->
+<!--            <plugin>-->
+<!--                <artifactId>maven-compiler-plugin</artifactId>-->
+<!--                <version>3.8.0</version>-->
+<!--                <configuration>-->
+<!--                    <target>${maven.compiler.target}</target>-->
+<!--                    <source>${maven.compiler.source}</source>-->
+<!--                    <encoding>UTF-8</encoding>-->
+<!--                    <skip>true</skip>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
+<!--        </plugins>-->
+<!--    </build>-->
 
 </project>

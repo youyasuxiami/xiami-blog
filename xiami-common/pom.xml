@@ -10,6 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>xiami-common</artifactId>
+    <groupId>com.xiami</groupId>
     <packaging>pom</packaging>
     <modules>
         <module>xiami-common-base</module>
