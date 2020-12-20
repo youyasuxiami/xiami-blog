@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xiami.dao.TTypeMapper">
+    <resultMap id="BaseResultMap" type="com.xiami.entity.TType">
+        <!--@mbg.generated generated on Mon Aug 03 22:58:53 CST 2020.-->
+        <!--@Table t_type-->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated generated on Mon Aug 03 22:58:53 CST 2020.-->
+        id, `name`, create_time, update_time
+    </sql>
+
+    <select id="selectBySearch" parameterType="com.xiami.dto.TypeQueryDto" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_type
+        <where>
+            <if test="typeName != null and typeName != ''">
+                AND name=#{typeName}
+            </if>
+            <if test="beginTime != null and beginTime != ''">
+                AND DATE_FORMAT(t.create_time, '%Y-%m-%d' ) &gt;= #{beginTime}
+            </if>
+            <if test="endTime != null and endTime != ''">
+                AND DATE_FORMAT(t.create_time, '%Y-%m-%d' ) &lt;= #{endTime}
+            </if>
+        </where>
+    </select>
+
+    <delete id="deleteByIds">
+        delete from t_type
+        where id in
+        <foreach collection="array" open="(" close=")" separator="," item="id">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="getAllTypeNames" resultType="java.lang.String">
+        select distinct name from t_type ty
+        right join t_blog tb
+        on ty.id=tb.type_id
+<!--        where tb.id in-->
+<!--        <foreach collection="array" open="(" close=")" separator="," item="item">-->
+<!--            #{item}-->
+<!--        </foreach>-->
+    </select>
+</mapper>

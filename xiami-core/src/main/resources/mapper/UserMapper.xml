@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xiami.dao.UserMapper">
+    <resultMap id="BaseResultMap" type="com.xiami.entity.User">
+        <!--@mbg.generated generated on Fri May 15 12:21:45 CST 2020.-->
+        <!--@Table user-->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="nick_name" jdbcType="VARCHAR" property="nickName"/>
+        <result column="password" jdbcType="VARCHAR" property="password"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="sex" jdbcType="CHAR" property="sex"/>
+        <result column="age" jdbcType="VARCHAR" property="age"/>
+        <result column="phone" jdbcType="CHAR" property="phone"/>
+        <result column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="avatar" jdbcType="VARCHAR" property="avatar"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="login_time" jdbcType="TIMESTAMP" property="loginTime"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        <!--@mbg.generated generated on Fri May 15 12:21:45 CST 2020.-->
+        id, nick_name, `password`, `name`, sex, age, phone, email, avatar, create_time, update_time,
+        login_time
+    </sql>
+
+    <select id="selectByQuery" parameterType="com.xiami.dto.UserQueryDto" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM user
+    </select>
+
+    <insert id="insertUsers" parameterType="java.util.List">
+        insert into
+        user
+        (`name`,`password`,`nick_name`,`sex`,`age`,`phone`,`email`,`avatar`,`create_time`,`update_time`,`login_time`,`ps`,`status`)
+        values
+        <foreach collection="list" item="user" separator=",">
+            (
+            #{user.name},
+            #{user.password},
+            #{user.nickName},
+            #{user.sex},
+            #{user.age},
+            #{user.phone},
+            #{user.email},
+            #{user.avatar},
+            #{user.createTime},
+            #{user.updateTime},
+            #{user.loginTime},
+            #{user.ps},
+            #{user.status}
+            )
+        </foreach>
+        on duplicate key update
+        id=VALUES(id),
+        nick_name=VALUES(nick_name)
+    </insert>
+
+    <delete id="deleteUsers" parameterType="Integer">
+        delete from user
+        where id in
+        <foreach collection="array" open="(" close=")" separator="," item="id">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="getUserByName" resultMap="BaseResultMap" parameterType="string">
+        select * from user
+        where name like concat('%',#{name},'%')
+    </select>
+</mapper>

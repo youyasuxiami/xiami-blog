@@ -22,6 +22,8 @@
         <module>xiami-background</module>
         <module>xiami-front</module>
         <module>xiami-web</module>
+        <module>xiami-auth</module>
+        <module>xiami-core</module>
     </modules>
 
 <properties>

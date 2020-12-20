@@ -1,4 +1,4 @@
-package com.xiami.entity;
+package com.xiami.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
