@@ -1,6 +1,7 @@
 package com.xiami;
 
 import org.apache.poi.hssf.usermodel.*;
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFCell;
@@ -56,7 +57,7 @@ public class ImprotExcelUtil {
         // 读取第一章表格内容
         HSSFSheet sheet = xwb.getSheetAt(0);
         // 获取标题内容
-        Row rowTitle = sheet.getRow(1);
+        Row rowTitle = (Row) sheet.getRow(1);
 
         Object value = null;
         HSSFRow row = null;
@@ -72,9 +73,9 @@ public class ImprotExcelUtil {
             // 读取列
             int cellCount = rowTitle.getPhysicalNumberOfCells();
             for (int j = 0; j < cellCount; j++) {
-                cell = row.getCell(j);
+                cell = row.getCell((short) j);
                 if (cell == null) {
-                    cell = row.createCell(j);
+                    cell = row.createCell((short) j);
                 }
                 DecimalFormat df = new DecimalFormat("0");// 格式化 number String 字符
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");// 格式化日期字符串
@@ -86,7 +87,7 @@ public class ImprotExcelUtil {
                         break;
                     case XSSFCell.CELL_TYPE_NUMERIC:
                         //String dataFormat = cell.getCellStyle().getDataFormatString();    // 单元格格式
-                        boolean isDate = DateUtil.isCellDateFormatted(cell);//判断是否是日期
+                        boolean isDate = DateUtil.isCellDateFormatted((Cell) cell);//判断是否是日期
                         //if ("General".equals(dataFormat)) {
                         //    value = df.format(cell.getNumericCellValue());
                         //} else

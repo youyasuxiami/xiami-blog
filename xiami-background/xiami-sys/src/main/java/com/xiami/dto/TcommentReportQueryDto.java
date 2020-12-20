@@ -1,6 +1,7 @@
 package com.xiami.dto;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.Set;
 
@@ -12,6 +13,7 @@ import java.util.Set;
  * @date：2020­08­01 23:57
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class TcommentReportQueryDto extends PageRequestDto {
 
     private String reportUserName;

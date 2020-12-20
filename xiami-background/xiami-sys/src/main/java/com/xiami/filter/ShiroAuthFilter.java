@@ -1,7 +1,7 @@
 package com.xiami.filter;
 
 import com.xiami.MapperUtils;
-import com.xiami.ShiroUtils;
+import com.xiami.utils.ShiroUtils;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
 import org.slf4j.Logger;

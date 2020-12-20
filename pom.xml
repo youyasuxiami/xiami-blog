@@ -20,8 +20,8 @@
         <module>xiami-dependencies</module>
         <module>xiami-common</module>
         <module>xiami-background</module>
-        <module>xiami-web</module>
         <module>xiami-front</module>
+        <module>xiami-web</module>
     </modules>
 
 <properties>
