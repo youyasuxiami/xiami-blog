@@ -29,24 +29,11 @@
         <commonmark.version>0.10.0</commonmark.version>
         <java-jwt.version>3.2.0</java-jwt.version>
         <spring-boot-starter-data-redis.version>2.3.6.RELEASE</spring-boot-starter-data-redis.version>
+        <lombok.version>1.18.12</lombok.version>
     </properties>
-
 
     <dependencyManagement>
         <dependencies>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-web</artifactId>
-                <version>${spring-boot.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.projectlombok</groupId>
-                <artifactId>lombok</artifactId>
-                <version>1.18.12</version>
-                <optional>true</optional>
-            </dependency>
-
             <!-- druid  start-->
             <dependency>
                 <groupId>com.alibaba</groupId>
@@ -182,13 +169,13 @@
             </dependency>
             <!--导入excel end-->
 
-            <!-- fastjson  start-->
+            <!-- Alibaba fastjson  start-->
             <dependency>
                 <groupId>com.alibaba</groupId>
                 <artifactId>fastjson</artifactId>
                 <version>${fastjson.version}</version>
             </dependency>
-            <!-- fastjson  end-->
+            <!-- Alibaba fastjson  end-->
 
             <!--日期格式化工具 start-->
             <dependency>
