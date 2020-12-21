@@ -1,7 +1,0 @@
-spring:
-  profiles:
-    ##    神州
-    #    active: dev
-    #    联想
-    active: lianxiangdev
-#    active: prod
