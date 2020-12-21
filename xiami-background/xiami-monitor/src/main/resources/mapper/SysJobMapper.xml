@@ -35,6 +35,15 @@
     <select id="getJobList" resultMap="BaseResultMap">
       select <include refid="Base_Column_List"/>
       from sys_job
-      where job_name like concat ("%",#{jobName},"%")
+
+<!--      where job_name like concat ("%",#{jobName},"%")-->
     </select>
+
+  <insert id="deleteJobs">
+    delete from sys_job
+    where id in
+    <foreach collection="array" open="(" close=")" separator="," item="item">
+      #{item}
+    </foreach>
+  </insert>
 </mapper>

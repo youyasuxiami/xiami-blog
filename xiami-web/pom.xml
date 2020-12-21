@@ -12,9 +12,16 @@
     <artifactId>xiami-web</artifactId>
 
     <dependencies>
+        <!--        博客模块+系统模块-->
         <dependency>
             <groupId>com.xiami</groupId>
             <artifactId>xiami-sys</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+        <!--        服务监控模块-->
+        <dependency>
+            <groupId>com.xiami</groupId>
+            <artifactId>xiami-monitor</artifactId>
             <version>1.0.0-SNAPSHOT</version>
         </dependency>
         <dependency>
