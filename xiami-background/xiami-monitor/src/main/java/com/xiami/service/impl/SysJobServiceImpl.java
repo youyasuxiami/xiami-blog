@@ -51,12 +51,17 @@ public class SysJobServiceImpl implements SysJobService {
     }
 
     @Override
-    public int updateJob(SysJobForm sysJobForm) {
+    public int updateSysJobForm(SysJobForm sysJobForm) {
         SysJob sysJob=new SysJob();
         BeanUtils.copyProperties(sysJobForm,sysJob);
         int i = sysJobMapper.updateByPrimaryKeySelective(sysJob);
         return i;
     }
+
+    @Override
+    public int updateSysJob(SysJob sysJob) {
+        int i = sysJobMapper.updateByPrimaryKeySelective(sysJob);
+        return i;    }
 
     @Override
     public int deleteJob(Integer id) {

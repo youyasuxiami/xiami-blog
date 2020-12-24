@@ -7,6 +7,8 @@
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="job_name" jdbcType="VARCHAR" property="jobName" />
     <result column="job_group" jdbcType="VARCHAR" property="jobGroup" />
+    <result column="trigger_name" jdbcType="VARCHAR" property="triggerName" />
+    <result column="trigger_group" jdbcType="VARCHAR" property="triggerGroup" />
     <result column="job_order" jdbcType="CHAR" property="jobOrder" />
     <result column="job_type" jdbcType="CHAR" property="jobType" />
     <result column="execute_path" jdbcType="VARCHAR" property="executePath" />
@@ -30,7 +32,7 @@
     <!--@mbg.generated generated on Wed Dec 16 12:24:27 CST 2020.-->
     id, job_name, job_group, job_order, job_type, execute_path, params_value, cron_expression, 
     misfire_policy, job_tenant_type, job_status, job_execute_status, start_time, previous_time, 
-    next_time, create_by, create_time, update_by, update_time, remarks, del_flag
+    next_time, create_by, create_time, update_by, update_time, remarks, del_flag,trigger_name, trigger_group
   </sql>
     <select id="getJobList" resultMap="BaseResultMap">
       select <include refid="Base_Column_List"/>

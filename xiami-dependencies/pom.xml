@@ -21,7 +21,6 @@
         <spring-boot.version>2.2.7.RELEASE</spring-boot.version>
         <mysql-connector-java.version>8.0.20</mysql-connector-java.version>
         <pagehelper-spring-boot-starter.version>1.2.5</pagehelper-spring-boot-starter.version>
-        <junit.version>4.12</junit.version>
         <guava.version>18.0</guava.version>
         <fastjson.version>1.2.41</fastjson.version>
         <joda-time.version>2.10.1</joda-time.version>
@@ -30,6 +29,8 @@
         <java-jwt.version>3.2.0</java-jwt.version>
         <spring-boot-starter-data-redis.version>2.3.6.RELEASE</spring-boot-starter-data-redis.version>
         <lombok.version>1.18.12</lombok.version>
+        <quartz.version>2.2.1</quartz.version>
+        <spring.version>5.2.6.RELEASE</spring.version>
     </properties>
 
     <dependencyManagement>
@@ -92,24 +93,7 @@
             </dependency>
             <!-- Aop  end-->
 
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-test</artifactId>
-                <version>${spring-boot.version}</version>
-                <scope>test</scope>
-                <exclusions>
-                    <exclusion>
-                        <groupId>org.junit.vintage</groupId>
-                        <artifactId>junit-vintage-engine</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-            <dependency>
-                <groupId>junit</groupId>
-                <artifactId>junit</artifactId>
-                <version>${junit.version}</version>
-                <scope>test</scope>
-            </dependency>
+
             <!-- guava  start-->
             <dependency>
                 <groupId>com.google.guava</groupId>
@@ -225,6 +209,32 @@
                 <version>${spring-boot-starter-data-redis.version}</version>
             </dependency>
             <!-- redis  end-->
+
+            <!-- Quartz任务调度的包  start-->
+            <dependency>
+                <groupId>org.quartz-scheduler</groupId>
+                <artifactId>quartz</artifactId>
+                <version>${quartz.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.quartz-scheduler</groupId>
+                <artifactId>quartz-jobs</artifactId>
+                <version>${quartz.version}</version>
+            </dependency>
+            <!-- Quartz任务调度的包  end-->
+
+            <!-- 注入quartz.properties  start-->
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-context-support</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-orm</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            <!-- 注入quartz.properties  end-->
         </dependencies>
 
     </dependencyManagement>

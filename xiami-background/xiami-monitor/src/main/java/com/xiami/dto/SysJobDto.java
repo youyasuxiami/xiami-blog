@@ -31,6 +31,16 @@ public class SysJobDto{
     private String jobGroup;
 
     /**
+     * 触发器名称
+     */
+    private String triggerName;
+
+    /**
+     * 触发器组别
+     */
+    private String triggerGroup;
+
+    /**
      * 组内执行顺利，值越大执行优先级越高，最大值9，最小值1
      */
     private String jobOrder;

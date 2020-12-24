@@ -33,6 +33,18 @@ public class SysJob implements Serializable {
     private String jobGroup;
 
     /**
+     * 触发器名称
+     */
+    @Column(name = "trigger_name")
+    private String triggerName;
+
+    /**
+     * 任务组名
+     */
+    @Column(name = "trigger_group")
+    private String triggerGroup;
+
+    /**
      * 组内执行顺利，值越大执行优先级越高，最大值9，最小值1
      */
     @Column(name = "job_order")
