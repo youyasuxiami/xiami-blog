@@ -1,7 +1,6 @@
 package com.xiami.config;
 
 import com.xiami.dao.SysJobMapper;
-import com.xiami.entity.SysJob;
 import com.xiami.enums.QuartzStatus;
 import com.xiami.service.SysJobService;
 import org.springframework.beans.factory.annotation.Autowired;
