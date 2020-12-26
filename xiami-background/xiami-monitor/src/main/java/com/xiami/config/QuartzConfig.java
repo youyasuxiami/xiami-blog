@@ -3,12 +3,11 @@ package com.xiami.config;
 import com.xiami.dto.SysJobForm;
 import com.xiami.entity.SysJob;
 import com.xiami.exception.QuartzException;
-import com.xiami.job.MyJob;
+import com.xiami.interceptor.JobRunLogInterceptor;
 import com.xiami.service.SysJobService;
 import com.xiami.utils.QuartzUtils;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.quartz.CronExpression;
 import org.quartz.CronScheduleBuilder;
 import org.quartz.CronTrigger;
 import org.quartz.JobBuilder;
@@ -20,13 +19,12 @@ import org.quartz.SchedulerException;
 import org.quartz.Trigger;
 import org.quartz.TriggerBuilder;
 import org.quartz.TriggerKey;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.annotation.Resource;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -49,11 +47,14 @@ public class QuartzConfig {
     /**
      * 开启定时任务
      */
-    public void start(SysJobForm sysJobForm) throws QuartzException, SchedulerException {
-
+    public void start(SysJobForm sysJobForm) {
         openJob(sysJobForm);
         //启动任务
-        scheduler.start();
+        try {
+            scheduler.start();
+        } catch (SchedulerException e) {
+            log.error("启动定时任务异常：{}", e);
+        }
     }
 
     @Autowired
@@ -85,34 +86,59 @@ public class QuartzConfig {
                 .build();
         //2、触发器表达式对象
         CronScheduleBuilder cronScheduleBuilder = CronScheduleBuilder.cronSchedule(cronExpression).withMisfireHandlingInstructionDoNothing();
-        //3、准备一个触发器对象
-        CronTrigger cronTrigger = TriggerBuilder.newTrigger().withIdentity(triggerName, triggerGroup).withSchedule(cronScheduleBuilder).build();
-        //4、开始调度
-        scheduler.scheduleJob(jobDetail, cronTrigger);
+
+        //3、获得触发器
+        CronTrigger cronTrigger = null;
+        TriggerKey triggerKey = this.getTriggerKey(sysJobForm);
+        cronTrigger = (CronTrigger) scheduler.getTrigger(triggerKey);
+        //先判断触发器有没有创建过
+        if (cronTrigger == null) {
+            cronTrigger = TriggerBuilder.newTrigger().withIdentity(triggerName, triggerGroup).withSchedule(cronScheduleBuilder).build();
+            //4、开始调度(不是启动),关联任务和触发器 保证按照触发器定义的条件执行任务
+            //第一个参数是JobDetail
+            //第二个参数是Trigger
+            scheduler.scheduleJob(jobDetail, cronTrigger);
+        } else {
+            cronTrigger = cronTrigger.getTriggerBuilder().withIdentity(triggerName, triggerGroup).withSchedule(cronScheduleBuilder).build();
+            //4、重启
+            //第一个参数是TriggerKey
+            //第二个参数是Trigger
+            scheduler.rescheduleJob(triggerKey, cronTrigger);
+        }
+
+        scheduler.getListenerManager().addJobListener(new JobRunLogInterceptor());
     }
 
     /**
-     * 暂停定时任务
+     * 停止定时任务
      *
-     * @param name
-     * @param group
+     * @param jobName
+     * @param jobGroup
      * @throws Exception
      */
-    public void pauseJob(String name, String group, Integer id) throws QuartzException, SchedulerException {
+    public void stopJob(String jobName, String jobGroup) {
         //任务的标志类
-        JobKey jobKey = new JobKey(name, group);
-        JobDetail jobDetail = scheduler.getJobDetail(jobKey);
-        if (jobDetail != null) {
-            //暂停某个任务
-            scheduler.pauseJob(jobKey);
-            //更新任务状态
-            SysJob sysJob = new SysJob();
-            sysJob.setId(id);
-            sysJob.setJobStatus("3");
-            sysJob.setNextTime(null);
-            sysJobService.updateSysJob(sysJob);
-        } else {
-            throw new QuartzException("任务不存在");
+        try {
+            JobKey jobKey = new JobKey(jobName, jobGroup);
+            JobDetail jobDetail = scheduler.getJobDetail(jobKey);
+            if (jobDetail != null) {
+                //停止某个任务
+                scheduler.deleteJob(jobKey);
+                //更新任务状态
+                SysJob sysJob = new SysJob();
+                sysJob.setJobName(jobName);
+                sysJob.setJobName(jobGroup);
+                sysJob.setJobStatus("1");
+                sysJob.setNextTime(null);
+                sysJobService.updateSysJob(sysJob);
+                log.info("停止定时任务成功");
+            } else {
+                throw new QuartzException("停止的定时任务不存在");
+            }
+        } catch (SchedulerException e) {
+            log.error("停止定时任务失败:{}", e);
+        } catch (QuartzException e) {
+            log.error("停止定时任务失败:{}", e);
         }
     }
 
@@ -159,19 +185,27 @@ public class QuartzConfig {
      * @param name
      * @param group
      */
-    public void resumeJob(String name, String group, Integer id) throws QuartzException, SchedulerException {
-        JobKey jobKey = new JobKey(name, group);
-        JobDetail jobDetail = scheduler.getJobDetail(jobKey);
-        if (jobDetail != null) {
-            //恢复某个任务
-            scheduler.resumeJob(jobKey);
-            //恢复成功，更新任务状态为正在运行状态
-            SysJobForm sysJobForm = new SysJobForm();
-            sysJobForm.setId(id);
-            sysJobForm.setJobStatus("2");
-            sysJobService.updateSysJobForm(sysJobForm);
-        } else {
-            throw new QuartzException("要恢复的任务不存在");
+    public void resumeJob(String name, String group, Integer id) {
+        try {
+            JobKey jobKey = new JobKey(name, group);
+            JobDetail jobDetail = scheduler.getJobDetail(jobKey);
+            if (jobDetail != null) {
+                //恢复某个任务
+                scheduler.resumeJob(jobKey);
+                //恢复成功，更新任务状态为正在运行状态
+                SysJobForm sysJobForm = new SysJobForm();
+                sysJobForm.setId(id);
+                sysJobForm.setJobStatus("2");
+                SysJob sysJob=new SysJob();
+                BeanUtils.copyProperties(sysJobForm,sysJob);
+                sysJobService.updateSysJobForm(sysJob);
+            } else {
+                throw new QuartzException("要恢复的任务不存在");
+            }
+        } catch (SchedulerException e) {
+            log.error("恢复定时任务失败:{}", e);
+        } catch (QuartzException e) {
+            log.error("恢复定时任务失败:{}", e);
         }
     }
 
@@ -225,6 +259,10 @@ public class QuartzConfig {
         }
     }
 
+    public TriggerKey getTriggerKey(SysJobForm sysJobForm) {
+        //参数1：触发器名称 参数二：触发器组别
+        return TriggerKey.triggerKey(sysJobForm.getTriggerName(), sysJobForm.getTriggerGroup());
+    }
 }
 
 

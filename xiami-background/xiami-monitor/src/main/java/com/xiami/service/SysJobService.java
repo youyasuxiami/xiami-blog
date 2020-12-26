@@ -12,13 +12,14 @@ public interface SysJobService {
 
     int addJob(SysJobForm sysJobForm);
 
-    int updateSysJobForm(SysJobForm sysJobForm);
+    int updateSysJobForm(SysJob sysJob);
 
     int updateSysJob(SysJob sysJob);
 
-    int deleteJob(Integer id);
+    int deleteJob(SysJobForm sysJobForm);
 
     int deleteJobs(Integer[] ids);
 
 
+    int updateTimes(SysJob sysJob);
 }

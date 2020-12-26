@@ -34,7 +34,7 @@ public class MyJob implements Job {
 
     @SneakyThrows
     @Override
-    public void execute(JobExecutionContext context) throws JobExecutionException {
+    public void execute(JobExecutionContext context)  {
         //获取传递过来的jobDataMap
         JobDataMap jobDataMap = context.getJobDetail().getJobDataMap();
 

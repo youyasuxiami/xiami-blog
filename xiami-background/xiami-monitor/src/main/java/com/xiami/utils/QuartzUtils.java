@@ -1,8 +1,6 @@
 package com.xiami.utils;
 
 import com.xiami.dto.SysJobForm;
-import com.xiami.entity.SysJob;
-import com.xiami.exception.QuartzException;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.TriggerKey;
 

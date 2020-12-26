@@ -10,9 +10,14 @@ import com.xiami.entity.TType;
 import com.xiami.exception.QuartzException;
 import com.xiami.service.SysJobService;
 import lombok.extern.slf4j.Slf4j;
+import org.quartz.CronExpression;
+import org.quartz.CronTrigger;
 import org.quartz.SchedulerException;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +25,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.text.ParseException;
+import java.util.Date;
 
 /**
  * Description：
@@ -32,6 +40,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @EnableScheduling
 @RequestMapping("/monitor")
+@Transactional
 @Slf4j
 public class JobController {
 
@@ -57,26 +66,30 @@ public class JobController {
         return new ResponseResult(ResponseResult.CodeStatus.OK, "获取定时任务列表数据成功", jobList);
     }
 
-    //
-    ///**
-    // * 新增/编辑
-    // *
-    // * @param tType
-    // * @return
-    // */
+    /**
+     * 新增/编辑定时任务
+     *
+     * @param sysJobForm
+     * @return
+     */
     @PostMapping("/addUpdateJob")
     public ResponseResult addUpdateJob(@RequestBody SysJobForm sysJobForm) {
         if (null == sysJobForm.getId()) {
             //新增
-            int i = sysJobService.addJob(sysJobForm);
-            if (i > 0) {
-                return new ResponseResult(ResponseResult.CodeStatus.OK, "新增定时任务成功");
-            } else {
+            try {
+                int i = sysJobService.addJob(sysJobForm);
+                if (i > 0) {
+                    return new ResponseResult(ResponseResult.CodeStatus.OK, "新增定时任务成功");
+                }
                 return new ResponseResult(ResponseResult.CodeStatus.FAIL, "新增定时任务失败");
+            } catch (DuplicateKeyException e) {
+                return new ResponseResult(ResponseResult.CodeStatus.FAIL, "任务名称和任务组别已存在，请重新输入");
             }
         }
         //编辑
-        int j = sysJobService.updateSysJobForm(sysJobForm);
+        SysJob sysJob=new SysJob();
+        BeanUtils.copyProperties(sysJobForm,sysJob);
+        int j = sysJobService.updateSysJobForm(sysJob);
         if (j > 0) {
             return new ResponseResult(ResponseResult.CodeStatus.OK, "更新定时任务成功");
         } else {
@@ -85,10 +98,13 @@ public class JobController {
     }
 
     @DeleteMapping("/deleteJob")
-    public ResponseResult deleteJob(Integer id) {
-        int i = sysJobService.deleteJob(id);
+    public ResponseResult deleteJob(SysJobForm sysJobForm) {
+        int i = sysJobService.deleteJob(sysJobForm);
         if (i > 0) {
-            return new ResponseResult(ResponseResult.CodeStatus.OK, "删除定时任务成功");
+            //删除定时任务成功后，停止该定时任务
+            //try {
+            quartzConfig.stopJob(sysJobForm.getJobName(), sysJobForm.getJobGroup());
+            return new ResponseResult(ResponseResult.CodeStatus.OK, "定时任务成功");
         } else {
             return new ResponseResult(ResponseResult.CodeStatus.FAIL, "删除定时任务失败");
         }
@@ -98,6 +114,7 @@ public class JobController {
     public ResponseResult deleteJobs(Integer[] ids) {
         int i = sysJobService.deleteJobs(ids);
         if (i > 0) {
+            log.info("删除定时任务成功");
             return new ResponseResult(ResponseResult.CodeStatus.OK, "删除定时任务成功");
         } else {
             return new ResponseResult(ResponseResult.CodeStatus.FAIL, "删除定时任务失败");
@@ -106,53 +123,49 @@ public class JobController {
 
     @PostMapping("/startJob")
     public ResponseResult startJob(@RequestBody SysJobForm sysJobForm) {
+        //开启定时任务
+        quartzConfig.start(sysJobForm);
+        //开启成功，更新该id的定时任务的状态
+        sysJobForm.setJobStatus("2");
+        String cronExpression = sysJobForm.getCronExpression();
         try {
-            //开启定时任务
-            quartzConfig.start(sysJobForm);
-            //开启成功，更新该id的定时任务的状态
-            sysJobForm.setJobStatus("2");
-            sysJobService.updateSysJobForm(sysJobForm);
+            CronExpression cronExpression1 = new CronExpression(cronExpression);
+            Date nextValidTimeAfter = cronExpression1.getNextValidTimeAfter(new Date());
+            SysJob sysJob=new SysJob();
+            BeanUtils.copyProperties(sysJobForm,sysJob);
+            sysJob.setNextTime(nextValidTimeAfter);
+            sysJob.setJobStatus("2");
+            sysJobService.updateSysJobForm(sysJob);
+            log.info("开启定时任务成功");
             return new ResponseResult(ResponseResult.CodeStatus.OK, "开启定时任务成功");
-        } catch (SchedulerException e) {
-            return new ResponseResult(ResponseResult.CodeStatus.FAIL, "开启定时任务失败");
-        } catch (QuartzException e) {
+        } catch (ParseException e) {
+            log.error("生成CronExpression表达式失败：{}",e);
             return new ResponseResult(ResponseResult.CodeStatus.FAIL, "开启定时任务失败");
         }
+
     }
 
-    @PostMapping("/pauseJob")
-    public ResponseResult pauseJob(@RequestBody SysJobForm sysJobForm) {
-        //暂停定时任务
-        try {
-            quartzConfig.pauseJob(sysJobForm.getJobName(), sysJobForm.getJobGroup(),sysJobForm.getId());
-            sysJobForm.setJobStatus("3");
-            sysJobService.updateSysJobForm(sysJobForm);
-            log.info("暂停定时任务成功");
-            return new ResponseResult(ResponseResult.CodeStatus.OK, "暂停定时任务成功");
-        } catch (SchedulerException e) {
-            log.error("暂停定时任务失败:{}",e);
-            return new ResponseResult(ResponseResult.CodeStatus.FAIL, "暂停定时任务失败");
-        } catch (QuartzException e) {
-            log.error("暂停定时任务失败:{}",e);
-            return new ResponseResult(ResponseResult.CodeStatus.FAIL, "暂停定时任务失败");
-        }
+    @PostMapping("/stopJob")
+    public ResponseResult stopJob(@RequestBody SysJobForm sysJobForm) {
+        //停止定时任务
+        quartzConfig.stopJob(sysJobForm.getJobName(), sysJobForm.getJobGroup());
+        sysJobForm.setJobStatus("1");//更改状态为未发布
+        SysJob sysJob=new SysJob();
+        BeanUtils.copyProperties(sysJobForm,sysJob);
+        sysJobService.updateSysJobForm(sysJob);
+        log.info("停止定时任务成功");
+        return new ResponseResult(ResponseResult.CodeStatus.OK, "停止定时任务成功");
     }
 
     @PostMapping("/resumeJob")
     public ResponseResult resumeJob(@RequestBody SysJobForm sysJobForm) {
-        //暂停定时任务
-        try {
-            quartzConfig.resumeJob(sysJobForm.getJobName(), sysJobForm.getJobGroup(),sysJobForm.getId());
-            sysJobForm.setJobStatus("2");
-            sysJobService.updateSysJobForm(sysJobForm);
-            log.info("恢复定时任务成功");
-            return new ResponseResult(ResponseResult.CodeStatus.OK, "恢复定时任务成功");
-        } catch (SchedulerException e) {
-            log.error("恢复定时任务失败:{}",e);
-            return new ResponseResult(ResponseResult.CodeStatus.FAIL, "恢复定时任务失败");
-        } catch (QuartzException e) {
-            log.error("恢复定时任务失败:{}",e);
-            return new ResponseResult(ResponseResult.CodeStatus.FAIL, "恢复定时任务失败");
-        }
+        //停止定时任务
+        quartzConfig.resumeJob(sysJobForm.getJobName(), sysJobForm.getJobGroup(), sysJobForm.getId());
+        sysJobForm.setJobStatus("2");
+        SysJob sysJob=new SysJob();
+        BeanUtils.copyProperties(sysJobForm,sysJob);
+        sysJobService.updateSysJobForm(sysJob);
+        log.info("恢复定时任务成功");
+        return new ResponseResult(ResponseResult.CodeStatus.OK, "恢复定时任务成功");
     }
 }

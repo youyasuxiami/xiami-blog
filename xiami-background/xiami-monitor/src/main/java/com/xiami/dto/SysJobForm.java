@@ -58,5 +58,7 @@ public class SysJobForm {
      */
     private String jobStatus;
 
-    private Date nextTime;
+    private String nextTime;
+
+
 }
