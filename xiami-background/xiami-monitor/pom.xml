@@ -41,6 +41,16 @@
         </dependency>
         <!-- 注入quartz.properties  end-->
 
+        <!-- 服务器监控  start-->
+        <dependency>
+            <groupId>com.github.oshi</groupId>
+            <artifactId>oshi-core</artifactId>
+        </dependency>
 
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+        </dependency>
+        <!-- 服务器监控  end-->
     </dependencies>
 </project>

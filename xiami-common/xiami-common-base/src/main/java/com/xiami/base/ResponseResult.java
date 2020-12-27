@@ -1,5 +1,6 @@
 package com.xiami.base;
 
+import com.xiami.common.ResponseCode;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -133,5 +134,18 @@ public class ResponseResult<T> implements Serializable {
          * 验证码错误
          */
         public static final int INCORRECT_CREDENTIALS = 30002;
+    }
+
+    //另外的返回方式
+    public static <T> ResponseResult<T> ok(T data, String msg) {
+        return restResult(data, ResponseResult.CodeStatus.OK, msg);
+    }
+
+    private static <T> ResponseResult<T> restResult(T data, int code, String msg) {
+        ResponseResult<T> apiResult = new ResponseResult<>();
+        apiResult.setCode(code);
+        apiResult.setData(data);
+        apiResult.setMessage(msg);
+        return apiResult;
     }
 }

@@ -235,6 +235,20 @@
                 <version>${spring.version}</version>
             </dependency>
             <!-- 注入quartz.properties  end-->
+
+            <!-- 服务器监控  start-->
+            <dependency>
+                <groupId>com.github.oshi</groupId>
+                <artifactId>oshi-core</artifactId>
+                <version>3.9.1</version>
+            </dependency>
+
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>5.2.0</version>
+            </dependency>
+            <!-- 服务器监控  end-->
         </dependencies>
 
     </dependencyManagement>

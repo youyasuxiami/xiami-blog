@@ -35,7 +35,7 @@ import java.util.Date;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @EnableScheduling
-@RequestMapping("/monitor")
+@RequestMapping("/monitor/job")
 @Transactional
 @Slf4j
 public class JobController {
