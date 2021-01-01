@@ -88,15 +88,18 @@ public class UserRealm extends AuthorizingRealm {
             throw new AuthenticationException("token认证失败!");
         }
         User user = userService.getUserByName(username);
+        if(user==null){
+            throw new AuthenticationException("该用户不存在");
+        }
         BaseJwtInfo baseJwtInfo=new BaseJwtInfo();
         baseJwtInfo.setName(user.getName());
         baseJwtInfo.setUserId(user.getId());
 
-        String password=user.getPassword();
-        //如果没有查询到用户名对应的密码
-        if(password==null){
-            throw new AuthenticationException("该用户不存在");
-        }
+        //String password=user.getPassword();
+        ////如果没有查询到用户名对应的密码
+        //if(password==null){
+        //    throw new AuthenticationException("该用户不存在");
+        //}
         return new SimpleAuthenticationInfo(baseJwtInfo,token,"UserRealm");
     }
 

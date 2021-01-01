@@ -2,6 +2,7 @@ package com.xiami.filter;
 
 import com.xiami.base.Constant;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.authc.BasicHttpAuthenticationFilter;
@@ -32,12 +33,7 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
         //判断请求头是否带上“Token”
         if(isLoginAttempt(request, response)){
             //如果存在，则执行executeLogin方法登入，检查token是否正确
-            try {
-                executeLogin(request, response);
-                return true;
-            } catch (Exception e) {
-                responseError(response,e.getMessage());
-            }
+                return executeLogin(request, response);
         }
         //如果没有token，则可能是执行登录操作或者是游客状态访问，无需检查token，直接返回true
         return true;
@@ -86,18 +82,21 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
     }
 
     @Override
-    protected boolean executeLogin(ServletRequest request, ServletResponse response) throws Exception {
+    protected boolean executeLogin(ServletRequest request, ServletResponse response) {
         AuthenticationToken token = createToken(request, response);
         //提交给realm进行登入，如果错误就会抛出异常并被捕获
 
         if(token==null){
             return true;
         }
-        Subject subject = SecurityUtils.getSubject();
-        subject.login(token);
-
-        //getSubject(request, response).login(token);
-        return true;
+        try {
+            Subject subject = SecurityUtils.getSubject();
+            subject.login(token);
+            return true;
+        } catch (AuthenticationException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     /**

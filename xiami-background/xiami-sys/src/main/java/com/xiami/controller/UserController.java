@@ -2,6 +2,7 @@ package com.xiami.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.xiami.ImprotExcelUtil;
+import com.xiami.annotation.OperatorLog;
 import com.xiami.base.PageResult;
 import com.xiami.base.ResponseResult;
 import com.xiami.dto.PageRequestDto;
@@ -92,6 +93,7 @@ public class UserController {
      * @param userDto
      * @return
      */
+    @OperatorLog("新增/编辑用户")
     @PostMapping("/addUser")
     public ResponseResult<User> addUser(@RequestBody UserDto userDto) {
         //新增用户
@@ -119,6 +121,7 @@ public class UserController {
      * @param status
      * @return
      */
+    @OperatorLog("更新用户状态")
     @PostMapping("/updateUserStatus")
     public ResponseResult<User> updateUserStatus(Integer id, String status) {
         User user = new User();
@@ -133,6 +136,7 @@ public class UserController {
      * @param id
      * @return
      */
+    @OperatorLog("删除用户")
     @PostMapping("/deleteUser")
     public ResponseResult<User> deleteUser(Integer id) {
         return userService.deleteUser(id);
@@ -144,6 +148,7 @@ public class UserController {
      * @param file
      * @return
      */
+    @OperatorLog("批量导入用户")
     @PostMapping("/importExcel")
     public ResponseResult<User> importExcel(@RequestParam("file") MultipartFile file) throws IOException {
         if (!file.isEmpty()) {
@@ -172,6 +177,7 @@ public class UserController {
      * @return
      * @throws IOException
      */
+    @OperatorLog("批量导出用户")
     @GetMapping(value = "/exportUserToExcel")
     public void exportUserToExcel(HttpServletResponse response, UserQueryDto userQueryDto) throws Exception {
 
@@ -194,6 +200,7 @@ public class UserController {
      * @return
      * @throws IOException
      */
+    @OperatorLog("导出用户数据")
     @GetMapping(value = "/exportAllUserToExcel")
     public void exportAllUserToExcel(HttpServletResponse response, UserQueryDto userQueryDto) throws Exception {
 
@@ -215,6 +222,7 @@ public class UserController {
      * @param ids
      * @return
      */
+    @OperatorLog("批量删除用户")
     @GetMapping("/deleteUsers")
     public ResponseResult<User> deleteUsers(Integer[] ids) {
         return userService.deleteUsers(ids);

@@ -1,5 +1,6 @@
 package com.xiami.controller;
 
+import com.xiami.annotation.OperatorLog;
 import com.xiami.base.PageResult;
 import com.xiami.base.ResponseResult;
 import com.xiami.config.QuartzConfig;
@@ -68,6 +69,7 @@ public class JobController {
      * @param sysJobForm
      * @return
      */
+    @OperatorLog("新增/编辑定时任务")
     @PostMapping("/addUpdateJob")
     public ResponseResult addUpdateJob(@RequestBody SysJobForm sysJobForm) {
         if (null == sysJobForm.getId()) {
@@ -93,6 +95,7 @@ public class JobController {
         }
     }
 
+    @OperatorLog("删除定时任务")
     @DeleteMapping("/deleteJob")
     public ResponseResult deleteJob(SysJobForm sysJobForm) {
         int i = sysJobService.deleteJob(sysJobForm);
@@ -106,6 +109,7 @@ public class JobController {
         }
     }
 
+    @OperatorLog("批量删除定时任务")
     @DeleteMapping("/deleteJobs")
     public ResponseResult deleteJobs(Integer[] ids) {
         int i = sysJobService.deleteJobs(ids);
@@ -117,6 +121,7 @@ public class JobController {
         }
     }
 
+    @OperatorLog("启动定时任务")
     @PostMapping("/startJob")
     public ResponseResult startJob(@RequestBody SysJobForm sysJobForm) {
         //开启定时任务
@@ -141,6 +146,7 @@ public class JobController {
 
     }
 
+    @OperatorLog("停止定时任务")
     @PostMapping("/stopJob")
     public ResponseResult stopJob(@RequestBody SysJobForm sysJobForm) {
         //停止定时任务
@@ -153,6 +159,7 @@ public class JobController {
         return new ResponseResult(ResponseResult.CodeStatus.OK, "停止定时任务成功");
     }
 
+    @OperatorLog("恢复定时任务")
     @PostMapping("/resumeJob")
     public ResponseResult resumeJob(@RequestBody SysJobForm sysJobForm) {
         //停止定时任务

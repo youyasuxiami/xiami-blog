@@ -2,6 +2,7 @@ package com.xiami.controller;
 
 import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClientBuilder;
+import com.xiami.annotation.OperatorLog;
 import com.xiami.base.ResponseResult;
 import com.xiami.dto.FileInfo;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -29,6 +30,7 @@ public class UploadController {
     private static final String BUCKET_NAME = "youyasumi-oss";
 
     @PostMapping("")
+    @OperatorLog("文件上传")
     public ResponseResult upload(MultipartFile multipartFile) {
         String fileName = multipartFile.getOriginalFilename();
         String suffix = fileName.substring(fileName.lastIndexOf(".") + 1);

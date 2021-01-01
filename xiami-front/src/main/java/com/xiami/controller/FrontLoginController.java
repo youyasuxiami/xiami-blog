@@ -3,6 +3,7 @@ package com.xiami.controller;
 import com.google.common.collect.Maps;
 import com.xiami.AccountSecurityUtils;
 import com.xiami.JWTUtil;
+import com.xiami.annotation.OperatorLog;
 import com.xiami.base.ResponseResult;
 import com.xiami.dto.FrontLoginInfo;
 import com.xiami.dto.FrontLoginParam;
@@ -42,11 +43,13 @@ public class FrontLoginController {
     @Autowired
     private UserService userService;
 
+    @OperatorLog("前台注册")
     @PostMapping("/register")
     public ResponseResult register(@RequestBody UserDto userDto) {
         return userService.addMember(userDto);
     }
 
+    @OperatorLog("前台登录")
     @PostMapping(value = "/login")
     public ResponseResult login(@RequestBody FrontLoginParam frontLoginParam) {
         Subject subject = SecurityUtils.getSubject();
@@ -99,6 +102,7 @@ public class FrontLoginController {
      *
      * @return {@link ResponseResult}
      */
+    @OperatorLog("注销")
     @PostMapping(value = "/logout")
     public ResponseResult<Void> logout(HttpServletRequest request) {
         Subject subject = SecurityUtils.getSubject();
@@ -110,7 +114,6 @@ public class FrontLoginController {
         //tokenStore.removeAccessToken(oAuth2AccessToken);
         return new ResponseResult<Void>(ResponseResult.CodeStatus.OK, "用户已注销");
     }
-
 
     @GetMapping(value = "/getUserInfo")
     public ResponseResult getUserInfo(Integer blogId) {

@@ -1,5 +1,6 @@
 package com.xiami.controller;
 
+import com.xiami.annotation.OperatorLog;
 import com.xiami.base.ResponseResult;
 import com.xiami.dto.TypeQueryDto;
 import com.xiami.entity.TType;
@@ -44,6 +45,7 @@ public class BlogTypeController {
      * @param tType
      * @return
      */
+    @OperatorLog("新增分类")
     @PostMapping("/addType")
     public ResponseResult addType(@RequestBody TType tType) {
         if (null == tType.getId()) {
@@ -54,11 +56,13 @@ public class BlogTypeController {
         return tTypeService.updateType(tType);
     }
 
+    @OperatorLog("删除分类")
     @DeleteMapping("/deleteType")
     public ResponseResult deleteType(Integer id) {
         return tTypeService.deleteType(id);
     }
 
+    @OperatorLog("批量删除分类")
     @DeleteMapping("/deleteTypes")
     public ResponseResult deleteTypes(Integer[] ids) {
         return tTypeService.deleteTypes(ids);

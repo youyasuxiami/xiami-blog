@@ -134,6 +134,11 @@ public class ResponseResult<T> implements Serializable {
          * 验证码错误
          */
         public static final int INCORRECT_CREDENTIALS = 30002;
+
+        /**
+         * 非法请求
+         */
+        public static final int ERROR_ACCOUNT_PASSWORD = 426;
     }
 
     //另外的返回方式

@@ -1,5 +1,6 @@
 package com.xiami.controller;
 
+import com.xiami.annotation.OperatorLog;
 import com.xiami.base.ResponseResult;
 import com.xiami.service.RedisService;
 import lombok.AllArgsConstructor;
@@ -15,6 +16,7 @@ public class RedisController {
     private final RedisService redisService;
 
     @GetMapping()
+    @OperatorLog("redis监控")
     public ResponseResult getInfo() {
         return ResponseResult.ok(redisService.getInfo(),"获取redis信息成功");
     }

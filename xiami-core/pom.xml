@@ -13,6 +13,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>xiami-core-base</module>
+        <module>xiami-core-log</module>
     </modules>
 
 

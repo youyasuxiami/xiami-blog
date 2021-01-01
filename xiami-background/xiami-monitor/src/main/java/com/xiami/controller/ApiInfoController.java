@@ -1,5 +1,6 @@
 package com.xiami.controller;
 
+import com.xiami.annotation.OperatorLog;
 import com.xiami.base.ResponseResult;
 import lombok.AllArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -26,6 +27,7 @@ public class ApiInfoController {
     private final JdbcTemplate jdbcTemplate;
 
     @GetMapping()
+    @OperatorLog("API监控数据")
     public ResponseResult getInfo() throws Exception {
         Map<String, Object> statMap = new HashMap<>();
         String sql = "select oper_url name, sum(1) value from sys_oper_log group by oper_url order by value";

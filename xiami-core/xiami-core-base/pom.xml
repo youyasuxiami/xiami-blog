@@ -183,6 +183,12 @@
             <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
         <!-- redis  end-->
+
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>com.xiami</groupId>
             <artifactId>xiami-common-base</artifactId>
