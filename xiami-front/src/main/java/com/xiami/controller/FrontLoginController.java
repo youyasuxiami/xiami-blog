@@ -67,7 +67,7 @@ public class FrontLoginController {
         Map<String, String> map = new HashMap<>();
         map.put("name", frontLoginParam.getName());
         //String token = JWTUtil.createToken(loginParam.getUsername());
-        String token = JWTUtil.createToken(map);
+        String token = JWTUtil.createToken(map,passwordJieMi);
         JWTToken jwtToken = new JWTToken(token);
         subject.login(jwtToken);
 

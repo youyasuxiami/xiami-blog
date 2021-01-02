@@ -145,4 +145,6 @@ public interface UserService {
      * @return
      */
     User getUserByName(String name);
+
+    int resetUser(Integer id);
 }

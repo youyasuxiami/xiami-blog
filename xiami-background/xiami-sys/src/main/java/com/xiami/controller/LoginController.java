@@ -6,13 +6,10 @@ import com.xiami.AccountSecurityUtils;
 import com.xiami.JWTUtil;
 import com.xiami.annotation.OperatorLog;
 import com.xiami.base.ResponseResult;
-import com.xiami.base.ResponseResult1;
 import com.xiami.dto.LoginInfo;
-import com.xiami.dto.LoginParam;
 import com.xiami.entity.User;
 import com.xiami.filter.JWTToken;
 import com.xiami.service.LoginService;
-import com.xiami.service.UserService;
 import com.xiami.utils.ShiroUtils;
 import com.xiami.utils.UserUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +22,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -130,16 +126,16 @@ public class LoginController {
 
     @OperatorLog("后台登录")
     @PostMapping(value = "/login")
-    public ResponseResult<Map<String, Object>> login(@RequestBody LoginParam loginParam) {
+    public ResponseResult<Map<String, Object>> login(String username,String password,String captcha) {
         //比对验证码
         String serverKaptcha = ShiroUtils.getKaptcha();
-        //if (!serverKaptcha.equalsIgnoreCase(loginParam.getCaptcha())) {
+        //if (!serverKaptcha.equalsIgnoreCase(captcha)) {
         //    return new ResponseResult<Map<String, Object>>(ResponseResult.CodeStatus.CODE_ERROR,"验证码错误" );
         //}
         Subject subject = SecurityUtils.getSubject();
         //解密
-        String passwordJieMi = AccountSecurityUtils.decrypt(loginParam.getPassword().trim());
-        String passwordJiaMi = new Md5Hash(passwordJieMi, loginParam.getUsername(), 1024).toBase64();
+        String passwordJieMi = AccountSecurityUtils.decrypt(password);
+        String passwordJiaMi = new Md5Hash(passwordJieMi, username, 1024).toBase64();
         //加密（数据库的密码）
         //String passwordJiaMi = MD5Utils.md5(passwordJieMi, loginParam.getUsername(), 1024);
         //通过subject 身份认证
@@ -150,16 +146,16 @@ public class LoginController {
 
         //储存,生成token
         Map<String, String> map = new HashMap<>();
-        map.put("name", loginParam.getUsername());
-        //String token = JWTUtil.createToken(loginParam.getUsername());
-        String token = JWTUtil.createToken(map);
+        map.put("name", username);
+        String token = JWTUtil.createToken(map,passwordJiaMi);
         JWTToken jwtToken = new JWTToken(token);
         try {
             subject.login(jwtToken);
             Map<String, Object> result = Maps.newHashMap();
             result.put("token", token);
             return new ResponseResult<Map<String, Object>>(ResponseResult.CodeStatus.OK, "登录成功", result);
-        } catch (AuthenticationException e) {
+        }
+        catch (AuthenticationException e) {
             log.error("登录失败:{}",e);
             return new ResponseResult<Map<String, Object>>(ResponseResult.CodeStatus.ERROR_ACCOUNT_PASSWORD, "用户名或者密码错误，请重新输入");
         }

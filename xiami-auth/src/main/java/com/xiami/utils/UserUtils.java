@@ -56,12 +56,15 @@ public class UserUtils implements ApplicationContextAware {
         User user;
         try {
             String token=request.getHeader(tokenHeader);
-            user=authUtils.getUser(token);
-            return  user;
+            if(!"undefined".equals(token)&&token!=null){
+                user=authUtils.getUser(token);
+                return user;
+            }
+            return null;
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
-        return null;
     }
 
     //@PostConstruct

@@ -26,6 +26,10 @@ import java.util.Objects;
 @UtilityClass
 public class OperLogUtil {
 
+    private static HttpServletRequest getCurRequest() {
+        return ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+    }
+
     public PreparedStatementSetter setOperLog(String title, long time, String userName, String clientId, String errorMsg) {
         HttpServletRequest request = ((ServletRequestAttributes) Objects
                 .requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
@@ -65,7 +69,10 @@ public class OperLogUtil {
      */
     public String getClientId() {
         User user = UserUtils.getUser();
-        String id = String.valueOf(user.getId());
+        String id = "";
+        if (user != null) {
+            id = String.valueOf(user.getId());
+        }
         return id;
     }
 
@@ -76,7 +83,13 @@ public class OperLogUtil {
      */
     public String getUsername() {
         User user = UserUtils.getUser();
-        String userName = user.getName();
+        String userName = "";
+        if (user == null) {
+            HttpServletRequest request = getCurRequest();
+            userName = request.getParameter("username");
+        } else {
+            userName = user.getName();
+        }
         return userName;
     }
 }

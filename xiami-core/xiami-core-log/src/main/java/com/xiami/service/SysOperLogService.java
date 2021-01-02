@@ -8,4 +8,8 @@ public interface SysOperLogService{
 
 
     PageResult getOperationLogList(PageRequestDto pageRequestDto, SysOperLog sysOperLog);
+
+    int deleteLog(Integer id);
+
+    int deleteLogs(Integer[] ids);
 }

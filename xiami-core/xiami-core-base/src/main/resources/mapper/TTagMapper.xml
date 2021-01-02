@@ -23,10 +23,10 @@
                 AND name=#{tagName}
             </if>
             <if test="beginTime != null and beginTime != ''">
-                AND DATE_FORMAT(t.create_time, '%Y-%m-%d' ) &gt;= #{beginTime}
+                AND DATE_FORMAT(create_time, '%Y-%m-%d' ) &gt;= #{beginTime}
             </if>
             <if test="endTime != null and endTime != ''">
-                AND DATE_FORMAT(t.create_time, '%Y-%m-%d' ) &lt;= #{endTime}
+                AND DATE_FORMAT(create_time, '%Y-%m-%d' ) &lt;= #{endTime}
             </if>
         </where>
     </select>

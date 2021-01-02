@@ -63,43 +63,27 @@ public class UserRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
-        //UsernamePasswordToken usernamePasswordToken = (UsernamePasswordToken) authenticationToken;
-        //String username = usernamePasswordToken.getUsername();
-        //String password = new String(usernamePasswordToken.getPassword());
-        //User user = profileService.getUserInfo(username);
-        //if (user == null) {
-        //    throw new UnknownAccountException("账户不存在");
-        //}
-        //if (!user.getPassword().equals(password)) {
-        //    throw new IncorrectCredentialsException("密码不正确");
-        //}
-        //if (user.getStatus().equals("0")) {
-        //    throw new LockedAccountException("账户被冻结，请联系管理员");
-        //}
-        ////第一个参数用户对象，第二个是前端传过来的密码，第三个是shiro任意名
-        //SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user, password, this.getName());
-        //return info;
+        System.out.println("触发doGetAuthenticationInfo");
+
         //获得token
         String token = (String) authenticationToken.getCredentials();
         //从token中获得username
         String username = JWTUtil.getUsername(token);
         //如果username为空或者验证不匹配
-        if(username == null||!JWTUtil.verify(token,username)){
-            throw new AuthenticationException("token认证失败!");
+        if(username == null){
+            throw new AuthenticationException("token无效!");
         }
         User user = userService.getUserByName(username);
         if(user==null){
-            throw new AuthenticationException("该用户不存在");
+            throw new AuthenticationException("该用户"+username+"不存在");
+        }
+        if (!JWTUtil.verify(token, username, user.getPassword())) {
+            throw new AuthenticationException("用户名/密码错误");
         }
         BaseJwtInfo baseJwtInfo=new BaseJwtInfo();
         baseJwtInfo.setName(user.getName());
         baseJwtInfo.setUserId(user.getId());
 
-        //String password=user.getPassword();
-        ////如果没有查询到用户名对应的密码
-        //if(password==null){
-        //    throw new AuthenticationException("该用户不存在");
-        //}
         return new SimpleAuthenticationInfo(baseJwtInfo,token,"UserRealm");
     }
 

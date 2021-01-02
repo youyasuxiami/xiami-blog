@@ -25,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -48,9 +49,6 @@ public class OperatorAspect {
     private final TaskExecutor taskExecutor;
     private final JdbcTemplate jdbcTemplate;
 
-    private static HttpServletRequest getCurRequest() {
-        return ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-    }
 
     private static long executeTime = 0;
 
@@ -61,20 +59,20 @@ public class OperatorAspect {
     public void logPointCut() {
     }
 
-    @SneakyThrows
-    @Around("logPointCut()")
-    public Object around(ProceedingJoinPoint point) {
-        String strClassName = point.getTarget().getClass().getName();
-        String strMethodName = point.getSignature().getName();
-
-        Long startTime = System.currentTimeMillis();
-        Object obj = point.proceed();
-        executeTime = System.currentTimeMillis() - startTime;
-
-        log.debug("[类名]:{},[方法]:{},[耗时]:{}", strClassName, strMethodName, executeTime + "毫秒");
-
-        return obj;
-    }
+    //@SneakyThrows
+    //@Around("logPointCut()")
+    //public Object around(ProceedingJoinPoint point) {
+    //    String strClassName = point.getTarget().getClass().getName();
+    //    String strMethodName = point.getSignature().getName();
+    //
+    //    Long startTime = System.currentTimeMillis();
+    //    Object obj = point.proceed();
+    //    executeTime = System.currentTimeMillis() - startTime;
+    //
+    //    log.debug("[类名]:{},[方法]:{},[耗时]:{}", strClassName, strMethodName, executeTime + "毫秒");
+    //
+    //    return obj;
+    //}
 
     /**
      * 处理完请求后执行
@@ -94,72 +92,70 @@ public class OperatorAspect {
      */
     @AfterThrowing(value = "logPointCut()", throwing = "e")
     public void doAfterThrowing(JoinPoint joinPoint, Exception e) {
-        System.out.println("异常++++++++++");
+        log.error("拦截异常,{}",e);
         handleLog(joinPoint, e);
     }
 
     protected void handleLog(final JoinPoint joinPoint, final Exception e) {
-            // 获得注解
-            OperatorLog operatorLog = getAnnotationLog(joinPoint);
-            if (operatorLog == null) {
-                return;
-            }
+        // 获得注解
+        OperatorLog operatorLog = getAnnotationLog(joinPoint);
+        if (operatorLog == null) {
+            return;
+        }
 
-            // 用户名
-            String userName = "";
-            // 异常信息
-            String errorMsg = "";
-            if (e != null) {
-                errorMsg = e.getMessage();
-                HttpServletRequest request = getCurRequest();
-                userName = request.getParameter("username");
-            } else {
-                userName = Objects.requireNonNull(OperLogUtil.getUsername());
-            }
+        // 异常信息
+        String errorMsg = "";
+        if (e != null) {
+            errorMsg = e.getMessage();
+        }
 
-            // 终端编号
-            String clientId = OperLogUtil.getClientId();
+        // 用户名
+        String userName = OperLogUtil.getUsername();
+        // 终端编号
+        String clientId = OperLogUtil.getClientId();
 
-            SysOperLog sysOperLog = new SysOperLog();
-            HttpServletRequest request = ((ServletRequestAttributes) Objects
-                    .requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
-            String ip = ServletUtil.getClientIP(request);
-            sysOperLog.setType("1");
-            sysOperLog.setTitle(operatorLog.value());
-            sysOperLog.setMethod(request.getMethod());
-            sysOperLog.setUserAgent(request.getHeader("user-agent"));
-            sysOperLog.setOperName(userName);
+        SysOperLog sysOperLog = new SysOperLog();
+        HttpServletRequest request = ((ServletRequestAttributes) Objects
+                .requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
+        String ip = ServletUtil.getClientIP(request);
+        sysOperLog.setType("1");
+        sysOperLog.setTitle(operatorLog.value());
+        sysOperLog.setMethod(request.getMethod());
+        sysOperLog.setUserAgent(request.getHeader("user-agent"));
+        sysOperLog.setOperName(userName);
+        if(!StringUtils.isEmpty(clientId)){
             sysOperLog.setClientId(clientId);
+        }
 
-            String path = URLUtil.getPath(request.getRequestURI());
-            sysOperLog.setOperUrl(path);
+        String path = URLUtil.getPath(request.getRequestURI());
+        sysOperLog.setOperUrl(path);
 
-            sysOperLog.setOperIp(ip);
+        sysOperLog.setOperIp(ip);
 
-            sysOperLog.setOperAddr(AddressUtil.getCityInfo(ip));
-            sysOperLog.setOperParam(HttpUtil.toParams(request.getParameterMap()));
+        sysOperLog.setOperAddr(AddressUtil.getCityInfo(ip));
+        sysOperLog.setOperParam(HttpUtil.toParams(request.getParameterMap()));
             if (StrUtil.isNotBlank(errorMsg)) {
-                sysOperLog.setStatus(1);
-                sysOperLog.setErrorMsg(errorMsg);
-            } else {
-                sysOperLog.setStatus(0);
-                sysOperLog.setErrorMsg(errorMsg);
-            }
+            sysOperLog.setStatus(1);
+            sysOperLog.setErrorMsg(errorMsg);
+        } else {
+            sysOperLog.setStatus(0);
+            sysOperLog.setErrorMsg(errorMsg);
+        }
 
-            sysOperLog.setExecuteTime(userName);
-            sysOperLog.setOperTime(new Date());
-            int insert = sysOperLogMapper.insert(sysOperLog);
-            if (insert > 0) {
-                log.info("插入日志成功,操作是{}", operatorLog.value());
-            } else {
-                log.info("插入日志失败,操作是{}", operatorLog.value());
-            }
+        sysOperLog.setExecuteTime(userName);
+        sysOperLog.setOperTime(new Date());
+        int insert = sysOperLogMapper.insertSelective(sysOperLog);
+        if (insert > 0) {
+            log.info("插入日志成功,操作是{}", operatorLog.value());
+        } else {
+            log.info("插入日志失败,操作是{}", operatorLog.value());
+        }
 
-            //PreparedStatementSetter pss = OperLogUtil.setOperLog(operatorLog.value(), executeTime, userName, clientId, errorMsg);
-            //
-            //CompletableFuture.runAsync(() -> {
-            //    jdbcTemplate.update(SqlConstants.OPER_LOG, pss);
-            //}, taskExecutor);
+        //PreparedStatementSetter pss = OperLogUtil.setOperLog(operatorLog.value(), executeTime, userName, clientId, errorMsg);
+        //
+        //CompletableFuture.runAsync(() -> {
+        //    jdbcTemplate.update(SqlConstants.OPER_LOG, pss);
+        //}, taskExecutor);
     }
 
     /**

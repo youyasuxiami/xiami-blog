@@ -25,4 +25,11 @@
     id, `type`, title, `method`, user_agent, oper_name, client_id, oper_url, oper_ip, 
     oper_addr, oper_param, `status`, error_msg, execute_time, oper_time
   </sql>
+    <delete id="deleteLogs">
+      delete from sys_oper_log
+      where id in
+      <foreach collection="array" item="item" open="(" close=")" separator=",">
+        #{item}
+      </foreach>
+    </delete>
 </mapper>

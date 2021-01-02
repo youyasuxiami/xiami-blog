@@ -98,10 +98,9 @@ public class UserController {
     public ResponseResult<User> addUser(@RequestBody UserDto userDto) {
         //新增用户
         if (userDto.getId() == null) {
-            //初始密码
-            String newPass = new Md5Hash("123456", userDto.getName(), 1024).toBase64();
+            //初始密码（生成密码规则）
+            String newPass = new Md5Hash(userDto.getPassword(), userDto.getName(), 1024).toBase64();
             userDto.setPassword(newPass);
-            //user.setAvatar("http://youyasumi-oss.oss-cn-beijing.aliyuncs.com/76e11fce-e7fd-4985-84ec-2332b9dfef84.png");
             userDto.setAvatar(userDto.getAvatar());
             userDto.setCreateTime(new Date());
             userDto.setUpdateTime(new Date());
@@ -246,5 +245,21 @@ public class UserController {
     @GetMapping("/getCheckedRoles")
     public ResponseResult<User> getCheckedRoles(Integer id) {
         return userService.getCheckedRoles(id);
+    }
+
+    /**
+     * 重置密码
+     * @param id
+     * @return
+     */
+    @OperatorLog("重置密码")
+    @PostMapping("/resetUser")
+    public ResponseResult<User> resetUser(Integer id) {
+        int i = userService.resetUser(id);
+        if(i>0){
+            return new ResponseResult<>(ResponseResult.CodeStatus.OK,"重置密码成功,新密码是123456");
+        }else{
+            return new ResponseResult<>(ResponseResult.CodeStatus.FAIL,"重置密码失败");
+        }
     }
 }

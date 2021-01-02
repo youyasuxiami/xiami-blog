@@ -815,5 +815,16 @@ public class UserServiceImpl implements UserService {
         User user = userMapper.selectOne(user1);
         return user;
     }
+
+    @Override
+    public int resetUser(Integer id) {
+        User user=new User();
+        user.setId(id);
+        User user1 = userMapper.selectOne(user);
+        String newPass = new Md5Hash("123456", user1.getName(), 1024).toBase64();
+        user.setPassword(newPass);
+        user.setUpdateTime(new Date());
+        return userMapper.updateByPrimaryKeySelective(user);
+    }
 }
 
