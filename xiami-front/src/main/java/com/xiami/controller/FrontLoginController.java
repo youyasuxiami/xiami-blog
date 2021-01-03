@@ -51,11 +51,12 @@ public class FrontLoginController {
 
     @OperatorLog("前台登录")
     @PostMapping(value = "/login")
-    public ResponseResult login(@RequestBody FrontLoginParam frontLoginParam) {
+    //public ResponseResult login(@RequestBody FrontLoginParam frontLoginParam) {
+    public ResponseResult login(String username,String password) {
         Subject subject = SecurityUtils.getSubject();
         //解密
-        String passwordJieMi = AccountSecurityUtils.decrypt(frontLoginParam.getPassword().trim());
-        String passwordJiaMi = new Md5Hash(passwordJieMi, frontLoginParam.getName(), 1024).toBase64();
+        String passwordJieMi = AccountSecurityUtils.decrypt(password);
+        String passwordJiaMi = new Md5Hash(passwordJieMi, username, 1024).toBase64();
         //加密
         //String passwordJiaMi = MD5Utils.md5(passwordJieMi, loginParam.getUsername(), 1024);
         //通过subject 身份认证
@@ -65,9 +66,9 @@ public class FrontLoginController {
         //}
         //储存,生成token
         Map<String, String> map = new HashMap<>();
-        map.put("name", frontLoginParam.getName());
+        map.put("name", username);
         //String token = JWTUtil.createToken(loginParam.getUsername());
-        String token = JWTUtil.createToken(map,passwordJieMi);
+        String token = JWTUtil.createToken(map,passwordJiaMi);
         JWTToken jwtToken = new JWTToken(token);
         subject.login(jwtToken);
 
