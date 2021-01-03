@@ -124,8 +124,8 @@ public class OperatorAspect {
         if(!StringUtils.isEmpty(clientId)){
             sysOperLog.setClientId(clientId);
         }
-
-        String path = URLUtil.getPath(request.getRequestURI());
+        //String path = URLUtil.getPath(request.getRequestURI());
+        String path = request.getRequestURI();
         sysOperLog.setOperUrl(path);
 
         sysOperLog.setOperIp(ip);
