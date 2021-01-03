@@ -1,6 +1,5 @@
 package com.xiami.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.util.Date;
@@ -29,9 +28,7 @@ public class CommentListDto {
      * 审核状态 1：待审核 2：通过审核 3：审核不通过
      */
     private String status;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
     private String type;
 

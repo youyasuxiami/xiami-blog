@@ -149,16 +149,16 @@ public class LoginController {
         map.put("name", username);
         String token = JWTUtil.createToken(map,passwordJiaMi);
         JWTToken jwtToken = new JWTToken(token);
-        try {
+        //try {
             subject.login(jwtToken);
             Map<String, Object> result = Maps.newHashMap();
             result.put("token", token);
             return new ResponseResult<Map<String, Object>>(ResponseResult.CodeStatus.OK, "登录成功", result);
-        }
-        catch (AuthenticationException e) {
-            log.error("登录失败:{}",e);
-            return new ResponseResult<Map<String, Object>>(ResponseResult.CodeStatus.ERROR_ACCOUNT_PASSWORD, "用户名或者密码错误，请重新输入");
-        }
+        //}
+        //catch (AuthenticationException e) {
+        //    log.error("登录失败:{}",e);
+        //    return new ResponseResult<Map<String, Object>>(ResponseResult.CodeStatus.ERROR_ACCOUNT_PASSWORD, "用户名或者密码错误，请重新输入");
+        //}
     }
 
     /**

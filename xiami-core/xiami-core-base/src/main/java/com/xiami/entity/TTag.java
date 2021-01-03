@@ -1,6 +1,5 @@
 package com.xiami.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import javax.persistence.Column;
@@ -22,11 +21,9 @@ public class TTag implements Serializable {
     private String name;
 
     @Column(name = "create_time")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
 
     @Column(name = "update_time")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
 
     private static final long serialVersionUID = 1L;

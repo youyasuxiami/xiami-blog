@@ -1,6 +1,5 @@
 package com.xiami.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.util.Date;
@@ -88,19 +87,16 @@ public class SysJobDto{
     /**
      * 初次执行时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date startTime;
 
     /**
      * 上次执行时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date previousTime;
 
     /**
      * 下次执行时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date nextTime;
 
     /**
@@ -111,7 +107,6 @@ public class SysJobDto{
     /**
      * 创建时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
 
     /**
@@ -122,7 +117,6 @@ public class SysJobDto{
     /**
      * 更新时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
 
     /**

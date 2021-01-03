@@ -45,7 +45,7 @@ public class OperLogUtil {
                 String path = URLUtil.getPath(request.getRequestURI());
                 ps.setString(7, path);
                 ps.setString(8, ip);
-                String cityInfo = AddressUtil.getCityInfo(ip);
+                String cityInfo = AddressUtil.getAddress(ip);
                 ps.setString(9, cityInfo);
                 String s = HttpUtil.toParams(request.getParameterMap());
                 ps.setString(10, s);

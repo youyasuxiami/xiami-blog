@@ -1,5 +1,9 @@
 package com.xiami.utils;
 
+import cn.hutool.core.util.StrUtil;
+import cn.hutool.http.HttpUtil;
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
 import com.xiami.config.GlobalConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.lionsoul.ip2region.DataBlock;
@@ -11,37 +15,39 @@ import java.io.File;
 import java.lang.reflect.Method;
 
 /**
- * @author yong
+ * @author xiami
  * @date 2019/6/12
  * @description 根据IP地址获取城市
  */
 @Slf4j
 public class AddressUtil {
-
-    public static String getCityInfo(String ip) {
-        DbSearcher searcher = null;
-        try {
-            String dbPath = GlobalConfig.getProfile() + "ip2region/ip2region.db";
-            //String dbPath = "f:/profile/ip2region/ip2region.db";  //本地测试使用地址
-            File file = new File(dbPath);
-            if (file.exists()) {
-                DbConfig config = new DbConfig();
-                searcher = new DbSearcher(config, file.getPath());
-                Method method = searcher.getClass().getMethod("btreeSearch", String.class);
-                if (!Util.isIpAddress(ip)) {
-                    log.error("Error: Invalid ip address");
-                }
-                DataBlock dataBlock = (DataBlock) method.invoke(searcher, ip);
-                return dataBlock.getRegion();
-            }
-        } catch (Exception e) {
-            log.error("获取地址信息异常：{}", e.getLocalizedMessage());
+    /**
+     * 根据ip获取地址
+     * @param ip
+     * @return
+     */
+    public static String getAddress(String ip) {
+        String url = "http://ip.ws.126.net/ipquery?ip=" + ip;
+        String str = HttpUtil.get(url);
+        if(!StrUtil.hasBlank(str)){
+            String substring = str.substring(str.indexOf("{"), str.indexOf("}")+1);
+            System.out.println(substring);
+            JSONObject jsonObject = JSONUtil.parseObj(substring);
+            String province = jsonObject.getStr("province");
+            String city = jsonObject.getStr("city");
+            return province + " " + city;
         }
-        return "XX XX";
+        return null;
     }
 
-    public static void main(String[] args) {
 
-        System.out.println(getCityInfo("115.218.10.198"));
+
+    public static void main(String[] args) {
+        String ip = "121.32.78.251";
+        String result = getAddress(ip);
+        System.out.println(result);
+        if(StrUtil.hasBlank("")){
+            System.out.println(1);
+        }
     }
 }

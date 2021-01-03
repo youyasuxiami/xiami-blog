@@ -1,9 +1,11 @@
 package com.xiami.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -27,11 +29,9 @@ public class SysDictionary implements Serializable {
     @Column(name = "remark")
     private String remark;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(name = "create_time")
     private Date createTime;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(name = "update_time")
     private Date updateTime;
 

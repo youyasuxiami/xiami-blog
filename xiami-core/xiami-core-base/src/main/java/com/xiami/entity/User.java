@@ -1,6 +1,5 @@
 package com.xiami.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import javax.persistence.Column;
@@ -68,21 +67,18 @@ public class User implements Serializable {
      * 创建时间
      */
     @Column(name = "create_time")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
 
     /**
      * 更新时间
      */
     @Column(name = "update_time")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
 
     /**
      * 最新登录时间
      */
     @Column(name = "login_time")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date loginTime;
 
     /**

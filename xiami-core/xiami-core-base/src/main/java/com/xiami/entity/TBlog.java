@@ -1,6 +1,5 @@
 package com.xiami.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import javax.persistence.Column;
@@ -26,7 +25,6 @@ public class TBlog implements Serializable {
     private String content;
 
     @Column(name = "create_time")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
 
     @Column(name = "description")
@@ -51,7 +49,6 @@ public class TBlog implements Serializable {
     private String title;
 
     @Column(name = "update_time")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
 
     @Column(name = "views")

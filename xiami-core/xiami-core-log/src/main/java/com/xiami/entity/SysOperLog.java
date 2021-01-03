@@ -1,6 +1,5 @@
 package com.xiami.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
@@ -104,7 +103,6 @@ public class SysOperLog implements Serializable {
      * 操作时间
      */
     @Column(name = "oper_time")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date operTime;
 
     @JsonIgnore

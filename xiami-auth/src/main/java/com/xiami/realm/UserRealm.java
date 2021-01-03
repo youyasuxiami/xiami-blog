@@ -62,7 +62,7 @@ public class UserRealm extends AuthorizingRealm {
      * @throws AuthenticationException
      */
     @Override
-    protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
+    protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) {
         System.out.println("触发doGetAuthenticationInfo");
 
         //获得token
