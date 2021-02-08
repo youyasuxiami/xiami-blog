@@ -20,7 +20,6 @@ public class BaseJob {
 
     /**
      * 更新数据库中的上一次执行时间、下次执行时间
-     * @param sysJobMapper
      * @param jobName
      * @param jobGroup
      * @param fireTime

@@ -147,4 +147,6 @@ public interface UserService {
     User getUserByName(String name);
 
     int resetUser(Integer id);
+
+    int getAddNum();
 }

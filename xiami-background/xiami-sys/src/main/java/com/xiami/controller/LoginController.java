@@ -10,6 +10,7 @@ import com.xiami.dto.LoginInfo;
 import com.xiami.entity.User;
 import com.xiami.filter.JWTToken;
 import com.xiami.service.LoginService;
+import com.xiami.utils.RedisUtil;
 import com.xiami.utils.ShiroUtils;
 import com.xiami.utils.UserUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -47,6 +48,9 @@ import java.util.Map;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 public class LoginController {
+    @Autowired
+    private RedisUtil redisUtil;
+
     @Autowired
     private DefaultKaptcha kaptcha;
 
@@ -168,6 +172,14 @@ public class LoginController {
      */
     @GetMapping("/getPublicKey")
     public ResponseResult getPublicKey() {
+        System.out.println("111");
+        redisUtil.set("name1","zhengjin");
         return new ResponseResult(ResponseResult.CodeStatus.OK, "登录成功", AccountSecurityUtils.PUBLIC_KEY);
+    }
+
+
+    @GetMapping("/aaaa")
+    public void testRedis01(){
+        redisUtil.set("name","zhengjin");
     }
 }

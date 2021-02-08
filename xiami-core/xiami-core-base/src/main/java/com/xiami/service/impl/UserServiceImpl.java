@@ -826,5 +826,11 @@ public class UserServiceImpl implements UserService {
         user.setUpdateTime(new Date());
         return userMapper.updateByPrimaryKeySelective(user);
     }
+
+    @Override
+    public int getAddNum() {
+        int i = userMapper.selectByCurrentMonth();
+        return i;
+    }
 }
 

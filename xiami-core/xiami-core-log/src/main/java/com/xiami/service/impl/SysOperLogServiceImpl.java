@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.xiami.base.PageResult;
 import com.xiami.dao.SysOperLogMapper;
 import com.xiami.dto.PageRequestDto;
+import com.xiami.entity.PageData;
 import com.xiami.entity.SysOperLog;
 import com.xiami.service.SysOperLogService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,5 +59,24 @@ public class SysOperLogServiceImpl implements SysOperLogService {
     public int deleteLogs(Integer[] ids) {
         int i = sysOperLogMapper.deleteLogs(ids);
         return i;
+    }
+
+    @Override
+    public int getOnlineNum() {
+        int i = sysOperLogMapper.selectByCurrentDay();
+        return i;
+    }
+
+    @Override
+    public List<PageData> getOperationLogs() {
+        List<PageData> sysOperLogList = sysOperLogMapper.getList();
+        //List<SysOperLog> sysOperLogList = sysOperLogMapper.selectAll();
+        return sysOperLogList;
+    }
+
+    @Override
+    public List<PageData> getProvinceAndNum() {
+        List<PageData> provinceAndNum = sysOperLogMapper.getProvinceAndNum();
+        return provinceAndNum;
     }
 }

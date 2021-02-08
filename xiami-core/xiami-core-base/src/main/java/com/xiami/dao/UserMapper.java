@@ -21,4 +21,6 @@ public interface UserMapper extends MyMapper<User> {
      * @return
      */
     List<User> getUserByName(String name);
+
+    int selectByCurrentMonth();
 }

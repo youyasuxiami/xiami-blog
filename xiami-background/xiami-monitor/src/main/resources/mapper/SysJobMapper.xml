@@ -57,6 +57,21 @@
             <if test="jobStatus!=null and jobStatus!=''" >
                 job_status=#{jobStatus},
             </if>
+            <if test="cronExpression!=null and cronExpression!=''" >
+                cron_expression=#{cronExpression},
+            </if>
+            <if test="triggerName!=null and triggerName!=''" >
+                trigger_name=#{triggerName},
+            </if>
+            <if test="triggerGroup!=null and triggerGroup!=''" >
+                trigger_group=#{triggerGroup},
+            </if>
+            <if test="executePath!=null and executePath!=''" >
+                execute_path=#{executePath},
+            </if>
+            <if test="remarks!=null and remarks!=''" >
+                remarks=#{remarks},
+            </if>
         </set>
         where job_name=#{jobName} and job_group=#{jobGroup}
     </update>

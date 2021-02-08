@@ -1,35 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xiami.dao.SysOperLogMapper">
-  <resultMap id="BaseResultMap" type="com.xiami.entity.SysOperLog">
-    <!--@mbg.generated generated on Wed Dec 30 12:37:42 CST 2020.-->
-    <!--@Table sys_oper_log-->
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="type" jdbcType="VARCHAR" property="type" />
-    <result column="title" jdbcType="VARCHAR" property="title" />
-    <result column="method" jdbcType="VARCHAR" property="method" />
-    <result column="user_agent" jdbcType="LONGVARCHAR" property="userAgent" />
-    <result column="oper_name" jdbcType="VARCHAR" property="operName" />
-    <result column="client_id" jdbcType="VARCHAR" property="clientId" />
-    <result column="oper_url" jdbcType="VARCHAR" property="operUrl" />
-    <result column="oper_ip" jdbcType="VARCHAR" property="operIp" />
-    <result column="oper_addr" jdbcType="VARCHAR" property="operAddr" />
-    <result column="oper_param" jdbcType="LONGVARCHAR" property="operParam" />
-    <result column="status" jdbcType="INTEGER" property="status" />
-    <result column="error_msg" jdbcType="LONGVARCHAR" property="errorMsg" />
-    <result column="execute_time" jdbcType="VARCHAR" property="executeTime" />
-    <result column="oper_time" jdbcType="TIMESTAMP" property="operTime" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    <!--@mbg.generated generated on Wed Dec 30 12:37:42 CST 2020.-->
-    id, `type`, title, `method`, user_agent, oper_name, client_id, oper_url, oper_ip, 
-    oper_addr, oper_param, `status`, error_msg, execute_time, oper_time
-  </sql>
+    <resultMap id="BaseResultMap" type="com.xiami.entity.SysOperLog">
+        <!--@mbg.generated generated on Wed Dec 30 12:37:42 CST 2020.-->
+        <!--@Table sys_oper_log-->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="type" jdbcType="VARCHAR" property="type"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="method" jdbcType="VARCHAR" property="method"/>
+        <result column="user_agent" jdbcType="LONGVARCHAR" property="userAgent"/>
+        <result column="oper_name" jdbcType="VARCHAR" property="operName"/>
+        <result column="client_id" jdbcType="VARCHAR" property="clientId"/>
+        <result column="oper_url" jdbcType="VARCHAR" property="operUrl"/>
+        <result column="oper_ip" jdbcType="VARCHAR" property="operIp"/>
+        <result column="oper_addr" jdbcType="VARCHAR" property="operAddr"/>
+        <result column="oper_param" jdbcType="LONGVARCHAR" property="operParam"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="error_msg" jdbcType="LONGVARCHAR" property="errorMsg"/>
+        <result column="execute_time" jdbcType="VARCHAR" property="executeTime"/>
+        <result column="oper_time" jdbcType="TIMESTAMP" property="operTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated generated on Wed Dec 30 12:37:42 CST 2020.-->
+        id, `type`, title, `method`, user_agent, oper_name, client_id, oper_url, oper_ip,
+        oper_addr, oper_param, `status`, error_msg, execute_time, oper_time
+    </sql>
     <delete id="deleteLogs">
-      delete from sys_oper_log
-      where id in
-      <foreach collection="array" item="item" open="(" close=")" separator=",">
-        #{item}
-      </foreach>
+        delete from sys_oper_log
+        where id in
+        <foreach collection="array" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
     </delete>
+
+    <select id="selectByCurrentDay" resultType="java.lang.Integer">
+    select count(*)AS onlineNum from sys_oper_log
+    where oper_url="/login" and DATE_FORMAT(oper_time,"%Y%M%D")=DATE_FORMAT(now(),"%Y%M%D")
+  </select>
+    <select id="getList" resultType="pd">
+    select oper_name as operName  ,title ,oper_ip as operIp ,oper_addr as operAddr ,status ,oper_time as operTime from sys_oper_log
+  </select>
+
+    <select id="getProvinceAndNum" resultType="pd">
+    select sd.`value` as name,sum(case when sol.id is not null THEN 1 ELSE 0 END) as `value` from sys_oper_log sol
+    right join sys_dictionary  sd
+    on left(sol.oper_addr,2)=sd.`value`
+    where sd.`group`="province_id"
+    group by sd.value
+  </select>
 </mapper>

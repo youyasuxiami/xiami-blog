@@ -256,6 +256,11 @@
                 <version>1.7.2</version>
             </dependency>
             <!-- 解析ip地址  end-->
+            <dependency>
+                <groupId>org.yaml</groupId>
+                <artifactId>snakeyaml</artifactId>
+                <version>1.17</version>
+            </dependency>
         </dependencies>
 
     </dependencyManagement>

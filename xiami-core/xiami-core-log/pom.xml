@@ -36,6 +36,10 @@
         </dependency>
         <!-- DbSearcher解析ip地址  end-->
         <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.xiami</groupId>
             <artifactId>xiami-common-base</artifactId>
             <version>1.0.0-SNAPSHOT</version>
