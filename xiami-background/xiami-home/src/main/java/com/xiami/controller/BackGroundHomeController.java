@@ -69,7 +69,7 @@ public class BackGroundHomeController {
     }
 
     /**
-     * 1、更新redis中的本月新增用户数
+     * 1、更新redis中的本月新增用户数1
      *
      * @return
      */
