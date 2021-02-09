@@ -1,6 +1,5 @@
 package com.xiami.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.util.Date;
@@ -29,6 +28,16 @@ public class SysJobDto{
      * 任务组名
      */
     private String jobGroup;
+
+    /**
+     * 触发器名称
+     */
+    private String triggerName;
+
+    /**
+     * 触发器组别
+     */
+    private String triggerGroup;
 
     /**
      * 组内执行顺利，值越大执行优先级越高，最大值9，最小值1
@@ -78,19 +87,16 @@ public class SysJobDto{
     /**
      * 初次执行时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date startTime;
 
     /**
      * 上次执行时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date previousTime;
 
     /**
      * 下次执行时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date nextTime;
 
     /**
@@ -101,7 +107,6 @@ public class SysJobDto{
     /**
      * 创建时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
 
     /**
@@ -112,7 +117,6 @@ public class SysJobDto{
     /**
      * 更新时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
 
     /**

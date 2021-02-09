@@ -1,5 +1,6 @@
 package com.xiami.controller;
 
+import com.xiami.annotation.OperatorLog;
 import com.xiami.base.ResponseResult;
 import com.xiami.dto.CommentDeteleDto;
 import com.xiami.dto.CommentDto;
@@ -60,6 +61,7 @@ public class BlogContentController  {
         return blogContentService.getSameBlogByBlogId(blogId);
     }
 
+    @OperatorLog("添加评论")
     @RequestMapping("/addComment")
     public ResponseResult addComment(@RequestBody CommentDto commentDto){
         return blogContentService.addComment(commentDto);
@@ -76,16 +78,19 @@ public class BlogContentController  {
      * @param commentReportDto
      * @return
      */
+    @OperatorLog("点击举报")
     @PostMapping("/reportComment")
     public ResponseResult reportComment(@RequestBody CommentReportDto commentReportDto){
         ResponseResult commentList = blogContentService.reportComment(commentReportDto);
         return commentList;
     }
+
     /**
      * 删除功能
      * @param commentDeteleDto
      * @return
      */
+    @OperatorLog("删除功能")
     @DeleteMapping("/deleteComment")
     public ResponseResult deleteComment(@RequestBody CommentDeteleDto commentDeteleDto){
         ResponseResult commentList = blogContentService.deleteComment(commentDeteleDto);

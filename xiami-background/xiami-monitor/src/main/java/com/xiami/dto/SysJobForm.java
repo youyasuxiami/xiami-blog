@@ -2,6 +2,8 @@ package com.xiami.dto;
 
 import lombok.Data;
 
+import java.util.Date;
+
 /**
  * Description：
  *
@@ -40,4 +42,23 @@ public class SysJobForm {
      * 备注信息
      */
     private String remarks;
+
+    /**
+     * 触发器名称
+     */
+    private String triggerName;
+
+    /**
+     * 触发器组别
+     */
+    private String triggerGroup;
+
+    /**
+     * 定时任务状态
+     */
+    private String jobStatus;
+
+    private String nextTime;
+
+
 }

@@ -1,5 +1,6 @@
 package com.xiami.controller;
 
+import com.xiami.annotation.OperatorLog;
 import com.xiami.base.ResponseResult;
 import com.xiami.dto.BlogDto;
 import com.xiami.dto.TcommentQueryDto;
@@ -42,6 +43,7 @@ public class CommentController {
      * @param status
      * @return
      */
+    @OperatorLog("更新评论状态")
     @PostMapping("/updateCommentStatus")
     public ResponseResult<User> updateCommentStatus(Integer id, String status) {
         TComment comment=new TComment();
@@ -66,6 +68,7 @@ public class CommentController {
      * @param status
      * @return
      */
+    @OperatorLog("更新进展状态")
     @PostMapping("/updateProgressStatusName")
     public ResponseResult updateProgressStatusName(Integer id, String status) {
         TCommentReport tCommentReport=new TCommentReport();
@@ -73,54 +76,4 @@ public class CommentController {
         tCommentReport.setProgressStatus(Integer.valueOf(status));
         return tCommentService.updateProgressStatusName(tCommentReport);
     }
-
-
-
-
-    @GetMapping("/getBlogTypes")
-    public ResponseResult getBlogTypes() {
-        return tBlogService.getBlogTypes();
-    }
-
-    @PostMapping("/addBlog")
-    public ResponseResult addTag(@RequestBody BlogDto blogDto) {
-        //新增博客
-        if (blogDto.getId() == null) {
-            return tBlogService.addBlog(blogDto);
-        }
-        //编辑博客
-        return tBlogService.updateBlog(blogDto);
-    }
-
-    @PutMapping("/changeRecommend")
-    public ResponseResult changeRecommend(Integer id, Integer recommend) {
-        return tBlogService.changeRecommend(id, recommend);
-    }
-
-    @PutMapping("/changeShareStatement")
-    public ResponseResult changeShareStatement(Integer id, Integer shareStatement) {
-        return tBlogService.changeShareStatement(id, shareStatement);
-    }
-
-    @PutMapping("/changeAppreciation")
-    public ResponseResult changeAppreciation(Integer id, Integer appreciation) {
-        return tBlogService.changeAppreciation(id, appreciation);
-    }
-
-    @PutMapping("/changeCommentabled")
-    public ResponseResult changeCommentabled(Integer id, Integer commentabled) {
-        return tBlogService.changeCommentabled(id, commentabled);
-    }
-
-    @DeleteMapping("/deleteBlog")
-    public ResponseResult deleteBlog(Integer id) {
-        return tBlogService.deleteBlog(id);
-    }
-
-    @DeleteMapping("/deleteBlogs")
-    public ResponseResult deleteBlogs(Integer[] ids) {
-        return tBlogService.deleteBlogs(ids);
-    }
-
-
 }

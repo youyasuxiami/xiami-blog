@@ -12,11 +12,13 @@ import com.xiami.utils.DictionaryUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Transactional
 public class SysJobServiceImpl implements SysJobService {
 
     @Autowired
@@ -51,17 +53,20 @@ public class SysJobServiceImpl implements SysJobService {
     }
 
     @Override
-    public int updateJob(SysJobForm sysJobForm) {
-        SysJob sysJob=new SysJob();
-        BeanUtils.copyProperties(sysJobForm,sysJob);
-        int i = sysJobMapper.updateByPrimaryKeySelective(sysJob);
+    public int updateSysJobForm(SysJob sysJob) {
+        int i = sysJobMapper.updateSysJob(sysJob);
         return i;
     }
 
     @Override
-    public int deleteJob(Integer id) {
+    public int updateSysJob(SysJob sysJob) {
+        int i = sysJobMapper.updateSysJob(sysJob);
+        return i;    }
+
+    @Override
+    public int deleteJob(SysJobForm sysJobForm) {
         SysJob sysJob=new SysJob();
-        sysJob.setId(id);
+        sysJob.setId(sysJobForm.getId());
         int i = sysJobMapper.deleteByPrimaryKey(sysJob);
         return i;
     }
@@ -69,6 +74,12 @@ public class SysJobServiceImpl implements SysJobService {
     @Override
     public int deleteJobs(Integer[] ids) {
         int i = sysJobMapper.deleteJobs(ids);
+        return i;
+    }
+
+    @Override
+    public int updateTimes(SysJob sysJob) {
+        int i=sysJobMapper.updateTimes(sysJob);
         return i;
     }
 }

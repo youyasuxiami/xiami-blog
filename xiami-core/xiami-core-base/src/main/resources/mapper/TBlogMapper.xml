@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xiami.dao.TBlogMapper">
+    <resultMap id="BaseResultMap" type="com.xiami.entity.TBlog">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="appreciation" jdbcType="BIT" property="appreciation"/>
+        <result column="commentabled" jdbcType="BIT" property="commentabled"/>
+        <result column="content" jdbcType="LONGVARCHAR" property="content"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="first_picture" jdbcType="VARCHAR" property="firstPicture"/>
+        <result column="flag" jdbcType="VARCHAR" property="flag"/>
+        <result column="published" jdbcType="BIT" property="published"/>
+        <result column="recommend" jdbcType="BIT" property="recommend"/>
+        <result column="share_statement" jdbcType="BIT" property="shareStatement"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="views" jdbcType="INTEGER" property="views"/>
+        <result column="collect_count" jdbcType="INTEGER" property="collectCount"/>
+        <result column="type_id" jdbcType="BIGINT" property="typeId"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        <!--@mbg.generated generated on Wed Jul 29 23:28:56 CST 2020.-->
+        id, appreciation, commentabled, content, create_time, description, first_picture,
+        flag, published, recommend, share_statement, title, update_time, views, type_id,
+        user_id
+    </sql>
+
+
+    <select id="selectBySearch" parameterType="com.xiami.dto.BlogQueryDto" resultMap="BaseResultMap">
+        select t.id, t.appreciation, t.commentabled, t.content, t.create_time, t.description, t.first_picture,
+        t.flag, t.published, t.recommend, t.share_statement, t.title, t.update_time, t.views, t.type_id,
+        t.user_id,u.name
+        from t_blog t
+        left join user u on t.user_id=u.id
+        <where>
+            <if test="userName != null and userName != ''">
+                AND u.name like concat('%', #{userName}, '%')
+            </if>
+            <if test="typeId != null and typeId != ''">
+                AND t.type_id = #{typeId}
+            </if>
+            <if test="title != null and title != ''">
+                AND t.title like concat('%', #{title}, '%')
+            </if>
+            <if test="flag != null and flag != ''">
+                AND t.flag = #{flag}
+            </if>
+            <if test="recommend != null">
+                AND t.recommend = #{recommend}
+            </if>
+            <if test="publish != null and publish != ''">
+                AND t.published = #{publish}
+            </if>
+            <if test="beginTime != null and beginTime != ''">
+                AND DATE_FORMAT(t.create_time, '%Y-%m-%d' ) &gt;= #{beginTime}
+            </if>
+            <if test="endTime != null and endTime != ''">
+                AND DATE_FORMAT(t.create_time, '%Y-%m-%d' ) &lt;= #{endTime}
+            </if>
+        </where>
+    </select>
+
+    <delete id="deleteByIds">
+        delete from t_blog
+        where id in
+        <foreach collection="array" open="(" close=")" separator="," item="id">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="getArticleByMonth" resultMap="BaseResultMap">
+        select * from t_blog
+        where DATE_FORMAT( create_time, '%Y%m' ) = DATE_FORMAT( #{monthDate}, '%Y%m' )
+    </select>
+
+    <select id="getArticleByBlogType" resultMap="BaseResultMap">
+        select * from t_blog b
+        left join t_type t
+        on b.type_id=t.id
+        where t.name=#{blogType}
+    </select>
+
+    <select id="getArticleByBlogTag" resultMap="BaseResultMap">
+        select tb.* from t_blog tb
+        left join t_blog_tags tbt
+        on tb.id=tbt.blogs_id
+        left join t_tag tt
+        on tt.id=tbt.tags_id
+        where tt.name=#{tagName}
+    </select>
+
+    <select id="getBlogTypeAndNum" resultType="pd">
+        select t.name as name,count(1) as value
+        from t_blog b
+        right join  t_type t
+        on b.type_id=t.id
+        where  b.id is not null
+        group by t.name
+    </select>
+
+    <select id="getBlogTagAndNum" resultType="com.xiami.dto.BlogTagDto">
+        select tt.name,count(tbt.blogs_id) from t_blog tb
+        right join t_blog_tags tbt
+        on tb.id=tbt.blogs_id
+        right join t_tag tt
+        on tbt.tags_id=tt.id
+        group BY tt.name
+    </select>
+
+    <select id="getHotBlogTypeAndNum" resultType="pd">
+        select tt.`name`,sum(tb.views)as sum from t_blog tb
+        left join t_type tt
+        on tb.type_id=tt.id
+        group by tt.`name`
+        order by sum desc
+        limit 6
+    </select>
+
+    <select id="getHotBlogTypeNameAndNum" resultType="pd">
+        select tb.type_id,tt.`name`,count(*) as num from t_blog tb
+        left join t_type tt
+        on tb.type_id=tt.id
+        where tt.`name` in
+        <foreach collection="list" open="(" close=")" item="item" separator=",">
+            #{item}
+        </foreach>
+        group by tb.type_id
+    </select>
+
+    <select id="getHotAuthor" resultType="pd">
+        select tb.user_id,sum(collect_count) as sum from t_blog tb
+        group by tb.user_id
+        order by sum desc
+    </select>
+
+    <select id="getHotAuthorAndNum" resultType="pd">
+        select u.name,count(*)as value from t_blog tb
+        left join user u
+        on u.id=tb.user_id
+        where tb.user_id in
+        <foreach collection="list" open="(" close=")" item="item" separator=",">
+            #{item}
+        </foreach>
+        GROUP BY u.name
+    </select>
+</mapper>

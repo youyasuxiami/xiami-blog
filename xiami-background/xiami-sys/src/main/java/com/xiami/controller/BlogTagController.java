@@ -1,5 +1,6 @@
 package com.xiami.controller;
 
+import com.xiami.annotation.OperatorLog;
 import com.xiami.base.ResponseResult;
 import com.xiami.dto.TagQueryDto;
 import com.xiami.entity.TTag;
@@ -44,6 +45,7 @@ public class BlogTagController {
      * @param tTag
      * @return
      */
+    @OperatorLog("新增标签")
     @PostMapping("/addTag")
     public ResponseResult addTag(@RequestBody TTag tTag) {
         if (null == tTag.getId()) {
@@ -54,11 +56,13 @@ public class BlogTagController {
         return tTagService.updateTag(tTag);
     }
 
+    @OperatorLog("删除标签")
     @DeleteMapping("/deleteTag")
     public ResponseResult deleteTag(Integer id) {
         return tTagService.deleteTag(id);
     }
 
+    @OperatorLog("批量删除标签")
     @DeleteMapping("/deleteTags")
     public ResponseResult deleteTags(Integer[] ids) {
         return tTagService.deleteTags(ids);

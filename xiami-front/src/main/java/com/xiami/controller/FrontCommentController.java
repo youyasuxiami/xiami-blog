@@ -1,5 +1,6 @@
 package com.xiami.controller;
 
+import com.xiami.annotation.OperatorLog;
 import com.xiami.base.ResponseResult;
 import com.xiami.dto.CommentDto;
 import com.xiami.service.TCommentService;
@@ -25,6 +26,7 @@ public class FrontCommentController {
     @Autowired
     private TCommentService tCommentService;
 
+    @OperatorLog("留言板添加评论")
     @PostMapping("/addComment")
     public ResponseResult addComment(@RequestBody CommentDto commentDto){
         return tCommentService.addComment(commentDto);

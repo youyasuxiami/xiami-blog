@@ -11,6 +11,10 @@ import com.xiami.dao.UserMapper;
 import com.xiami.dto.BlogDto;
 import com.xiami.dto.BlogListDto;
 import com.xiami.dto.BlogQueryDto;
+import com.xiami.dto.BlogTagDto;
+import com.xiami.dto.BlogTypeDto;
+import com.xiami.dto.HotBlogTypeDto;
+import com.xiami.entity.PageData;
 import com.xiami.entity.TBlog;
 import com.xiami.entity.TBlogTags;
 import com.xiami.entity.User;
@@ -274,6 +278,42 @@ public class TBlogServiceImpl implements TBlogService {
             e.printStackTrace();
             return new ResponseResult(ResponseResult.CodeStatus.FAIL, "批量删除博客失败");
         }
+    }
+
+    @Override
+    public List<PageData> getBlogTypeAndNum() {
+        List<PageData> blogTypeAndNum = tBlogMapper.getBlogTypeAndNum();
+        return blogTypeAndNum;
+    }
+
+    @Override
+    public List<BlogTagDto> getBlogTagAndNum() {
+        List<BlogTagDto> blogTagAndNum = tBlogMapper.getBlogTagAndNum();
+        return blogTagAndNum;
+    }
+
+    @Override
+    public List<PageData> getHotBlogTypeAndNum() {
+        List<PageData> hotBlogType = tBlogMapper.getHotBlogTypeAndNum();
+        List<String> typeName=new ArrayList<>();
+        for (PageData pageData : hotBlogType) {
+            typeName.add(pageData.getString("name"));
+        }
+        List<PageData> hotBlogTypeNameAndNum = tBlogMapper.getHotBlogTypeNameAndNum(typeName);
+
+        return hotBlogTypeNameAndNum;
+    }
+
+    @Override
+    public List<PageData> getHotAuthorAndNum() {
+        List<PageData> hotAuthor = tBlogMapper.getHotAuthor();
+        List<Integer> hotUserIds=new ArrayList<>();
+        for (PageData pageData : hotAuthor) {
+            hotUserIds.add((Integer)pageData.get("user_id"));
+        }
+        List<PageData> hotAuthorAndNum = tBlogMapper.getHotAuthorAndNum(hotUserIds);
+
+        return hotAuthorAndNum;
     }
 }
 

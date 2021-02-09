@@ -1,49 +1,84 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xiami.dao.SysJobMapper">
-  <resultMap id="BaseResultMap" type="com.xiami.entity.SysJob">
-    <!--@mbg.generated generated on Wed Dec 16 12:24:27 CST 2020.-->
-    <!--@Table sys_job-->
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="job_name" jdbcType="VARCHAR" property="jobName" />
-    <result column="job_group" jdbcType="VARCHAR" property="jobGroup" />
-    <result column="job_order" jdbcType="CHAR" property="jobOrder" />
-    <result column="job_type" jdbcType="CHAR" property="jobType" />
-    <result column="execute_path" jdbcType="VARCHAR" property="executePath" />
-    <result column="params_value" jdbcType="VARCHAR" property="paramsValue" />
-    <result column="cron_expression" jdbcType="VARCHAR" property="cronExpression" />
-    <result column="misfire_policy" jdbcType="VARCHAR" property="misfirePolicy" />
-    <result column="job_tenant_type" jdbcType="CHAR" property="jobTenantType" />
-    <result column="job_status" jdbcType="CHAR" property="jobStatus" />
-    <result column="job_execute_status" jdbcType="CHAR" property="jobExecuteStatus" />
-    <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
-    <result column="previous_time" jdbcType="TIMESTAMP" property="previousTime" />
-    <result column="next_time" jdbcType="TIMESTAMP" property="nextTime" />
-    <result column="create_by" jdbcType="VARCHAR" property="createBy" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
-    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
-    <result column="remarks" jdbcType="VARCHAR" property="remarks" />
-    <result column="del_flag" jdbcType="CHAR" property="delFlag" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    <!--@mbg.generated generated on Wed Dec 16 12:24:27 CST 2020.-->
-    id, job_name, job_group, job_order, job_type, execute_path, params_value, cron_expression, 
-    misfire_policy, job_tenant_type, job_status, job_execute_status, start_time, previous_time, 
-    next_time, create_by, create_time, update_by, update_time, remarks, del_flag
-  </sql>
+    <resultMap id="BaseResultMap" type="com.xiami.entity.SysJob">
+        <!--@mbg.generated generated on Wed Dec 16 12:24:27 CST 2020.-->
+        <!--@Table sys_job-->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="job_name" jdbcType="VARCHAR" property="jobName"/>
+        <result column="job_group" jdbcType="VARCHAR" property="jobGroup"/>
+        <result column="trigger_name" jdbcType="VARCHAR" property="triggerName"/>
+        <result column="trigger_group" jdbcType="VARCHAR" property="triggerGroup"/>
+        <result column="job_order" jdbcType="CHAR" property="jobOrder"/>
+        <result column="job_type" jdbcType="CHAR" property="jobType"/>
+        <result column="execute_path" jdbcType="VARCHAR" property="executePath"/>
+        <result column="params_value" jdbcType="VARCHAR" property="paramsValue"/>
+        <result column="cron_expression" jdbcType="VARCHAR" property="cronExpression"/>
+        <result column="misfire_policy" jdbcType="VARCHAR" property="misfirePolicy"/>
+        <result column="job_tenant_type" jdbcType="CHAR" property="jobTenantType"/>
+        <result column="job_status" jdbcType="CHAR" property="jobStatus"/>
+        <result column="job_execute_status" jdbcType="CHAR" property="jobExecuteStatus"/>
+        <result column="start_time" jdbcType="TIMESTAMP" property="startTime"/>
+        <result column="previous_time" jdbcType="TIMESTAMP" property="previousTime"/>
+        <result column="next_time" jdbcType="TIMESTAMP" property="nextTime"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="remarks" jdbcType="VARCHAR" property="remarks"/>
+        <result column="del_flag" jdbcType="CHAR" property="delFlag"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated generated on Wed Dec 16 12:24:27 CST 2020.-->
+        id, job_name, job_group, job_order, job_type, execute_path, params_value, cron_expression,
+        misfire_policy, job_tenant_type, job_status, job_execute_status, start_time, previous_time,
+        next_time, create_by, create_time, update_by, update_time, remarks, del_flag,trigger_name, trigger_group
+    </sql>
     <select id="getJobList" resultMap="BaseResultMap">
-      select <include refid="Base_Column_List"/>
-      from sys_job
+        select
+        <include refid="Base_Column_List"/>
+        from sys_job
 
-<!--      where job_name like concat ("%",#{jobName},"%")-->
+        <!--      where job_name like concat ("%",#{jobName},"%")-->
     </select>
 
-  <insert id="deleteJobs">
-    delete from sys_job
-    where id in
-    <foreach collection="array" open="(" close=")" separator="," item="item">
-      #{item}
-    </foreach>
-  </insert>
+    <insert id="deleteJobs">
+        delete from sys_job
+        where id in
+        <foreach collection="array" open="(" close=")" separator="," item="item">
+            #{item}
+        </foreach>
+    </insert>
+
+    <update id="updateSysJob">
+        update sys_job
+        <set>
+            next_time=#{nextTime},
+            <if test="jobStatus!=null and jobStatus!=''" >
+                job_status=#{jobStatus},
+            </if>
+            <if test="cronExpression!=null and cronExpression!=''" >
+                cron_expression=#{cronExpression},
+            </if>
+            <if test="triggerName!=null and triggerName!=''" >
+                trigger_name=#{triggerName},
+            </if>
+            <if test="triggerGroup!=null and triggerGroup!=''" >
+                trigger_group=#{triggerGroup},
+            </if>
+            <if test="executePath!=null and executePath!=''" >
+                execute_path=#{executePath},
+            </if>
+            <if test="remarks!=null and remarks!=''" >
+                remarks=#{remarks},
+            </if>
+        </set>
+        where job_name=#{jobName} and job_group=#{jobGroup}
+    </update>
+
+    <update id="updateTimes">
+        update sys_job
+        set previous_time=#{previousTime},next_time=#{nextTime}
+        where job_name=#{jobName} and job_group=#{jobGroup}
+    </update>
 </mapper>

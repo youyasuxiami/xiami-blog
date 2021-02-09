@@ -1,6 +1,5 @@
 package com.xiami.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.xiami.entity.TTag;
 import lombok.Data;
 
@@ -32,7 +31,6 @@ public class IndexBlogListDto {
 
     private Integer collectCount;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
 
     private List<TTag> tTags;

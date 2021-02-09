@@ -1,5 +1,6 @@
 package com.xiami.controller;
 
+import com.xiami.annotation.OperatorLog;
 import com.xiami.base.ResponseResult;
 import com.xiami.entity.Menu;
 import com.xiami.entity.User;
@@ -41,6 +42,7 @@ public class MenuController {
      * @param menu
      * @return
      */
+    @OperatorLog("新增/编辑用户")
     @PostMapping("/addMenu")
     public ResponseResult<User> addUser(@RequestBody Menu menu) {
         //新增菜单
@@ -64,6 +66,7 @@ public class MenuController {
      * @param id
      * @return
      */
+    @OperatorLog("删除一个菜单")
     @GetMapping("/deleteMenu")
     public ResponseResult deleteUser(Integer id) {
         return menuService.deleteMenu(id);

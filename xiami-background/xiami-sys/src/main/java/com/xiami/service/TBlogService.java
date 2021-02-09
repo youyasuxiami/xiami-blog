@@ -3,6 +3,12 @@ package com.xiami.service;
 import com.xiami.base.ResponseResult;
 import com.xiami.dto.BlogDto;
 import com.xiami.dto.BlogQueryDto;
+import com.xiami.dto.BlogTagDto;
+import com.xiami.dto.BlogTypeDto;
+import com.xiami.dto.HotBlogTypeDto;
+import com.xiami.entity.PageData;
+
+import java.util.List;
 
 public interface TBlogService {
 
@@ -49,4 +55,12 @@ public interface TBlogService {
     ResponseResult deleteBlog(Integer id);
 
     ResponseResult deleteBlogs(Integer[] ids);
+
+    List<PageData> getBlogTypeAndNum();
+
+    List<BlogTagDto> getBlogTagAndNum();
+
+    List<PageData> getHotBlogTypeAndNum();
+
+    List<PageData> getHotAuthorAndNum();
 }

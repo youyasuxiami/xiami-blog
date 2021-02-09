@@ -1,5 +1,6 @@
 package com.xiami.controller;
 
+import com.xiami.annotation.OperatorLog;
 import com.xiami.base.ResponseResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,6 +38,7 @@ public class FileController {
      * @return
      * @throws IOException
      */
+    @OperatorLog("文件上传")
     @PostMapping("/upload")
     public ResponseResult uploadFile(@RequestParam("file") MultipartFile file) throws IOException {
         //如果文件为空，返回状态码
@@ -80,6 +82,7 @@ public class FileController {
      * @return
      * @throws Exception
      */
+    @OperatorLog("文件下载")
     @RequestMapping("/download")
     public ResponseResult downloadFile(String fileName, HttpServletRequest request, HttpServletResponse response) throws Exception {
         String filePath = null;                       //linux下使用/opt/nfdw/

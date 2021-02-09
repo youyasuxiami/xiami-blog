@@ -3,6 +3,7 @@ package com.xiami.controller;
 import com.google.common.collect.Maps;
 import com.xiami.AccountSecurityUtils;
 import com.xiami.JWTUtil;
+import com.xiami.annotation.OperatorLog;
 import com.xiami.base.ResponseResult;
 import com.xiami.dto.FrontLoginInfo;
 import com.xiami.dto.FrontLoginParam;
@@ -42,17 +43,20 @@ public class FrontLoginController {
     @Autowired
     private UserService userService;
 
+    @OperatorLog("前台注册")
     @PostMapping("/register")
     public ResponseResult register(@RequestBody UserDto userDto) {
         return userService.addMember(userDto);
     }
 
+    @OperatorLog("前台登录")
     @PostMapping(value = "/login")
-    public ResponseResult login(@RequestBody FrontLoginParam frontLoginParam) {
+    //public ResponseResult login(@RequestBody FrontLoginParam frontLoginParam) {
+    public ResponseResult login(String username,String password) {
         Subject subject = SecurityUtils.getSubject();
         //解密
-        String passwordJieMi = AccountSecurityUtils.decrypt(frontLoginParam.getPassword().trim());
-        String passwordJiaMi = new Md5Hash(passwordJieMi, frontLoginParam.getName(), 1024).toBase64();
+        String passwordJieMi = AccountSecurityUtils.decrypt(password);
+        String passwordJiaMi = new Md5Hash(passwordJieMi, username, 1024).toBase64();
         //加密
         //String passwordJiaMi = MD5Utils.md5(passwordJieMi, loginParam.getUsername(), 1024);
         //通过subject 身份认证
@@ -62,9 +66,9 @@ public class FrontLoginController {
         //}
         //储存,生成token
         Map<String, String> map = new HashMap<>();
-        map.put("name", frontLoginParam.getName());
+        map.put("name", username);
         //String token = JWTUtil.createToken(loginParam.getUsername());
-        String token = JWTUtil.createToken(map);
+        String token = JWTUtil.createToken(map,passwordJiaMi);
         JWTToken jwtToken = new JWTToken(token);
         subject.login(jwtToken);
 
@@ -99,6 +103,7 @@ public class FrontLoginController {
      *
      * @return {@link ResponseResult}
      */
+    @OperatorLog("注销")
     @PostMapping(value = "/logout")
     public ResponseResult<Void> logout(HttpServletRequest request) {
         Subject subject = SecurityUtils.getSubject();
@@ -110,7 +115,6 @@ public class FrontLoginController {
         //tokenStore.removeAccessToken(oAuth2AccessToken);
         return new ResponseResult<Void>(ResponseResult.CodeStatus.OK, "用户已注销");
     }
-
 
     @GetMapping(value = "/getUserInfo")
     public ResponseResult getUserInfo(Integer blogId) {

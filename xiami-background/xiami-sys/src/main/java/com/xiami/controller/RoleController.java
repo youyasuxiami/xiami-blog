@@ -1,5 +1,6 @@
 package com.xiami.controller;
 
+import com.xiami.annotation.OperatorLog;
 import com.xiami.base.ResponseResult;
 import com.xiami.dto.RoleParam;
 import com.xiami.dto.RoleQueryDto;
@@ -39,6 +40,7 @@ public class RoleController {
      * @param param
      * @return
      */
+    @OperatorLog("添加角色")
     @PostMapping(value = "/addRole")
     public ResponseResult addRole(@RequestBody RoleParam param) {
         //新增
@@ -66,6 +68,7 @@ public class RoleController {
      * @param id
      * @return
      */
+    @OperatorLog("删除一个角色")
     @GetMapping("/deleteRole")
     public ResponseResult deleteUser(Integer id) {
         return roleService.deleteRole(id);

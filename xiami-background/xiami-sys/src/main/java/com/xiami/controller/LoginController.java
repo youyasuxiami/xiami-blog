@@ -4,17 +4,18 @@ import com.google.code.kaptcha.impl.DefaultKaptcha;
 import com.google.common.collect.Maps;
 import com.xiami.AccountSecurityUtils;
 import com.xiami.JWTUtil;
+import com.xiami.annotation.OperatorLog;
 import com.xiami.base.ResponseResult;
-import com.xiami.base.ResponseResult1;
 import com.xiami.dto.LoginInfo;
-import com.xiami.dto.LoginParam;
 import com.xiami.entity.User;
 import com.xiami.filter.JWTToken;
 import com.xiami.service.LoginService;
-import com.xiami.service.UserService;
+import com.xiami.utils.RedisUtil;
 import com.xiami.utils.ShiroUtils;
 import com.xiami.utils.UserUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -44,28 +44,18 @@ import java.util.Map;
  * @author：zj
  * @date：2020­03­28 12:45
  */
+@Slf4j
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 public class LoginController {
+    @Autowired
+    private RedisUtil redisUtil;
+
     @Autowired
     private DefaultKaptcha kaptcha;
 
     @Autowired
     private LoginService loginService;
-
-    @Autowired
-    private UserService userService;
-
-    @GetMapping(value="/login")
-    public ResponseResult1 login(){
-        return new ResponseResult1(ResponseResult1.CodeStatus.OK,"成功",null);
-    }
-    //@PostMapping(value = "/user/login")
-    //public ResponseResult1 login( LoginParam loginParam){
-    //    System.out.println("11111111111111");
-    //    return new ResponseResult1(ResponseResult1.CodeStatus.OK,"成功",null);
-    //}
-
 
     @GetMapping(value = "/info")
     public ResponseResult<LoginInfo> info(Integer firstMenuId) {
@@ -99,6 +89,7 @@ public class LoginController {
      *
      * @return {@link ResponseResult}
      */
+    @OperatorLog("后台注销")
     @PostMapping(value = "/logout")
     public ResponseResult<Void> logout(HttpServletRequest request) {
         Subject subject = SecurityUtils.getSubject();
@@ -137,17 +128,18 @@ public class LoginController {
         }
     }
 
+    @OperatorLog("后台登录")
     @PostMapping(value = "/login")
-    public ResponseResult<Map<String, Object>> login(@RequestBody LoginParam loginParam) {
+    public ResponseResult<Map<String, Object>> login(String username,String password,String captcha) {
         //比对验证码
         String serverKaptcha = ShiroUtils.getKaptcha();
-        //if (!serverKaptcha.equalsIgnoreCase(loginParam.getCaptcha())) {
+        //if (!serverKaptcha.equalsIgnoreCase(captcha)) {
         //    return new ResponseResult<Map<String, Object>>(ResponseResult.CodeStatus.CODE_ERROR,"验证码错误" );
         //}
         Subject subject = SecurityUtils.getSubject();
         //解密
-        String passwordJieMi = AccountSecurityUtils.decrypt(loginParam.getPassword().trim());
-        String passwordJiaMi = new Md5Hash(passwordJieMi, loginParam.getUsername(), 1024).toBase64();
+        String passwordJieMi = AccountSecurityUtils.decrypt(password);
+        String passwordJiaMi = new Md5Hash(passwordJieMi, username, 1024).toBase64();
         //加密（数据库的密码）
         //String passwordJiaMi = MD5Utils.md5(passwordJieMi, loginParam.getUsername(), 1024);
         //通过subject 身份认证
@@ -158,15 +150,19 @@ public class LoginController {
 
         //储存,生成token
         Map<String, String> map = new HashMap<>();
-        map.put("name", loginParam.getUsername());
-        //String token = JWTUtil.createToken(loginParam.getUsername());
-        String token = JWTUtil.createToken(map);
+        map.put("name", username);
+        String token = JWTUtil.createToken(map,passwordJiaMi);
         JWTToken jwtToken = new JWTToken(token);
-        subject.login(jwtToken);
-
-        Map<String, Object> result = Maps.newHashMap();
-        result.put("token", token);
-        return new ResponseResult<Map<String, Object>>(ResponseResult.CodeStatus.OK, "登录成功", result);
+        //try {
+            subject.login(jwtToken);
+            Map<String, Object> result = Maps.newHashMap();
+            result.put("token", token);
+            return new ResponseResult<Map<String, Object>>(ResponseResult.CodeStatus.OK, "登录成功", result);
+        //}
+        //catch (AuthenticationException e) {
+        //    log.error("登录失败:{}",e);
+        //    return new ResponseResult<Map<String, Object>>(ResponseResult.CodeStatus.ERROR_ACCOUNT_PASSWORD, "用户名或者密码错误，请重新输入");
+        //}
     }
 
     /**
@@ -176,6 +172,14 @@ public class LoginController {
      */
     @GetMapping("/getPublicKey")
     public ResponseResult getPublicKey() {
+        System.out.println("111");
+        redisUtil.set("name1","zhengjin");
         return new ResponseResult(ResponseResult.CodeStatus.OK, "登录成功", AccountSecurityUtils.PUBLIC_KEY);
+    }
+
+
+    @GetMapping("/aaaa")
+    public void testRedis01(){
+        redisUtil.set("name","zhengjin");
     }
 }

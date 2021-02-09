@@ -13,4 +13,8 @@ public interface SysJobMapper extends MyMapper<SysJob> {
 
 
     int deleteJobs(Integer[] ids);
+
+    int updateSysJob(SysJob sysJob);
+
+    int updateTimes(SysJob sysJob);
 }

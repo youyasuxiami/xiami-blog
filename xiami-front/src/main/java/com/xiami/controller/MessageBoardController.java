@@ -1,5 +1,6 @@
 package com.xiami.controller;
 
+import com.xiami.annotation.OperatorLog;
 import com.xiami.base.ResponseResult;
 import com.xiami.dto.MessageDto;
 import com.xiami.service.MessageService;
@@ -34,6 +35,7 @@ public class MessageBoardController {
     //    return commentList;
     //}
 
+    @OperatorLog("留言板添加评论")
     @PostMapping("/addMessage")
     public ResponseResult addMessage(@RequestBody MessageDto messageDto){
         return messageService.addMessage(messageDto);

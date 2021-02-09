@@ -1,5 +1,6 @@
 package com.xiami.controller;
 
+import com.xiami.annotation.OperatorLog;
 import com.xiami.base.ResponseResult;
 import com.xiami.service.AboutService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ public class AboutController {
 
     @Autowired
     private AboutService aboutService;
+
 
     @RequestMapping("/getMe")
     public ResponseResult getMe(Integer userId) {

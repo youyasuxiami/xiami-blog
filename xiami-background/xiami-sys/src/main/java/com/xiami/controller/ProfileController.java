@@ -1,5 +1,6 @@
 package com.xiami.controller;
 
+import com.xiami.annotation.OperatorLog;
 import com.xiami.base.ResponseResult;
 import com.xiami.dto.IconParam;
 import com.xiami.dto.ProfileParam;
@@ -46,6 +47,7 @@ public class ProfileController {
      * @param profileParam
      * @return
      */
+    @OperatorLog("更新账号信息")
     @PostMapping("/profile/update")
     public ResponseResult<User> updateUserInfo(@RequestBody ProfileParam profileParam) {
         User user = new User();
@@ -68,6 +70,7 @@ public class ProfileController {
      * @param iconParam {@link IconParam}
      * @return {@link ResponseResult}
      */
+    @OperatorLog("修改头像")
     @PostMapping(value = "/profile/modify/icon")
     public ResponseResult<Void> modifyIcon(@RequestBody IconParam iconParam) {
         int result = profileService.modifyIcon(iconParam.getUsername(), iconParam.getPath());
@@ -93,6 +96,7 @@ public class ProfileController {
      * @param newPassword
      * @return
      */
+    @OperatorLog("修改密码")
     @PostMapping(value = "/profile/modify/password")
     public ResponseResult<Void> modifyPassword(String oldPassword, String newPassword) {
         return profileService.modifyPassword(oldPassword, newPassword);

@@ -1,7 +1,5 @@
 package com.xiami.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import java.util.Date;
 
 public class UserInfo {
@@ -12,6 +10,5 @@ public class UserInfo {
 
     private Integer age;
 
-    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date birth;
 }

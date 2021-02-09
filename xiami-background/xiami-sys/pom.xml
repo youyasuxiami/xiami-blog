@@ -182,6 +182,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.xiami</groupId>
+            <artifactId>xiami-core-log</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
         <!-- redis  end-->
     </dependencies>
 

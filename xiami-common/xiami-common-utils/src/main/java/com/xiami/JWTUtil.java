@@ -23,22 +23,22 @@ public class JWTUtil {
      * 设置过期时间24小时
      */
     private static final long EXPIRE_TIME = 1000*60*60*24;
-    /**
-     * 设置密钥
-     */
-    private static final String SECRET = "shiro+jwt";
+    ///**
+    // * 设置密钥
+    // */
+    //private static final String SECRET = "shiro+jwt";
 
     /**
      * 根据用户名创建一个token
      * @return 返回的token字符串
      */
     //public static String createToken(String username){
-    public static String createToken(Map<String, String> claims){
+    public static String createToken(Map<String, String> claims,String secret){
         try {
             //将当前时间的毫秒数和设置的过期时间相加生成一个新的时间
             Date date = new Date(System.currentTimeMillis()+EXPIRE_TIME);
             //由密钥创建一个指定的算法
-            Algorithm algorithm = Algorithm.HMAC256(SECRET);
+            Algorithm algorithm = Algorithm.HMAC256(secret);
             JWTCreator.Builder builder = JWT.create()
                     //附带过期时间
                     .withExpiresAt(date);
@@ -67,10 +67,10 @@ public class JWTUtil {
      * @param name 用户名
      * @return 返回boolean
      */
-    public static boolean verify(String token,String name){
+    public static boolean verify(String token,String name,String secret){
         try {
             //获取算法
-            Algorithm algorithm = Algorithm.HMAC256(SECRET);
+            Algorithm algorithm = Algorithm.HMAC256(secret);
             //生成JWTVerifier
             JWTVerifier verifier = JWT.require(algorithm)
                     .withClaim("name",name)
@@ -78,11 +78,11 @@ public class JWTUtil {
             //验证token
             verifier.verify(token);
             return true;
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
             return false;
         }
     }
+
 
     /**
      * 从token中获得username，无需secret
