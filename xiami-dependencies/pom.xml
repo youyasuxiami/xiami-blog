@@ -29,7 +29,7 @@
         <java-jwt.version>3.2.0</java-jwt.version>
         <spring-boot-starter-data-redis.version>2.3.6.RELEASE</spring-boot-starter-data-redis.version>
         <lombok.version>1.18.12</lombok.version>
-        <quartz.version>2.2.1</quartz.version>
+        <quartz.version>2.3.2</quartz.version>
         <spring.version>5.2.6.RELEASE</spring.version>
     </properties>
 
