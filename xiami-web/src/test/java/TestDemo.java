@@ -1,7 +1,6 @@
 import com.xiami.utils.RedisUtil;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
 
 import java.io.UnsupportedEncodingException;
@@ -20,12 +19,18 @@ import java.util.Random;
  */
 public class TestDemo {
 
-    @Autowired
-    @Qualifier("redisTemplate")
-    private RedisTemplate redisTemplate;
+    //@Autowired
+    //@Qualifier("redisTemplate")
+    //private RedisTemplate redisTemplate;
+    public  final RedisTemplate redisTemplate;
 
     @Autowired
-    private RedisUtil redisUtil;
+    public RedisUtil redisUtil;
+
+    public TestDemo(RedisTemplate redisTemplate) {
+        this.redisTemplate = redisTemplate;
+    }
+
 
     public static void main(String[] args) throws UnsupportedEncodingException, NoSuchAlgorithmException {
         //String result = "";
@@ -51,8 +56,9 @@ public class TestDemo {
         //
         //result = buf.toString();
         //System.out.println("result = " + result);
-        String token = getToken();
-        System.out.println(token);
+        //String token = getToken();
+        //System.out.println(token);
+
     }
 
     public static String getToken()  {
@@ -98,14 +104,5 @@ public class TestDemo {
         System.out.println("token:"+token);
 
         return token;
-    }
-
-    @Test
-    public void testRedis(){
-        System.out.println("111111");
-        redisTemplate.opsForValue().set("name","zhengjin");
-
-        //redisUtil.set("name","zhengjin");
-        //System.out.println(redisUtil.get("name"));
     }
 }
