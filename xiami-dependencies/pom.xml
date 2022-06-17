@@ -22,7 +22,7 @@
         <mysql-connector-java.version>8.0.20</mysql-connector-java.version>
         <pagehelper-spring-boot-starter.version>1.2.5</pagehelper-spring-boot-starter.version>
         <guava.version>18.0</guava.version>
-        <fastjson.version>1.2.41</fastjson.version>
+        <fastjson.version>1.2.83</fastjson.version>
         <joda-time.version>2.10.1</joda-time.version>
         <commons-lang3.version>3.9</commons-lang3.version>
         <commonmark.version>0.10.0</commonmark.version>
